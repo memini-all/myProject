@@ -73,15 +73,13 @@
 	}
 	
 	$(document).ready(
-			function() {
-
-				
-				$('#newBtn').on("click", function(evt) {
-					alert("글쓰기 클릭");
-					self.location = "board/post";
-				});
-
+		function() {
+	
+			$('#newBtn').on("click", function(evt) {
+				//alert("글쓰기 클릭");
+				self.location = "board/post";
 			});
+	});
 	
 	
 </script>

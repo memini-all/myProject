@@ -38,6 +38,35 @@
     
     <script src="/resources/ckeditor/ckeditor.js"></script>
     
+    <script>
+ 
+	
+	$(document).ready(
+		function() {
+			CKEDITOR.replace( 'brdcontent', { 'filebrowserUploadUrl': 'upload4ckeditor'});
+	});
+	
+	function fn_formSubmit(){
+		CKEDITOR.instances["brdcontent"].updateElement();
+		
+		// 내용 입력 체크
+		if ( ! chkInputValue("#brdtitle", "제목")) return false;
+		if ( ! chkInputValue("#brdcontent", "내용")) return false;
+		
+		$("#form1").submit();
+	} 
+	
+	function chkInputValue(id, msg){
+		if ( $.trim($(id).val()) == "") {
+			alert(msg+"을(를) 입력해주세요.");
+			$(id).focus();
+			return false;
+		}
+		return true;
+	}
+	
+	</script>
+    
 </head>
 <body>
 
@@ -76,12 +105,13 @@
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">내용</label>
 	                            <div class="col-lg-9">
-	                            	<textarea id="brdmemo" class="form-control" name="brdmemo" rows="10" cols="60"><c:out value="${boardInfo.brdmemo}"/></textarea>
+	                            	<textarea id="brdcontent" class="form-control" name="brdmemo" rows="10" cols="60"><c:out value="${boardInfo.brdmemo}"/></textarea>
 	                            </div>
 	                        </div>                        
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">파일</label>
 	                            <div class="col-lg-9">
+	                            	
 	                            	<c:forEach var="listview" items="${listview}" varStatus="status">
 										<input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>">	
 				            			<a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>"> 							 
