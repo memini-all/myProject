@@ -59,9 +59,35 @@
     <script src="css/sb-admin/sb-admin-2.js"></script>
    -->
 
+<script>
+	function fn_move(formid, url, msg){
+		
+		
+		
+		if (msg) {
+			if (!confirm( msg + " 하시겠습니까??")) return;
+		}
+		var form = document.getElementById(formid);
+		form.action=url;
+		form.submit();
+	}
+	
+	$(document).ready(
+			function() {
+
+				
+				$('#newBtn').on("click", function(evt) {
+					alert("글쓰기 클릭");
+					self.location = "board/post";
+				});
+
+			});
+	
+	
+</script>
+
 </head>
 <body>
-	<h2>게시판 목록목록</h2>
 
 	<div id="wrapper">
 
@@ -75,6 +101,26 @@
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
+			
+			<div class="row">
+                <div class="col-lg-12">
+                
+                	<!-- 게시판 아이콘 -->
+	                <button id="boardlistBtn" type="button" class="btn btn-default" onclick="showBoardList()"><i class="fa  fa-files-o fa-fw"></i> <c:out value="${bgInfo.bgname}"/></button>      
+	                <div id="boardlistDiv" style="width: 250px; height:300px; display: none;" class="popover fade bottom in" role="tooltip">
+	                	<div style="left:15%;" class="arrow"></div>
+	                	<div class="popover-content">
+             				<div id="tree"></div>	
+	                	</div>
+	                </div>
+                
+					<!-- 글쓰기 버튼 -->
+			        <button type="button" class="btn btn-default pull-right" id="newBtn">
+			        <i class="fa fa-edit fa-fw"></i> 글쓰기 </button>      
+					
+				</div>
+            </div>
+			
 			<div class="row">
 				<div class="col-lg-6">
 					게시판 위치할 부분
