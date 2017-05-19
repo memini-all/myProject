@@ -1,2 +1,2 @@
-# myhub
+# Project
 coding study
