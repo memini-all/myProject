@@ -57,6 +57,7 @@
 	} 
 	
 	function chkInputValue(id, msg){
+
 		if ( $.trim($(id).val()) == "") {
 			alert(msg+"을(를) 입력해주세요.");
 			$(id).focus();
@@ -72,6 +73,7 @@
 
 	<div id="wrapper">
 
+		<!-- 네비게이션 부분 -->
 		<jsp:include page="../common/navigation2.jsp" />
 
 		<div id="page-wrapper">
@@ -125,6 +127,8 @@
 	                </div>
 			        <button class="btn btn-outline btn-primary">작성</button>
 					
+					<!-- 작성자 : 현재는 hidden으로 임의의 값을 넣음 -->
+					<input type="hidden" name="user" value="user01" />
 				</form>	
                 
             </div>

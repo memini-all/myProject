@@ -18,7 +18,7 @@ public class BoardController {
 	// 등록 페이지를 보여줌
 	@RequestMapping(value = "/post", method = RequestMethod.GET)
 	public String boardForm(BoardVO board, Model model) throws Exception {
-		logger.info(">>>>>>> 등록 페이지 로딩.........");
+		logger.info(">>>>>>> 글 등록 페이지 이동 .........");
 		
 		return "board/BoardForm";
 	}
@@ -26,7 +26,8 @@ public class BoardController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String boardList() throws Exception {
-
+		logger.info(">>>>>>> 글 목록 페이지 이동 .........");
+		
 		return "board/BoardList2";
 	}
 }
