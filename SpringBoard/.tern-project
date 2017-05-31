@@ -1,0 +1,37 @@
+{
+  "ecmaVersion": 5,
+  "plugins": {
+    "outline": {
+      
+    },
+    "chrome-extension": {
+      
+    },
+    "chrome-apps": {
+      
+    },
+    "browser-extension": {
+      
+    },
+    "angular1": {
+      
+    },
+    "jquery-ui1-12": {
+      
+    },
+    "bootstrap": {
+      
+    },
+    "jquery-extension": {
+      
+    },
+    "jquery-mobile1.5": {
+      
+    }
+  },
+  "libs": [
+    "ecma5",
+    "browser",
+    "jquery"
+  ]
+}

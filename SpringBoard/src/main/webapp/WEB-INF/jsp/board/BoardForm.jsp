@@ -12,6 +12,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
+    <script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
+    
     <!-- Bootstrap Core CSS -->
     <link href="/resources/sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -43,18 +45,21 @@
 	
 	$(document).ready(
 		function() {
-			CKEDITOR.replace( 'brdcontent', { 'filebrowserUploadUrl': 'upload4ckeditor'});
+			CKEDITOR.replace( 'content', { 'filebrowserUploadUrl': 'upload4ckeditor'});
 	});
 	
+	// 전송 부분 - 제이쿼리 이용 x
+	/**/
 	function fn_formSubmit(){
-		CKEDITOR.instances["brdcontent"].updateElement();
+		CKEDITOR.instances["content"].updateElement();
 		
 		// 내용 입력 체크
-		if ( ! chkInputValue("#brdtitle", "제목")) return false;
-		if ( ! chkInputValue("#brdcontent", "내용")) return false;
-		
-		$("#form1").submit();
+		if ( ! chkInputValue("#title", "제목")) return false;
+		if ( ! chkInputValue("#content", "내용")) return false;
+	
+		$("#registerForm").submit();
 	} 
+	
 	
 	function chkInputValue(id, msg){
 
@@ -79,20 +84,21 @@
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> <c:out value="${bgInfo.bgname}"/></h1>
+                    <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> </h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            
+            						<!-- enctype="multipart/form-data"을 form 태그에 적용시 자동적으로 VO와 바인딩이 안됨, 
+            							pom.xml과 설정파일(main-servlet.xml)에 파일업로드 관련 부분을 모두 추가해야함 -->
             <!-- /.row -->
             <div class="row">
-            	<form id="form1" name="form1" role="form" action="boardSave" method="post" enctype="multipart/form-data" onsubmit="return fn_formSubmit();" >
+            	<form id="registerForm"  name="registerForm" role="form" action="regist" method="post" enctype="multipart/form-data" onsubmit="return fn_formSubmit();">
 					<div class="panel panel-default">
 	                    <div class="panel-body">
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">제목</label>
 	                            <div class="col-lg-9">
-	                            	<input type="text" class="form-control" id="brdtitle" name="brdtitle" size="70" maxlength="250" value="<c:out value="${boardInfo.brdtitle}"/>">
+	                            	<input type="text" class="form-control" id="title" name="title" size="70" maxlength="250" placeholder="Enter Title">
 	                            	
 	                            	<!-- 공지사항 
 	                            	<c:if test="${bgInfo.bgnotice=='Y'}">
@@ -107,13 +113,13 @@
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">내용</label>
 	                            <div class="col-lg-9">
-	                            	<textarea id="brdcontent" class="form-control" name="brdmemo" rows="10" cols="60"><c:out value="${boardInfo.brdmemo}"/></textarea>
+	                            	<textarea id="content" class="form-control" name="content" rows="10" cols="60"></textarea>
 	                            </div>
 	                        </div>                        
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">파일</label>
 	                            <div class="col-lg-9">
-	                            	
+	                            	<!-- 
 	                            	<c:forEach var="listview" items="${listview}" varStatus="status">
 										<input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>">	
 				            			<a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>"> 							 
@@ -121,15 +127,20 @@
 									</c:forEach>					
 									
 									<input type="file" name="uploadfile" multiple="multiple" />
+									<input type="file" name="uploadfile" multiple="multiple" />
+									
+									 -->
+									 <input type="file" name="uploadfile" multiple="multiple" />
 	                            </div>
 	                        </div>  
 	                    </div>
 	                </div>
-			        <button class="btn btn-outline btn-primary">작성</button>
+			        <button type="submit" class="btn btn-outline btn-primary">작성</button>
 					
 					<!-- 작성자 : 현재는 hidden으로 임의의 값을 넣음 -->
-					<input type="hidden" name="user" value="user01" />
-				</form>	
+					<!-- 추후 세션에 저장된 로그인한 아이디를 넘겨주고 controller에서 그걸 토대로 회원번호를 검색하도록 설정 -->
+					<input type="hidden" name="userno" value="01" />
+				</form>
                 
             </div>
             <!-- /.row -->
@@ -139,5 +150,30 @@
     </div>
     <!-- /#wrapper -->
 </body>
+
+
+<script>
+/*
+//글 등록시 파일의 이름을 같이 전송해 준다.
+$("#registerForm").submit(function(event) {
+	
+	//event.preventDefault(); // submit의 동작을 일시적으로 막는다.
+	// 이게 있으면 에디터 기능x
+
+	var that = $(this);
+
+	CKEDITOR.instances["content"].updateElement();
+	
+	//that.action = 
+	
+	// 내용 입력 체크
+	if ( ! chkInputValue("#title", "제목")) return false;
+	if ( ! chkInputValue("#content", "내용")) return false;
+	
+	$("#registerForm").submit();
+});
+*/
+
+</script>
 
 </html>
