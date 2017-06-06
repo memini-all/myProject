@@ -1,0 +1,152 @@
+/* ----------------------------------------------------------------------- 
+  추가부분
+ */
+ 
+ .msgAlert {
+  width: 18px; 
+  height:18px; 
+  background:#d9534f; 
+  color:white; 
+  border-radius: 50%; 
+  overflow: hidden; 
+  position: absolute; 
+  top: 3px; 
+  left: 30px; 
+  text-align:center;
+ }
+ 
+.navbar-header {
+    width: 100%;
+}
+
+@media (max-width: 991px) {
+	_navbar-static-top {
+	    position: fixed;
+	    width: 100%;
+	}
+	.navbar-right{
+		float: right;
+	}
+}
+
+.table>thead>tr>th{
+	text-align:center;
+}
+
+.height100 {
+	min-height:100%;
+}
+
+.maxHeight400 {
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.height200 {
+	height: 200px;
+	overflow-y: auto;
+}
+
+.notice {
+		color: red;
+		font-weight:bold;
+}
+
+list{
+	max-width: 1000px;
+}
+.listTitle, .showField, .listHiddenField{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	padding: 5px 5px 0px 5px;
+	min-height: 35px;
+}
+.boardHead, .listHiddenField, .textCenter{
+	text-align:center;
+}
+
+.listTitle{
+	width: auto;
+}
+.boardHead{
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	width: 100%;
+}
+.listBody{
+	border-bottom: 1px solid #CCC;
+	width: 100%;
+}
+.showField{
+	display: none;
+}
+.field30{
+	width: 30px;
+	text-align: center;
+}
+.field60{
+	width: 60px;
+}
+.field100{
+	width: 100px;
+}
+
+.field130{
+	width: 130px;
+}
+
+@media screen and (max-width: 900px) {
+	.boardHead,
+	.listHiddenField {
+		display: none;
+	}
+	.listTitle {
+		_font-size: 17px;
+		width: 99%;
+	}
+	.showField{
+		display: inline;
+	}
+}
+
+.photoOutline {
+	width:50px;
+	vertical-align: top; 
+}
+.img-circle{
+	display: inline-block;
+	width: 50px; 
+	height: 50px; 
+	border: 1px solid #ededed; 
+	border-radius: 50%; 
+	overflow: hidden;
+	vertical-align: middle;
+	text-align: center;
+	padding-left: 3px;
+	padding-top: 2px;
+}
+
+.photoTitle{
+	width: auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	min-height: 35px;
+	padding-left: 15px;
+}
+
+.noPhoto{
+	margin-top: 8px;
+	font-size: 20pt; 
+	color:#337ab7;
+}
+
+_div {border:1px solid #cccccc}
+
+/* ----------------------------------------------------------------------- 
+  추가부분
+ */
+ 
+
+ 

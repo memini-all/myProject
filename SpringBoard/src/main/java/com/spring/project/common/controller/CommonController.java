@@ -13,6 +13,8 @@ public class CommonController {
 	@RequestMapping(value = "/index")
 	public String boardList() throws Exception {
 
-		return "board/BoardList2";
+		logger.info(">>>>>>> CommonController");
+		
+		return "board/BoardList";
 	}
 }

@@ -22,5 +22,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY brdno DESC, regdate DESC
 	]]>
 	</select>
+	
+	<!-- 글 상세보기 -->
+	<select id="detail" parameterType="Integer" resultType="boardVO">
+		SELECT
+			brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt 
+		FROM
+			tbl_sboard
+		WHERE brdno = #{brdno}
+	</select>
+
 
 </mapper>

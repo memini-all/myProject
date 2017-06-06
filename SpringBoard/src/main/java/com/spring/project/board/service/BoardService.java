@@ -19,4 +19,12 @@ public interface BoardService {
 	 * @throws Exception
 	 */
 	public List<BoardVO> boardList() throws Exception;
+	
+	/**
+	 * 글 상세보기
+	 * @param brdno
+	 * @return
+	 * @throws Exception
+	 */
+	public BoardVO boardDetail(Integer brdno) throws Exception;
 }

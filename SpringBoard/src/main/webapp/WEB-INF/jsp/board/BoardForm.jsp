@@ -79,7 +79,7 @@
 	<div id="wrapper">
 
 		<!-- 네비게이션 부분 -->
-		<jsp:include page="../common/navigation2.jsp" />
+		<jsp:include page="../common/navigation.jsp" />
 
 		<div id="page-wrapper">
             <div class="row">

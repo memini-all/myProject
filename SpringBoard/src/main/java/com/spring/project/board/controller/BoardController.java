@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.project.board.dto.BoardVO;
@@ -46,11 +47,10 @@ public class BoardController {
 		service.boardRegist(board);
 		rttr.addFlashAttribute("msg", "SUCCESS");
 
-		//return "redirect:/board/BoardList2";
-		return "redirect:/index";
+		return "redirect:/board/list";
 	}
 	
-
+	// 게시물 보기
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String boardList(Model model) throws Exception {
 		
@@ -59,6 +59,15 @@ public class BoardController {
 		logger.info(">>>>>>> show all list........");
 		model.addAttribute("list", service.boardList());
 		
-		return "board/BoardList2";
+		return "board/BoardList";
+	}
+	
+	// 글 상세보기
+	@RequestMapping(value = "/detail", method = RequestMethod.GET)
+	public String read(@RequestParam("brdno") int brdno, Model model) throws Exception {
+		
+		model.addAttribute("boardVO", service.boardDetail(brdno));
+		
+		return "board/BoardDetail";
 	}
 }

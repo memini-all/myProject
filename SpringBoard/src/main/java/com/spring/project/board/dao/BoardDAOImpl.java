@@ -31,4 +31,12 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlsession.selectList(namespace+".list");
 	}
 
+
+	@Override
+	public BoardVO detail(Integer brdno) throws Exception {
+		
+		return sqlsession.selectOne(namespace+".detail", brdno);
+	}
+	
+
 }
