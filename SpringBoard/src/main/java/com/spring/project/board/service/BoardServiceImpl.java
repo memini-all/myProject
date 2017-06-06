@@ -1,5 +1,7 @@
 package com.spring.project.board.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -17,6 +19,12 @@ public class BoardServiceImpl implements BoardService {
 	public void boardRegist(BoardVO board) throws Exception {
 	
 		boardDAO.regist(board);
+	}
+
+	@Override
+	public List<BoardVO> boardList() throws Exception {
+			
+		return boardDAO.boardList();
 	}
 
 }

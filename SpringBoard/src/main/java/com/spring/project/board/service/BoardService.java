@@ -1,5 +1,7 @@
 package com.spring.project.board.service;
 
+import java.util.List;
+
 import com.spring.project.board.dto.BoardVO;
 
 public interface BoardService {
@@ -10,4 +12,11 @@ public interface BoardService {
 	 * @throws Exception
 	 */
 	public void boardRegist(BoardVO board) throws Exception;
+	
+	/**
+	 * 글 목록
+	 * @return
+	 * @throws Exception
+	 */
+	public List<BoardVO> boardList() throws Exception;
 }

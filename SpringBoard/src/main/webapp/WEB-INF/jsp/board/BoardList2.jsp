@@ -33,6 +33,7 @@
 
     <!-- Custom CSS -->
     <link href="/resources/sb-admin/dist/css/sb-admin-2.css" rel="stylesheet">
+	<link href="/resources/css/sb-admin-add.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/resources/sb-admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -101,34 +102,99 @@
 			</div>
 			
 			<div class="row">
-                <div class="col-lg-12">
-                
-                	<!-- 게시판 아이콘 -->
-	                <button id="boardlistBtn" type="button" class="btn btn-default" onclick="showBoardList()"><i class="fa  fa-files-o fa-fw"></i> <c:out value="${bgInfo.bgname}"/></button>      
-	                <div id="boardlistDiv" style="width: 250px; height:300px; display: none;" class="popover fade bottom in" role="tooltip">
-	                	<div style="left:15%;" class="arrow"></div>
-	                	<div class="popover-content">
-             				<div id="tree"></div>	
-	                	</div>
-	                </div>
-                
-					<!-- 글쓰기 버튼 -->
-			        <button type="button" class="btn btn-default pull-right" id="newBtn">
-			        <i class="fa fa-edit fa-fw"></i> 글쓰기 </button>      
-					
-				</div>
-            </div>
-			
-			<div class="row">
-				<div class="col-lg-6">
-					게시판 위치할 부분
-				</div>
-				<!-- /.col-lg-6 -->
+	        	<div class="col-lg-12">
+	                	<!-- 게시판 아이콘 -->
+		                <button id="boardlistBtn" type="button" class="btn btn-default" onclick="showBoardList()"><i class="fa  fa-files-o fa-fw"></i> <c:out value="${bgInfo.bgname}"/></button>      
+		                <div id="boardlistDiv" style="width: 250px; height:300px; display: none;" class="popover fade bottom in" role="tooltip">
+						<div style="left:15%;" class="arrow"></div>
+						<div class="popover-content">
+							<div id="tree"></div>	
+						</div>
+					</div>
+	                
+						<!-- 글쓰기 버튼 -->
+					<button type="button" class="btn btn-default pull-right" id="newBtn">
+					<i class="fa fa-edit fa-fw"></i> 글쓰기 </button>      
+						
+	        	</div>
 			</div>
-					
+				
+			<div class="panel panel-default">
+	            <div class="panel-body">
+					<div class="boardHead">
+						<div class="listHiddenField pull-left field60">No.</div>
+						<div class="listHiddenField pull-right field60">첨부</div>
+						<div class="listHiddenField pull-right field60">조회수</div>
+						<div class="listHiddenField pull-right field100">작성일</div>
+						<div class="listHiddenField pull-right field100">작성자</div>
+						<div class="listTitle">제목</div>
+					</div>
+						
+						
+					<c:forEach items="${list}" var="boardVO">	
+						
+					<div class="listBody">
+
+						<!-- 파일첨부 아이콘부분 -->
+						<div class="listHiddenField pull-right field60">
+							<c:if test="${listitem.filecnt>0}">
+								<i class="fa fa-download fa-fw" title="<c:out value="${listitem.filecnt}"/>"></i>
+							</c:if>	
+						</div>
+						<div class="listHiddenField pull-left field60"><c:out value="${boardVO.brdno}"/></div> <!-- 글번호 -->
+						<div class="listHiddenField pull-right field60 textCenter"><c:out value="${boardVO.viewcnt}"/></div>
+						<div class="listHiddenField pull-right field100 textCenter"><c:out value="${boardVO.regdate}"/></div>
+						<div class="listHiddenField pull-right field100 textCenter"><c:out value="글쓴이"/></div> <!-- 작성자 -->
+						<div class="listTitle">
+							<a href="#" >${boardVO.title}</a>			<!-- 제목 -->					
+						</div>
+						
+						<!-- 
+						<div class="listHiddenField pull-right field60 textCenter"><c:out value="${listitem.brdhit}"/></div>
+						<div class="listHiddenField pull-right field100 textCenter"><c:out value="${listitem.brddate}"/></div>
+						<div class="listHiddenField pull-right field100 textCenter"><c:out value="${listitem.brdwriter}"/></div> 
+						<div class="listTitle" title="<c:out value="${listitem.brdtitle}"/>">
+							<a href="${link}" <c:if test="${listitem.brdnotice=='Y'}">class="notice"</c:if>><c:out value="${listitem.brdtitle}"/></a>						
+						</div>
+						 -->
+						 
+						<!-- 화면 축소시 보여질 부분 -->
+						<div class="showField text-muted small">
+						
+							<c:out value="글쓴이"/> 
+							<c:out value="${boardVO.regdate}"/>
+							<i class="fa fa-eye fa-fw"></i> <c:out value="${boardVO.viewcnt}"/>
+							<c:if test="${listitem.filecnt>0}">
+								<i class="fa fa-download fa-fw" title="<c:out value="${listitem.filecnt}"/>"></i>
+							</c:if>									
+						</div>
+						
+						<!-- 
+						<div class="showField text-muted small">
+							<c:out value="${listitem.brdwriter}"/> 
+							<c:out value="${listitem.brddate}"/>
+							<i class="fa fa-eye fa-fw"></i> <c:out value="${listitem.brdhit}"/>
+							<c:if test="${listitem.filecnt>0}">
+								<i class="fa fa-download fa-fw" title="<c:out value="${listitem.filecnt}"/>"></i>
+							</c:if>									
+						</div>
+						 -->
+						 
+					</div>
+					<!-- listBody -->	
+						
+					</c:forEach>
+	
+						 
+				
+						
+	            </div>
+	            <!-- panel-body -->
+			</div>
+			<!-- panel panel-default -->
+				
 		</div>
 		<!-- /#page-wrapper -->
-
 	</div>
 	<!-- /#wrapper -->
 </body>

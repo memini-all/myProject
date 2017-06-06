@@ -1,5 +1,7 @@
 package com.spring.project.board.dao;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -15,13 +17,18 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	private static String namespace = "com.spring.project.board";
 	
-	/**
-	 * 글 등록
-	 */
+	
 	@Override
 	public void regist(BoardVO board) throws Exception {
 		
 		sqlsession.insert(namespace+".regist", board);
+	}
+
+	
+	@Override
+	public List<BoardVO> boardList() throws Exception {
+		
+		return sqlsession.selectList(namespace+".list");
 	}
 
 }

@@ -52,8 +52,12 @@ public class BoardController {
 	
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String boardList() throws Exception {
-		logger.info(">>>>>>> 게시판 목록 페이지 이동 .........");
+	public String boardList(Model model) throws Exception {
+		
+		logger.info(">>>>>>> 모든 게시물 보기 ........");
+		
+		logger.info(">>>>>>> show all list........");
+		model.addAttribute("list", service.boardList());
 		
 		return "board/BoardList2";
 	}
