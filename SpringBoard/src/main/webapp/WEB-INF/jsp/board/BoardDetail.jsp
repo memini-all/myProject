@@ -59,6 +59,38 @@
     <script src="css/sb-admin/sb-admin-2.js"></script>
 	<script src="js/project9.js"></script>    
   --> 
+  
+  	<script type="text/javascript">
+ 
+ 	 $(document).ready(function(){
+		
+ 		var formObj = $("form[role='form']");
+ 		 
+ 		console.log(formObj);
+ 		
+		// 목록버튼
+		$("#listBtn").on("click", function(){
+			self.location = "/board/list";
+		});
+
+		// 수정버튼
+		$("#modifyBtn").on("click", function(){
+			formObj.attr("action", "/board/modify");
+			formObj.attr("method", "get");		
+			formObj.submit();
+		});
+			
+		// 삭제버튼
+		$("#removeBtn").on("click", function() {
+			formObj.attr("action", "/board/remove")
+			formObj.submit();
+		});
+			
+	});
+		
+  
+  	</script>
+  
 </head>
 
 <body>
@@ -78,6 +110,15 @@
             <!-- /.row -->
             <div class="row">
 				<div class="panel panel-default">
+				
+				
+					<form role="form" action="modifyPage" method="post">
+					
+						<input type='hidden' name='brdno' value="${boardVO.brdno}"> 
+					
+					</form>
+				
+				
 					<!-- 제목 -->
                     <div class="panel-heading">
                         	<c:out value="${boardVO.title}"/>
@@ -90,6 +131,8 @@
                     <div class="panel-body">
                         <p><c:out value="${boardVO.content}" escapeXml="false"/></p>
                     </div>
+                    
+                    <!-- 첨부파일 있을경우 파일 다운로드 표시 -->
                     <c:if test="${listview.size()>0}">
 		                <div class="panel-footer">
 		                	<c:forEach var="listview" items="${listview}" varStatus="status">	
@@ -98,11 +141,13 @@
 							</c:forEach>
 	                     </div>
                     </c:if>
+                    
                 </div>
-                <button class="btn btn-outline btn-primary" onclick="fn_moveToURL('board/list?bgno=<c:out value="${bgno}"/>')" >목록</button>
+                
+                <button class="btn btn-outline btn-primary" id="listBtn" >목록</button>
 				<c:if test='${boardInfo.userno==sessionScope.userno}' >
-	                <button class="btn btn-outline btn-primary" onclick="fn_moveToURL('boardDelete?bgno=<c:out value="${boardInfo.bgno}"/>&brdno=<c:out value="${boardInfo.brdno}"/>', '삭제')" >삭제</button>
-	                <button class="btn btn-outline btn-primary" onclick="fn_moveToURL('boardForm?brdno=<c:out value="${boardInfo.brdno}"/>')" >수정</button>
+					<button class="btn btn-outline btn-primary" id="modifyBtn" >수정</button>
+	                <button class="btn btn-outline btn-primary" id="removeBtn" >삭제</button>
 				</c:if>
 
 							                               

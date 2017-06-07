@@ -73,13 +73,12 @@
 		form.submit();
 	}
 	
-	$(document).ready(
-		function() {
+	$(document).ready(function() {
 	
-			$('#newBtn').on("click", function(evt) {
-				//alert("글쓰기 클릭");
-				self.location = "/board/post";
-			});
+		$('#newBtn').on("click", function(event) {
+			//alert("글쓰기 클릭");
+			self.location = "/board/post";
+		});
 	});
 	
 	

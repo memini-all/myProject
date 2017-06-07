@@ -48,40 +48,27 @@
 		CKEDITOR.replace( 'content', { 'filebrowserUploadUrl': 'upload4ckeditor'});
 		
 		var formObj = $("form[role='form']");
-			
-		// 등록
-		$("#registBtn").on("click", function(){
+		
+		// 수정버튼
+		$("#modifyBtn").on("click", function(){
 			
 			CKEDITOR.instances["content"].updateElement();
 			
 			if ( ! chkInputValue("#title", "제목")) return false;
 			if ( ! chkInputValue("#content", "내용")) return false;
 			
-			formObj.attr("action", "/board/regist");
+			formObj.attr("action", "/board/modify");
 			formObj.attr("method", "post");		
 			formObj.submit();
 		});
 		
-		
-		// 취소
+		// 취소 버튼
 		$("#cancelBtn").on("click", function(){
-		  	self.location = "/board/list";	  
+			self.location = "/board/list";	  
 		});
 			
 	});
 	
-	// 전송 부분 - 제이쿼리 이용 x
-	/*
-	function fn_formSubmit(){
-		CKEDITOR.instances["content"].updateElement();
-		
-		// 내용 입력 체크
-		if ( ! chkInputValue("#title", "제목")) return false;
-		if ( ! chkInputValue("#content", "내용")) return false;
-	
-		$("#registerForm").submit();
-	} 
-	*/
 	
 	function chkInputValue(id, msg){
 
@@ -110,32 +97,24 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            						<!-- enctype="multipart/form-data"을 form 태그에 적용시 자동적으로 VO와 바인딩이 안됨, 
-            							pom.xml과 설정파일(main-servlet.xml)에 파일업로드 관련 부분을 모두 추가해야함 -->
+            					
             <!-- /.row -->
             <div class="row">
-            	<form id="registerForm"  name="registerForm" role="form" enctype="multipart/form-data" >
+            	<form id="modifyForm"  name="modifyForm" role="form" enctype="multipart/form-data">
 					<div class="panel panel-default">
 	                    <div class="panel-body">
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">제목</label>
 	                            <div class="col-lg-9">
-	                            	<input type="text" class="form-control" id="title" name="title" size="70" maxlength="250" placeholder="Enter Title">
-	                            	
-	                            	<!-- 공지사항 
-	                            	<c:if test="${bgInfo.bgnotice=='Y'}">
-									 	<label>
-				                        	<input type="checkbox" name="brdnotice" value="Y" <c:if test="${boardInfo.brdnotice=='Y'}">checked="checked"</c:if>/>
-				                        	<s:message code="common.notice"/>
-				                        </label>
-	                            	</c:if>
-	                            	-->
+	                            	<input type="text" class="form-control" id="title" name="title" size="70" maxlength="250" value="<c:out value="${boardVO.title}"/>">
 	                            </div>
 	                        </div>
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">내용</label>
 	                            <div class="col-lg-9">
-	                            	<textarea id="content" class="form-control" name="content" rows="10" cols="60"></textarea>
+	                            	<textarea id="content" class="form-control" name="content" rows="10" cols="60">
+	                            		<c:out value="${boardVO.content}"/>
+	                            	</textarea>
 	                            </div>
 	                        </div>                        
 	                    	<div class="row form-group">
@@ -157,13 +136,15 @@
 	                        </div>  
 	                    </div>
 	                </div>
+			       
 					
+					<input type="hidden" name="brdno" value="${boardVO.brdno}" />
 					<!-- 작성자 : 현재는 hidden으로 임의의 값을 넣음 -->
 					<!-- 추후 세션에 저장된 로그인한 아이디를 넘겨주고 controller에서 그걸 토대로 회원번호를 검색하도록 설정 -->
 					<input type="hidden" name="userno" value="01" />
 				</form>
 				
-				<button type="submit" id="registBtn" class="btn btn-outline btn-primary">작성</button>
+				<button type="submit" id="modifyBtn" class="btn btn-outline btn-primary">수정</button>
 				<button id="cancelBtn" class="btn btn-outline btn-primary">취소</button>
                 
             </div>
@@ -174,5 +155,6 @@
     </div>
     <!-- /#wrapper -->
 </body>
+
 
 </html>

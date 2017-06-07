@@ -27,4 +27,18 @@ public interface BoardService {
 	 * @throws Exception
 	 */
 	public BoardVO boardDetail(Integer brdno) throws Exception;
+	
+	/**
+	 * 글 수정
+	 * @param board
+	 * @throws Exception
+	 */
+	public void boardModify(BoardVO board) throws Exception;
+	
+	/**
+	 * 글 삭제
+	 * @param brdno
+	 * @throws Exception
+	 */
+	public void boardRemove(Integer brdno) throws Exception;
 }

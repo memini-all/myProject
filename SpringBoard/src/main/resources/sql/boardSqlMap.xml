@@ -7,30 +7,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 글등록 -->
 	<insert id="regist" parameterType="boardVO">
-		INSERT INTO tbl_sboard (userno, title, content)
-		VALUES(#{userno}, #{title}, #{content})
+		INSERT INTO tbl_sboard
+			(userno, title, content, regdate, updatedate, deleteat, viewcnt)
+		VALUES
+			(#{userno}, #{title}, #{content}, NOW(), NOW(), 'N', 0)
 	</insert>
-	
-	<!-- 글목록 : 글 전체목록을 가져온다 > 추후 수정 -->
+
+	<!-- 글목록 : 글 전체목록을 가져온다, 추후 수정 -->
 	<select id="list" resultType="boardVO">
 	<![CDATA[
 		SELECT 
 		   brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt 
 		FROM 
 		   tbl_sboard 
-		WHERE brdno > 0 
-		ORDER BY brdno DESC, regdate DESC
+		WHERE 
+			brdno > 0 AND deleteat = 'N'
+		ORDER BY 
+			brdno DESC, regdate DESC
 	]]>
 	</select>
-	
+
 	<!-- 글 상세보기 -->
 	<select id="detail" parameterType="Integer" resultType="boardVO">
 		SELECT
-			brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt 
+			brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt
 		FROM
 			tbl_sboard
 		WHERE brdno = #{brdno}
 	</select>
 
+	<!-- 글 수정 -->
+	<update id="update" parameterType="boardVO">
+		UPDATE
+			tbl_sboard 
+		SET 
+			title = #{title}, content = #{content}, updatedate = NOW()
+		WHERE 
+			brdno= #{brdno}
+	</update>
+
+	<!-- 글 삭제 -->
+	<delete id="remove" parameterType="Integer">
+		UPDATE
+			tbl_sboard 
+		SET 
+			deleteat = 'Y'
+		WHERE 
+			brdno= #{brdno}
+	</delete>
 
 </mapper>

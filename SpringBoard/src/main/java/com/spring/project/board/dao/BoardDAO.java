@@ -27,4 +27,17 @@ public interface BoardDAO {
 	 * @throws Exception
 	 */
 	public BoardVO detail(Integer brdno) throws Exception;
+	
+	/**
+	 * 글 수정
+	 * @param board
+	 * @throws Exception
+	 */
+	public void modify(BoardVO board) throws Exception;
+
+	/**
+	 * 글 삭제
+	 * @param brdno
+	 */
+	public void remove(Integer brdno) throws Exception;
 }
