@@ -60,7 +60,7 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="/board/list"><i class="fa fa-dashboard fa-fw"></i>게시판</a>
+                            <a href="/board/list"><i class="fa fa-files-o fa-fw"></i>게시판</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

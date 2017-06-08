@@ -64,7 +64,7 @@
 		
 		// 취소 버튼
 		$("#cancelBtn").on("click", function(){
-			self.location = "/board/list";	  
+			self.location = "/board/list?page=${cri.page}&perPageNum=${cri.perPageNum}";	  
 		});
 			
 	});
@@ -101,6 +101,11 @@
             <!-- /.row -->
             <div class="row">
             	<form id="modifyForm"  name="modifyForm" role="form" enctype="multipart/form-data">
+            	
+            		<!-- 수정후 원래 페이지로 돌아가기 위한 페이지 번호와 페이지당 보여지는 글 목록수 -->
+					<input type='hidden' name='page' value="${cri.page}"> 
+					<input type='hidden' name='perPageNum' value="${cri.perPageNum}">
+            	
 					<div class="panel panel-default">
 	                    <div class="panel-body">
 	                    	<div class="row form-group">

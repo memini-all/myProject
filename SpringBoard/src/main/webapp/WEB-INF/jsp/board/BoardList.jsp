@@ -21,10 +21,19 @@
     <script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
     <script src="/resources/sb-admin/vendor/jquery/jquery-ui.js"></script>
     <script src="/resources/sb-admin/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/resources/sb-admin/vendor/metisMenu/metisMenu.min.js"></script>
+    <script src="/resources/sb-admin/vendor//metisMenu.min.js"></script>
     <script src="/resources/sb-admin/dist/js/sb-admin-2.js"></script>
      -->
      
+     <!--  project9 BoardList.jsp JS파일 링크
+    <script src="js/jquery-2.2.3.min.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/dynatree/jquery.dynatree.js"></script>    
+    <script src="css/sb-admin/bootstrap.min.js"></script>
+    <script src="css/sb-admin/metisMenu.min.js"></script>
+    <script src="css/sb-admin/sb-admin-2.js"></script>
+   -->
+    
     <!-- Bootstrap Core CSS -->
     <link href="/resources/sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -40,7 +49,8 @@
 
     <!-- jQuery -->
     <script src="/resources/sb-admin/vendor/jquery/jquery.min.js"></script>
-
+	<script src="/resources/sb-admin/vendor/jquery/jquery-ui.js"></script>
+	
     <!-- Bootstrap Core JavaScript -->
     <script src="/resources/sb-admin/vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -50,15 +60,8 @@
     <!-- Custom Theme JavaScript -->
     <script src="/resources/sb-admin/dist/js/sb-admin-2.js"></script>
      
-     
-<!--  project9 BoardList.jsp JS파일 링크
-    <script src="js/jquery-2.2.3.min.js"></script>
-	<script src="js/jquery-ui.js"></script>
-	<script src="js/dynatree/jquery.dynatree.js"></script>    
-    <script src="css/sb-admin/bootstrap.min.js"></script>
-    <script src="css/sb-admin/metisMenu.min.js"></script>
-    <script src="css/sb-admin/sb-admin-2.js"></script>
-   -->
+    
+
 
 <script>
 	function fn_move(formid, url, msg){
@@ -140,26 +143,18 @@
 									<i class="fa fa-download fa-fw" title="<c:out value="${listitem.filecnt}"/>"></i>
 								</c:if>	
 							</div>
-							<div class="listHiddenField pull-left field60"><c:out value="${boardVO.brdno}"/></div> <!-- 글번호 -->
+							<div class="listHiddenField pull-left field60"><c:out value="${boardVO.brdno}"/></div> 					<!-- 글번호 -->
 							<div class="listHiddenField pull-right field60 textCenter"><c:out value="${boardVO.viewcnt}"/></div>
 							<div class="listHiddenField pull-right field100 textCenter"><c:out value="${boardVO.regdate}"/></div>
-							<div class="listHiddenField pull-right field100 textCenter"><c:out value="글쓴이"/></div> <!-- 작성자 -->
+							<div class="listHiddenField pull-right field100 textCenter"><c:out value="글쓴이"/></div> 				<!-- 작성자 -->
 							<div class="listTitle">
-								<a href="/board/detail?brdno=${boardVO.brdno}" >${boardVO.title}</a>			<!-- 제목 -->					
+														<!-- 목록에서 글제목 클릭 시 페이지 정보 넘긴다. -->	
+								<a href="/board/detail${pageCalculate.makeURI(pageCalculate.cri.page) }&brdno=${boardVO.brdno}" >${boardVO.title}</a>					
 							</div>
-							
-							<!-- 
-							<div class="listHiddenField pull-right field60 textCenter"><c:out value="${listitem.brdhit}"/></div>
-							<div class="listHiddenField pull-right field100 textCenter"><c:out value="${listitem.brddate}"/></div>
-							<div class="listHiddenField pull-right field100 textCenter"><c:out value="${listitem.brdwriter}"/></div> 
-							<div class="listTitle" title="<c:out value="${listitem.brdtitle}"/>">
-								<a href="${link}" <c:if test="${listitem.brdnotice=='Y'}">class="notice"</c:if>><c:out value="${listitem.brdtitle}"/></a>						
-							</div>
-							 -->
+
 							 
 							<!-- 화면 축소시 보여질 부분 -->
 							<div class="showField text-muted small">
-							
 								<c:out value="글쓴이"/> 
 								<c:out value="${boardVO.regdate}"/>
 								<i class="fa fa-eye fa-fw"></i> <c:out value="${boardVO.viewcnt}"/>
@@ -167,25 +162,91 @@
 									<i class="fa fa-download fa-fw" title="<c:out value="${listitem.filecnt}"/>"></i>
 								</c:if>									
 							</div>
-							
-							<!-- 
-							<div class="showField text-muted small">
-								<c:out value="${listitem.brdwriter}"/> 
-								<c:out value="${listitem.brddate}"/>
-								<i class="fa fa-eye fa-fw"></i> <c:out value="${listitem.brdhit}"/>
-								<c:if test="${listitem.filecnt>0}">
-									<i class="fa fa-download fa-fw" title="<c:out value="${listitem.filecnt}"/>"></i>
-								</c:if>									
-							</div>
-							 -->
+
 							 
 						</div>
 					<!-- listBody -->	
 						
 					</c:forEach>
 	
-						 
+					<!-- 페이지 및 검색 -->	 
+					<form role="form" id="form1" name="form1"  method="post">
+					    
+					    <!-- 페이지 -->
+						<div id="dataTables-example_paginate" class= "text-center">
+							<ul class="pagination">
+							
+							<c:if test="${pageCalculate.cri.page > 1}">
+								<li title="처음으로" class="paginate_button" ><a href="/board/list${pageCalculate.makeURI(1) }"><i class="fa fa-angle-double-left fa-fw"></i> </a></li>
+							</c:if>	
+								
+									<c:if test="${pageCalculate.prev}">
+										<li title="이전" class="paginate_button">
+											<a href="/board/list${pageCalculate.makeURI(pageCalculate.startPage - 1) }">
+												<i class="fa fa-angle-left  fa-fw"></i>
+											</a>
+										</li>
+									</c:if>
+		
+									<c:forEach begin="${pageCalculate.startPage }" end="${pageCalculate.endPage }" var="idx">
+										<!-- 현재 선택된 페이지는 링크 비활성화, 버튼 파랑색 처리 -->
+										<c:choose>
+							                <c:when test="${idx eq pageCalculate.cri.page}">
+												<li class="paginate_button active"><a href="#"><c:out value="${idx}"/></a></li>  <!-- active : 선택된 페이지번호 파란색으로 표시 -->
+							                </c:when>
+							                <c:otherwise>
+												<li class="paginate_button"><a href="/board/list${pageCalculate.makeURI(idx) }">${idx}</a></li>
+							                </c:otherwise>
+						           		</c:choose>
+									</c:forEach>
+		
+									<c:if test="${pageCalculate.next && pageCalculate.endPage > 0}">
+										<li title="다음" class="paginate_button">
+											<a href="/board/list${pageCalculate.makeURI(pageCalculate.endPage +1) }">
+												<i class="fa fa-angle-right  fa-fw"></i>
+											</a>
+										</li>
+									</c:if>
+
+   
+								<c:if test="${pageCalculate.cri.page < pageCalculate.totalPage }">
+									<li title="끝으로" class="paginate_button"><a href="/board/list${pageCalculate.makeURI(pageCalculate.totalPage) }"><i class="fa fa-angle-double-right  fa-fw"></i></a></li>
+								</c:if>	
 				
+							</ul>
+							
+						</div>					    
+					    
+				    	<!-- 검색 -->
+						<div class="form-group">
+						
+							<div class="checkbox col-lg-3 pull-left">
+							 	<label class="pull-right">
+		                        	<input type="checkbox" name="searchType" value="brdmemo" />
+		                        	내용
+		                        </label>
+							 	<label class="pull-right">
+		                        	<input type="checkbox" name="searchType" value="brdtitle"/>
+		                        	제목
+		                        </label>
+							 	<label class="pull-right">
+							 		<input type="checkbox" name="searchType" value="usernm"/>
+		                        	작성자
+		                        </label>
+		                   </div>
+		                   
+		                   <div class="input-group custom-search-form col-lg-3">
+								<input class="form-control" placeholder="Search..." type="text" name="searchKeyword" 
+	                                	   value='<c:out value="${searchVO.searchKeyword}"/>' >
+								<span class="input-group-btn">
+	                                <button class="btn btn-default" >
+	                                    <i class="fa fa-search"></i>
+	                                </button>
+	                            </span>
+	                       </div>
+	                       
+						</div>
+					</form>	
 						
 	            </div>
 	            <!-- panel-body -->

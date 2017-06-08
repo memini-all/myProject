@@ -6,6 +6,7 @@
 
 	<typeAliases>
 		<typeAlias type="com.spring.project.board.dto.BoardVO" alias="boardVO"/>
+		<typeAlias type="com.spring.project.board.dto.Criteria" alias="criteria"/>
 	</typeAliases>
 
 </configuration>

@@ -3,6 +3,7 @@ package com.spring.project.board.dao;
 import java.util.List;
 
 import com.spring.project.board.dto.BoardVO;
+import com.spring.project.board.dto.Criteria;
 
 public interface BoardDAO {
 
@@ -18,7 +19,7 @@ public interface BoardDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<BoardVO> boardList() throws Exception;
+	public List<BoardVO> boardList(Criteria cri) throws Exception;
 	
 	/**
 	 * 글 상세보기
@@ -40,4 +41,12 @@ public interface BoardDAO {
 	 * @param brdno
 	 */
 	public void remove(Integer brdno) throws Exception;
+
+	/**
+	 * 글의 총 개수
+	 * @param cri
+	 * @return
+	 * @throws Exception
+	 */
+	public int countPaging(Criteria cri) throws Exception;
 }

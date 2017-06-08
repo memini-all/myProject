@@ -12,18 +12,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES
 			(#{userno}, #{title}, #{content}, NOW(), NOW(), 'N', 0)
 	</insert>
+	
 
-	<!-- 글목록 : 글 전체목록을 가져온다, 추후 수정 -->
-	<select id="list" resultType="boardVO">
+	<!-- 글목록 -->
+	<select id="list" parameterType="criteria" resultType="boardVO">
 	<![CDATA[
 		SELECT 
 		   brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt 
 		FROM 
 		   tbl_sboard 
 		WHERE 
-			brdno > 0 AND deleteat = 'N'
+			deleteat = 'N'
 		ORDER BY 
 			brdno DESC, regdate DESC
+		LIMIT #{pageStart}, #{perPageNum}
 	]]>
 	</select>
 
@@ -53,7 +55,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET 
 			deleteat = 'Y'
 		WHERE 
-			brdno= #{brdno}
+			brdno= #{brdno}		
 	</delete>
+	
+	<!-- 글 개수를 구한다 -->
+	<select id="countPaging" parameterType="criteria" resultType="int">
+	<![CDATA[
+		SELECT 
+			COUNT(brdno)
+		FROM 
+			tbl_sboard 
+		WHERE 
+			deleteat = 'N'
+	]]>
+	</select>
+
+	<!--  페이지 1 -->
+	<!-- 
+	<select id="listPage" parameterType="Integer" resultType="boardVO">
+	<![CDATA[
+		SELECT 
+		   brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt 
+		FROM 
+		   tbl_sboard 
+		WHERE 
+			brdno > 0 AND deleteat = 'N'
+		ORDER BY 
+			brdno DESC, regdate DESC
+		LIMIT #{page}, 10
+	]]>
+	</select>
+	 -->
+	<!--  페이지 2 -->
+	<!-- 
+	<select id="listCriteria" parameterType="criteria" resultType="boardVO">
+	 <![CDATA[
+	 	SELECT 
+		   brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt 
+		FROM 
+		   tbl_sboard 
+		WHERE 
+			brdno > 0 AND deleteat = 'N'
+		ORDER BY 
+			brdno DESC, regdate DESC
+		LIMIT #{pageStart}, #{perPageNum}
+	 ]]>
+	</select>
+	 -->
 
 </mapper>

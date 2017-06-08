@@ -70,7 +70,9 @@
  		
 		// 목록버튼
 		$("#listBtn").on("click", function(){
-			self.location = "/board/list";
+			formObj.attr("action", "/board/list");  // 다시 목록으로 돌아가게 처리
+			formObj.attr("method", "get");
+			formObj.submit();
 		});
 
 		// 수정버튼
@@ -112,9 +114,11 @@
 				<div class="panel panel-default">
 				
 				
-					<form role="form" action="modifyPage" method="post">
+					<form role="form" method="post">
 					
 						<input type='hidden' name='brdno' value="${boardVO.brdno}"> 
+						<input type='hidden' name='page' value="${cri.page}">
+						<input type='hidden' name='perPageNum' value="${cri.perPageNum}">
 					
 					</form>
 				

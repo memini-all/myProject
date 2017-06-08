@@ -3,6 +3,7 @@ package com.spring.project.board.service;
 import java.util.List;
 
 import com.spring.project.board.dto.BoardVO;
+import com.spring.project.board.dto.Criteria;
 
 public interface BoardService {
 	
@@ -14,11 +15,11 @@ public interface BoardService {
 	public void boardRegist(BoardVO board) throws Exception;
 	
 	/**
-	 * 글 목록
+	 * 글 목록 - 페이지 처리
 	 * @return
 	 * @throws Exception
 	 */
-	public List<BoardVO> boardList() throws Exception;
+	public List<BoardVO> boardList(Criteria cri) throws Exception;
 	
 	/**
 	 * 글 상세보기
@@ -41,4 +42,12 @@ public interface BoardService {
 	 * @throws Exception
 	 */
 	public void boardRemove(Integer brdno) throws Exception;
+	
+	/**
+	 * 글을 총 개수
+	 * @param cri
+	 * @return
+	 * @throws Exception
+	 */
+	public int listCount(Criteria cri) throws Exception;
 }
