@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -84,7 +85,7 @@
 			
 		// 삭제버튼
 		$("#removeBtn").on("click", function() {
-			formObj.attr("action", "/board/remove")
+			formObj.attr("action", "/board/remove")		
 			formObj.submit();
 		});
 			
@@ -119,15 +120,18 @@
 						<input type='hidden' name='brdno' value="${boardVO.brdno}"> 
 						<input type='hidden' name='page' value="${cri.page}">
 						<input type='hidden' name='perPageNum' value="${cri.perPageNum}">
-					
+						
+						<!-- 검색조건 -->
+						<input type='hidden' name='searchType' value="${cri.searchType}">
+						<input type='hidden' name='keyword' value="${cri.keyword}">
 					</form>
 				
 				
 					<!-- 제목 -->
                     <div class="panel-heading">
                         	<c:out value="${boardVO.title}"/>
-                        <span class="pull-right text-muted">
-                        	[ <a href="#">작성자</a> ]  [<c:out value="${boardVO.regdate}"/>]
+                        <span class="pull-right text-muted"> <c:out value="${boardVO.regdate}"/>
+                        	[ <a href="#">작성자</a> ]  [<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${boardVO.regdate}" />]
                         	<i class="fa fa-eye fa-fw"></i> <c:out value="${boardVO.viewcnt}"/>
                         </span>
                     </div>

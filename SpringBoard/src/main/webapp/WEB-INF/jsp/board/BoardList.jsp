@@ -59,15 +59,12 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="/resources/sb-admin/dist/js/sb-admin-2.js"></script>
-     
-    
 
 
 <script>
+	/*
 	function fn_move(formid, url, msg){
-		
-		
-		
+	
 		if (msg) {
 			if (!confirm( msg + " 하시겠습니까??")) return;
 		}
@@ -75,15 +72,29 @@
 		form.action=url;
 		form.submit();
 	}
+	*/
 	
 	$(document).ready(function() {
 	
+		// 글쓰기
 		$('#newBtn').on("click", function(event) {
-			//alert("글쓰기 클릭");
 			self.location = "/board/post";
 		});
+		
+		// 검색
+		$('#searchBtn').on('click', function(event){
+			
+			var url =  "/board/list"
+						+ '${pageCalculate.makeURI(1)}'
+						+ "&searchType="
+						+ $("select option:selected").val()
+						+ "&keyword="
+						+ encodeURIComponent($('#keywordInput').val());
+				
+			self.location = url;
+		});
+
 	});
-	
 	
 </script>
 
@@ -149,7 +160,7 @@
 							<div class="listHiddenField pull-right field100 textCenter"><c:out value="글쓴이"/></div> 				<!-- 작성자 -->
 							<div class="listTitle">
 														<!-- 목록에서 글제목 클릭 시 페이지 정보 넘긴다. -->	
-								<a href="/board/detail${pageCalculate.makeURI(pageCalculate.cri.page) }&brdno=${boardVO.brdno}" >${boardVO.title}</a>					
+								<a href="/board/detail${pageCalculate.makeSearchURI(pageCalculate.cri.page) }&brdno=${boardVO.brdno}" >${boardVO.title}</a>					
 							</div>
 
 							 
@@ -170,49 +181,68 @@
 					</c:forEach>
 	
 					<!-- 페이지 및 검색 -->	 
-					<form role="form" id="form1" name="form1"  method="post">
+					<form role="form" id="form1" name="form1" method="post"></form>	
 					    
 					    <!-- 페이지 -->
-						<div id="dataTables-example_paginate" class= "text-center">
+						<div id="dataTables-example_paginate" class="text-center">
 							<ul class="pagination">
 							
+							<!-- 
 							<c:if test="${pageCalculate.cri.page > 1}">
-								<li title="처음으로" class="paginate_button" ><a href="/board/list${pageCalculate.makeURI(1) }"><i class="fa fa-angle-double-left fa-fw"></i> </a></li>
+								<li title="처음으로" class="paginate_button" ><a href="/board/list${pageCalculate.makeSearchURI(1) }"><i class="fa fa-angle-double-left fa-fw"></i> </a></li>
 							</c:if>	
-								
+							 -->	
 									<c:if test="${pageCalculate.prev}">
+										<!--  
 										<li title="이전" class="paginate_button">
-											<a href="/board/list${pageCalculate.makeURI(pageCalculate.startPage - 1) }">
+											<a href="/board/list${pageCalculate.makeSearchURI(pageCalculate.startPage - 1) }">
 												<i class="fa fa-angle-left  fa-fw"></i>
 											</a>
 										</li>
+										-->
+										<li title="이전" class="page-item">
+									       <a class="page-link" href="/board/list${pageCalculate.makeSearchURI(pageCalculate.startPage - 1) }" aria-label="Previous">
+									        <span aria-hidden="true">&laquo;</span>
+									        <span class="sr-only">Previous</span>   
+									      </a>
+									    </li>
 									</c:if>
 		
 									<c:forEach begin="${pageCalculate.startPage }" end="${pageCalculate.endPage }" var="idx">
 										<!-- 현재 선택된 페이지는 링크 비활성화, 버튼 파랑색 처리 -->
 										<c:choose>
 							                <c:when test="${idx eq pageCalculate.cri.page}">
-												<li class="paginate_button active"><a href="#"><c:out value="${idx}"/></a></li>  <!-- active : 선택된 페이지번호 파란색으로 표시 -->
+												<li class="page-item active"><a href="#"><c:out value="${idx}"/></a></li>  <!-- active : 선택된 페이지번호 파란색으로 표시 -->
 							                </c:when>
-							                <c:otherwise>
-												<li class="paginate_button"><a href="/board/list${pageCalculate.makeURI(idx) }">${idx}</a></li>
+							                <c:otherwise>							           
+												<li class="page-item""><a href="/board/list${pageCalculate.makeSearchURI(idx) }">${idx}</a></li>
 							                </c:otherwise>
 						           		</c:choose>
 									</c:forEach>
 		
 									<c:if test="${pageCalculate.next && pageCalculate.endPage > 0}">
-										<li title="다음" class="paginate_button">
-											<a href="/board/list${pageCalculate.makeURI(pageCalculate.endPage +1) }">
-												<i class="fa fa-angle-right  fa-fw"></i>
+										<!--
+										<li title="다음" class="page-item"">
+											<a href="/board/list${pageCalculate.makeSearchURI(pageCalculate.endPage +1) }">
+												<i class="fa fa-angle-right fa-fw"></i>
 											</a>
 										</li>
+									  -->	
+										<li title="다음" class="page-item">
+									       <a class="page-link" href="/board/list${pageCalculate.makeSearchURI(pageCalculate.endPage +1) }" aria-label="Next">
+									        <span aria-hidden="true">&raquo;</span>
+									        <span class="sr-only">Next</span>   
+									      </a>
+									    </li>
+										
 									</c:if>
 
-   
+							<!-- 
 								<c:if test="${pageCalculate.cri.page < pageCalculate.totalPage }">
-									<li title="끝으로" class="paginate_button"><a href="/board/list${pageCalculate.makeURI(pageCalculate.totalPage) }"><i class="fa fa-angle-double-right  fa-fw"></i></a></li>
+									<li title="끝으로" class="paginate_button"><a href="/board/list${pageCalculate.makeSearchURI(pageCalculate.totalPage) }"><i class="fa fa-angle-double-right  fa-fw"></i></a></li>
 								</c:if>	
-				
+							 -->
+							 
 							</ul>
 							
 						</div>					    
@@ -220,34 +250,30 @@
 				    	<!-- 검색 -->
 						<div class="form-group">
 						
-							<div class="checkbox col-lg-3 pull-left">
-							 	<label class="pull-right">
-		                        	<input type="checkbox" name="searchType" value="brdmemo" />
-		                        	내용
-		                        </label>
-							 	<label class="pull-right">
-		                        	<input type="checkbox" name="searchType" value="brdtitle"/>
-		                        	제목
-		                        </label>
-							 	<label class="pull-right">
-							 		<input type="checkbox" name="searchType" value="usernm"/>
-		                        	작성자
-		                        </label>
-		                   </div>
+							<div class="col-lg-2" style="width:auto;">
+							
+								<select class="selectpicker form-control"  name="searchType" style="width:auto;">
+									<option value="n" <c:out value="${cri.searchType == null ? 'selected' : '' }"/> >---</option>
+                                	<option value="t" <c:out value="${cri.searchType eq 't' ? 'selected' : '' }"/> >제목</option>
+                                	<option value="c" <c:out value="${cri.searchType eq 'c' ? 'selected' : '' }"/> >내용</option>
+                                	<option value="w" <c:out value="${cri.searchType eq 'w' ? 'selected' : ''}"/> >작성자</option>
+                                	<option value="tc" <c:out value="${cri.searchType eq 'tc' ? 'selected' : ''}"/> >제목+내용</option>
+                                </select>
+							</div>
 		                   
-		                   <div class="input-group custom-search-form col-lg-3">
-								<input class="form-control" placeholder="Search..." type="text" name="searchKeyword" 
-	                                	   value='<c:out value="${searchVO.searchKeyword}"/>' >
+			                <div class="input-group custom-search-form col-lg-3">
+								<input class="form-control" placeholder="Search..." type="text" name='keyword' 
+		                        		id="keywordInput" value='${cri.keyword }' >
 								<span class="input-group-btn">
-	                                <button class="btn btn-default" >
-	                                    <i class="fa fa-search"></i>
-	                                </button>
-	                            </span>
-	                       </div>
-	                       
+									<button class="btn btn-default" id='searchBtn'>
+										<i class="fa fa-search" style="font-size:1.45em"></i>
+									</button>
+								</span>
+							</div>
+
 						</div>
-					</form>	
-						
+
+
 	            </div>
 	            <!-- panel-body -->
 			</div>

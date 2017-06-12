@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.project.board.dto.BoardVO;
 import com.spring.project.board.dto.Criteria;
+import com.spring.project.board.dto.SearchCriteria;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -27,7 +28,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	
 	@Override
-	public List<BoardVO> boardList(Criteria cri) throws Exception {
+	public List<BoardVO> boardList(SearchCriteria cri) throws Exception {
 		
 		return sqlsession.selectList(namespace+".list", cri);
 	}
@@ -55,8 +56,8 @@ public class BoardDAOImpl implements BoardDAO {
 
 
 	@Override
-	public int countPaging(Criteria cri) throws Exception {
+	public int countPage(SearchCriteria cri) throws Exception {
 		
-		return sqlsession.selectOne(namespace+".countPaging", cri);
+		return sqlsession.selectOne(namespace+".countPage", cri);
 	}
 }

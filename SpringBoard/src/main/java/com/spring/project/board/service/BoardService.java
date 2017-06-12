@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.spring.project.board.dto.BoardVO;
 import com.spring.project.board.dto.Criteria;
+import com.spring.project.board.dto.SearchCriteria;
 
 public interface BoardService {
 	
@@ -19,7 +20,7 @@ public interface BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<BoardVO> boardList(Criteria cri) throws Exception;
+	public List<BoardVO> boardList(SearchCriteria cri) throws Exception;
 	
 	/**
 	 * 글 상세보기
@@ -49,5 +50,5 @@ public interface BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int listCount(Criteria cri) throws Exception;
+	public int listCount(SearchCriteria cri) throws Exception;
 }

@@ -64,7 +64,12 @@
 		
 		// 취소 버튼
 		$("#cancelBtn").on("click", function(){
-			self.location = "/board/list?page=${cri.page}&perPageNum=${cri.perPageNum}";	  
+
+			var url =  "/board/list"
+				+ "?page=${cri.page}&perPageNum=${cri.perPageNum}"
+				+ "&searchType=${cri.searchType}&keyword=${cri.keyword}";
+		
+			self.location = url;
 		});
 			
 	});
@@ -105,6 +110,10 @@
             		<!-- 수정후 원래 페이지로 돌아가기 위한 페이지 번호와 페이지당 보여지는 글 목록수 -->
 					<input type='hidden' name='page' value="${cri.page}"> 
 					<input type='hidden' name='perPageNum' value="${cri.perPageNum}">
+					
+					<!-- 검색조건 -->
+					<input type='hidden' name='searchType' value="${cri.searchType}">
+					<input type='hidden' name='keyword' value="${cri.keyword}">
             	
 					<div class="panel panel-default">
 	                    <div class="panel-body">

@@ -23,6 +23,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   tbl_sboard 
 		WHERE 
 			deleteat = 'N'
+	]]>
+		<!-- 검색조건 (동적 쿼리)을 추가 -->
+	<include refid="search"></include> 
+	<![CDATA[		
 		ORDER BY 
 			brdno DESC, regdate DESC
 		LIMIT #{pageStart}, #{perPageNum}
@@ -59,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<!-- 글 개수를 구한다 -->
-	<select id="countPaging" parameterType="criteria" resultType="int">
+	<select id="countPage" parameterType="searchCriteria" resultType="int">
 	<![CDATA[
 		SELECT 
 			COUNT(brdno)
@@ -68,7 +72,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			deleteat = 'N'
 	]]>
+		<!-- 검색조건 (동적 쿼리)을 추가 -->
+	<include refid="search"></include>
 	</select>
+	
+	
+	<!-- 검색조건 -->
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">	<!-- 제목 -->
+				AND title LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'c'.toString()">	<!-- 내용 -->
+				AND content LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'w'.toString()">	<!-- 작성자 -->
+				AND writer LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'tc'.toString()">	<!-- 제목+내용 -->
+				AND ( title like CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%') )
+			</if>
+		</if>
+	</sql>
 
 	<!--  페이지 1 -->
 	<!-- 

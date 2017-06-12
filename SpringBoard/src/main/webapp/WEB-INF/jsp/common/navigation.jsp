@@ -53,14 +53,14 @@
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
+                                    <i class="fa fa-search" style="font-size:1.45em"></i>
                                 </button>
                             </span>
                             </div>
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="/board/list"><i class="fa fa-files-o fa-fw"></i>게시판</a>
+                            <a href="/board/list"><i class="fa fa-files-o fa-fw"></i> 게시판</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

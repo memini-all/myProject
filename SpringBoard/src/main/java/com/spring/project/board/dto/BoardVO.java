@@ -1,6 +1,7 @@
 package com.spring.project.board.dto;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class BoardVO {
 
@@ -46,6 +47,7 @@ public class BoardVO {
 	}
 
 	public Date getRegdate() {
+		
 		return regdate;
 	}
 
