@@ -37,6 +37,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="/resources/sb-admin/dist/js/sb-admin-2.js"></script>
+	
+	<!-- handlebars JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -61,6 +64,41 @@
 	<script src="js/project9.js"></script>    
   --> 
   
+  	<!-- 댓글 템플릿 : 화면에서 하나의 댓글을 구성 -->
+	<script id="template" type="text/x-handlebars-template">
+	{{#each .}}
+	<div class="panel panel-default" id="replyItem<c:out value="${replylist.reno}"/>" style="margin-left: <c:out value="${20*replylist.redepth}"/>px;">
+		<div class="panel-body">
+			             
+			<div class="pull-left photoOutline">
+				<c:choose>
+					<c:when test="${replylist.photo==null}">
+						<a href="" class="img-circle">
+							<i class="glyphicon glyphicon-user noPhoto"></i>
+						</a>
+					</c:when>
+					<c:otherwise>
+					<img class="img-circle" src="fileDownload?downname=<c:out value="${replylist.photo}"/>" title="<c:out value="${replylist.rewriter}"/>"/>
+					</c:otherwise>
+				</c:choose>
+			</div>	
+														
+			<div class="photoTitle">
+				<div> 
+					{{userno}} {{regdate}}
+					<c:if test='${replylist.userno==sessionScope.userno}' >
+						<a href="javascript:fn_replyDelete('<c:out value="${replylist.reno}"/>')" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
+						<a href="javascript:fn_replyUpdate('<c:out value="${replylist.reno}"/>')" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
+					</c:if>
+						<a href="javascript:fn_replyReply('<c:out value="${replylist.reno}"/>')" title="댓글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
+				</div>
+					<div id="reply<c:out value="${replylist.reno}"/>">{{rcontent}}</div>
+			</div>	
+		</div>
+	</div>			
+	{{/each}}
+	</script>
+
   	<script type="text/javascript">
  
  	 $(document).ready(function(){
@@ -88,9 +126,65 @@
 			formObj.attr("action", "/board/remove")		
 			formObj.submit();
 		});
-			
-	});
 		
+	});
+ 	 
+ 	 
+ 	// 글번호와 초기 보여줄 페이지
+	var brdno = ${boardVO.brdno};
+	var replyPage = 1;
+	
+	getReplyList("/replies/"+brdno+"/1");
+	
+	// 댓글목록과 댓글페이지를 만든다.
+	function getReplyList(pageURI) {
+
+		$.getJSON(pageURI, function(data) {
+			
+			printTemplate(data.replyList, $("#repliesDiv"), $('#template'));
+			printPage(data.pageCalculate, $(".pagination"));
+		});
+	}
+	// end getReplyList()
+	
+	
+	// 배열형식 댓글데이터, 타겟(div), 템플릿 스크립트를 인자로 받아 템플릿 생성
+ 	var printTemplate = function(replyArr, target, templateObject){
+ 		
+ 		var template = Handlebars.compile(templateObject.html());
+ 		var html = template(replyArr);
+ 		target.after(html);
+ 	}
+	
+	// 댓글 페이지 생성
+	var printPage = function(pageCalculate, target) {
+
+		var str = "";
+
+		if (pageCalculate.prev) {
+			str += "<li><a href='" 
+				+ (pageCalculate.startPage - 1)
+				+ "'> << </a></li>";
+		}
+
+		for (var i = pageCalculate.startPage, len = pageCalculate.endPage; i <= len; i++) {
+			
+			var strClass = pageCalculate.cri.page == i ? 'class=active' : '';
+			
+			str += "<li "+strClass+"><a href='"+i+"'>" + i + "</a></li>";
+		}
+
+		if (pageCalculate.next) {
+			str += "<li><a href='" 
+				+ (pageCalculate.endPage + 1)
+				+ "'> >> </a></li>";
+		}
+
+		target.html(str);
+	};
+	// end printPage();
+	
+
   
   	</script>
   
@@ -130,7 +224,7 @@
 					<!-- 제목 -->
                     <div class="panel-heading">
                         	<c:out value="${boardVO.title}"/>
-                        <span class="pull-right text-muted"> <c:out value="${boardVO.regdate}"/>
+                        <span class="pull-right text-muted">
                         	[ <a href="#">작성자</a> ]  [<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${boardVO.regdate}" />]
                         	<i class="fa fa-eye fa-fw"></i> <c:out value="${boardVO.viewcnt}"/>
                         </span>
@@ -178,11 +272,23 @@
 				</div>
 					
 					<!-- 댓글목록 -->	
-				<!-- 	
-					<div id="replyList"> 
+				
+					<div id="repliesDiv"> 
+					
+					<!-- 테스트
+							<ul class="timeline">
+								<li class="time-label" id="repliesDiv">
+									<span class="bg-green">Replies List</span>
+								</li>
+							</ul>
+					 -->
+					 
+						<!--		
 						<c:forEach var="replylist" items="${replylist}" varStatus="status">
 							<div class="panel panel-default" id="replyItem<c:out value="${replylist.reno}"/>" style="margin-left: <c:out value="${20*replylist.redepth}"/>px;">
 			                	<div class="panel-body">
+			                	
+			                	
 			                   		<div class="pull-left photoOutline">
 										<c:choose>
 										    <c:when test="${replylist.photo==null}">
@@ -194,7 +300,9 @@
 										    	<img class="img-circle" src="fileDownload?downname=<c:out value="${replylist.photo}"/>" title="<c:out value="${replylist.rewriter}"/>"/>
 										    </c:otherwise>
 										</c:choose>
-									</div>					
+									</div>	
+									
+													
 				                   	<div class="photoTitle">
 										<div> 
 											<c:out value="${replylist.rewriter}"/> <c:out value="${replylist.redate}"/>
@@ -206,14 +314,22 @@
 										</div>
 										<div id="reply<c:out value="${replylist.reno}"/>"><c:out value="${replylist.getRememoByHTML()}" escapeXml="false"/></div>
 									</div>
+									
+									
 								</div>
 				            </div>						
 						</c:forEach>
+						 -->	 
 					</div>
-				
+					
+				 	<!-- 페이지 번호 부분 -->
+					<div class='text-center'>
+						<ul id="pagination" class="pagination pagination-sm no-margin ">
 
-				-->	
-				
+						</ul>
+					</div>
+
+
 				<!-- 댓글 답변 -->	
 				<div id="replyDiv" style="width: 99%; display:none">
 						<input type="hidden" id="brdno2" name="brdno" value="<c:out value="${boardInfo.brdno}"/>"> 
@@ -249,6 +365,8 @@
 
     </div>
     <!-- /#wrapper -->
+ 
+    
 </body>
 
 </html>

@@ -23,6 +23,17 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!-- REST filter - HiddenHttpMethodFilter -->
+	<filter>
+		<filter-name>hiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>hiddenHttpMethodFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
