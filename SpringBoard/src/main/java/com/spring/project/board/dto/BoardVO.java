@@ -1,7 +1,5 @@
 package com.spring.project.board.dto;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 public class BoardVO {
 
@@ -9,8 +7,8 @@ public class BoardVO {
 	private Integer userno;
 	private String title;
 	private String content;
-	private Date regdate;
-	private Date updatedate;
+	private String regdate;
+	private String updatedate;
 	private String deleteat;
 	private Integer viewcnt;
 
@@ -46,20 +44,20 @@ public class BoardVO {
 		this.content = content;
 	}
 
-	public Date getRegdate() {
+	public String getRegdate() {
 		
 		return regdate;
 	}
 
-	public void setRegdate(Date regdate) {
+	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
 
-	public Date getUpdatedate() {
+	public String getUpdatedate() {
 		return updatedate;
 	}
 
-	public void setUpdatedate(Date updatedate) {
+	public void setUpdatedate(String updatedate) {
 		this.updatedate = updatedate;
 	}
 
