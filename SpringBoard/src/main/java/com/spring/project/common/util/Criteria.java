@@ -1,4 +1,4 @@
-package com.spring.project.board.dto;
+package com.spring.project.common.util;
 
 public class Criteria {
 	

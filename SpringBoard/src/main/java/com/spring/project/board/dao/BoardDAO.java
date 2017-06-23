@@ -3,8 +3,8 @@ package com.spring.project.board.dao;
 import java.util.List;
 
 import com.spring.project.board.dto.BoardVO;
-import com.spring.project.board.dto.Criteria;
-import com.spring.project.board.dto.SearchCriteria;
+import com.spring.project.common.util.Criteria;
+import com.spring.project.common.util.SearchCriteria;
 
 public interface BoardDAO {
 
@@ -43,6 +43,13 @@ public interface BoardDAO {
 	 */
 	public void remove(Integer brdno) throws Exception;
 
+	/**
+	 * 조회수 증가
+	 * @param brdno
+	 * @throws Exception
+	 */
+	public void updateViewCnt(Integer brdno) throws Exception;
+	
 	/**
 	 * 글의 총 개수
 	 * @param cri

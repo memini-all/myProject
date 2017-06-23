@@ -1,4 +1,4 @@
-package com.spring.project.board.dto;
+package com.spring.project.common.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

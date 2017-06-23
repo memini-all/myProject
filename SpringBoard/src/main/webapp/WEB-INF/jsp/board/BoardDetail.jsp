@@ -257,7 +257,7 @@
 					{{else}}
 						<a href="javascript:replyRemove({{repno}})" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
 						<a href="javascript:replyModify({{repno}})" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
-						<a href="javascript:replyReply({{repno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
+						<a href="javascript:replyReply({{repno}}, {{userno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
 					{{/isView}}
 				</div>
 					<!--<div>[삭제된 댓글의 댓글입니다.]</div>-->
@@ -545,8 +545,8 @@
 	}
 
 	
-	// 댓글 답변창
-	function replyReply(repno){
+	// 댓글 답글창
+	function replyReply(repno, userno){
 		
 		$("#replyDialog").show();
 		
@@ -554,6 +554,9 @@
 			replyModCancel();
 		} 
 
+		// 부모글의 repno
+		alert("부모글 번호 : "+repno + " / 부모글 작성자 : "+userno);
+		
 		var groupNumber = $("#hiddenGroup"+repno).val();
 		
 		$("#replyParent").val(repno);

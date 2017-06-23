@@ -18,9 +18,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="list" parameterType="criteria" resultType="boardVO">
 	<![CDATA[
 		SELECT 
-		   brdno, userno, title, content, DATE_FORMAT(regdate,'%Y-%m-%d') regdate, DATE_FORMAT(updatedate,'%Y-%m-%d') updatedate, deleteat, viewcnt 
+		   brdno, userno, title, content, DATE_FORMAT(regdate,'%Y-%m-%d') regdate, DATE_FORMAT(updatedate,'%Y-%m-%d') updatedate, deleteat, viewcnt, 
+		   (SELECT COUNT(*) FROM tbl_sreply WHERE brdno = BD.brdno AND rdeletat = 'N') replycnt
 		FROM 
-		   tbl_sboard 
+			tbl_sboard AS BD
 		WHERE 
 			deleteat = 'N'
 	]]>
@@ -75,6 +76,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 검색조건 (동적 쿼리)을 추가 -->
 	<include refid="search"></include>
 	</select>
+	
+	<!-- 조회수 업데이트 -->
+	<update id="updateViewCnt" parameterType="Integer">
+  		UPDATE 
+  			tbl_sboard 
+  		SET 
+  			viewcnt = viewcnt +1 
+  		WHERE 
+  			brdno = #{brdno}
+	</update>
 	
 	
 	<!-- 검색조건 -->

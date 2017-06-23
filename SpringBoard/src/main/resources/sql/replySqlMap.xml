@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.project.reply">
+
+	<!-- 테스트용 - 댓글조회 -->	   
+	<select id="listAll" parameterType="Integer" resultType="ReplyVO">
+		SELECT
+			repno, brdno, userno, rcontent, rgroup, rparent, rdeletat, regdate, updatedate
+		FROM 
+		   tbl_sreply 
+		WHERE 
+			brdno = #{brdno} AND rdeletat = 'N'
+		ORDER BY
+			repno DESC
+	</select>
+	
+	<!-- 댓글조회-1  
+	<select id="replyList" parameterType="HashMap" resultType="ReplyVO">
+		SELECT
+			repno, brdno, userno, rcontent, rgroup, rparent, rdeletat, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate, DATE_FORMAT(updatedate, '%Y-%m-%d %H:%i') updatedate
+		FROM 
+		   tbl_sreply 
+		WHERE 
+			brdno = #{brdno}
+		ORDER BY
+			rgroup ASC, regdate ASC , repno ASC
+		LIMIT #{cri.pageStart}, #{cri.perPageNum}	
+	</select>
+	-->
+	
+	<!-- 댓글조회-2
+	<select id="replyList" parameterType="HashMap" resultType="ReplyVO">
+		(SELECT
+			repno, brdno, userno, rcontent, rgroup, rparent, rdeletat, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate, DATE_FORMAT(updatedate, '%Y-%m-%d %H:%i') updatedate
+		 FROM 
+			tbl_sreply
+		 WHERE 
+			brdno = #{brdno} AND rparent = 0)
+	UNION 	
+		(SELECT 
+			repno, brdno, userno, rcontent, rgroup, rparent, rdeletat, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate, DATE_FORMAT(updatedate, '%Y-%m-%d %H:%i') updatedate
+	 	 FROM 
+			tbl_sreply 
+	 	 WHERE 
+		 	brdno = #{brdno} AND rparent > 0 AND rdeletat ="N")
+	ORDER BY
+		rgroup ASC, regdate ASC , repno ASC
+	LIMIT #{cri.pageStart}, #{cri.perPageNum}	
+	</select>
+	-->
+	
+	<!-- 댓글조회-3 -->
+	<select id="replyList" parameterType="HashMap" resultType="ReplyVO">
+		SELECT t1.repno, t1.brdno, t1.userno, t1.rcontent, t1.rgroup, t1.rparent, t1.rdeletat, t1.regdate, t1.updatedate FROM 
+		( 
+			SELECT 	repno, brdno, userno, IF(rdeletat = 'Y', '[삭제된 댓글입니다.]', rcontent) rcontent, rgroup, rparent, rdeletat, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate, DATE_FORMAT(updatedate, '%Y-%m-%d %H:%i') updatedate
+			FROM tbl_sreply
+		) t1 
+		LEFT JOIN tbl_sreply t2 ON t1.repno = t2.rparent
+		WHERE t1.brdno = #{brdno} AND t1.rparent = 0 AND t2.repno IS NOT NULL
+		
+		UNION  
+		
+		SELECT t1.repno, t1.brdno, t1.userno, t1.rcontent, t1.rgroup, t1.rparent, t1.rdeletat, t1.regdate, t1.updatedate FROM
+		( 
+			SELECT 	repno, brdno, userno, rcontent, rgroup, rparent, rdeletat, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate, DATE_FORMAT(updatedate, '%Y-%m-%d %H:%i') updatedate
+			FROM tbl_sreply
+		) t1  
+		LEFT JOIN tbl_sreply AS t2 ON t1.repno = t2.rparent
+		WHERE t1.brdno = #{brdno} AND t2.repno IS NULL AND t1.rdeletat ="N"
+		
+		ORDER BY
+			rgroup ASC, regdate ASC , repno ASC
+		LIMIT 
+			#{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<!-- 자식여부 체크 -->
+	<select id="checkChild" parameterType="Integer" resultType="Integer">
+		SELECT 
+			COUNT(*)
+		FROM 
+			tbl_sreply
+		WHERE 
+		 	rdeletat = 'N' AND rgroup = #{_parameter} AND repno! = #{_parameter}
+	</select>
+
+	<!-- 댓글등록 
+		 insert 실행 후 AUTO_INCREMENT 값이 ReplyVO의 변수 repno에 세팅된다.
+	-->
+	<insert id="replyRegist" parameterType="ReplyVO" useGeneratedKeys="true" keyProperty="repno">
+		INSERT INTO tbl_sreply
+			(brdno, userno, rcontent, rgroup, rparent, rdeletat, regdate, updatedate)
+		VALUES 
+			(#{brdno}, #{userno}, #{rcontent}, #{rgroup}, #{rparent}, 'N', NOW(), NOW())
+	</insert>
+
+	
+	<!-- 댓글 그룹번호 수정-->
+	<update id="updateReplyGroup" parameterType="Integer">
+		UPDATE 
+			tbl_sreply 
+		SET 
+            rgroup = #{_parameter}
+        WHERE 
+        	repno = #{_parameter}    
+	</update>
+
+	<!-- 댓글수정 -->
+	<update id="replyUpdate" parameterType="ReplyVO">
+		UPDATE 
+			tbl_sreply 
+		SET 
+			rcontent = #{rcontent}, updatedate = NOW()
+		WHERE 
+			repno = #{repno}
+	</update>
+
+	<!-- 댓글삭제 -->
+	<delete id="replyDelete" parameterType="Integer">
+		UPDATE
+			tbl_sreply 
+		SET 
+			rdeletat = 'Y'
+		WHERE 
+			repno = #{repno}
+	</delete>
+	
+	<!-- 댓글 수 -->
+	<select id="replyCount" parameterType="Integer" resultType="int">
+		SELECT 
+			COUNT(brdno) 
+		FROM 
+			tbl_sreply 
+		WHERE 
+			brdno = #{brdno} AND rdeletat = 'N'
+	</select>
+
+</mapper>

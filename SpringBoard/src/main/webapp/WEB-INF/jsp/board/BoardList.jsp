@@ -160,7 +160,10 @@
 							<div class="listHiddenField pull-right field100 textCenter"><c:out value="글쓴이"/></div> 				<!-- 작성자 -->
 							<div class="listTitle">
 														<!-- 목록에서 글제목 클릭 시 페이지 정보 넘긴다. -->	
-								<a href="/board/detail${pageCalculate.makeSearchURI(pageCalculate.cri.page) }&brdno=${boardVO.brdno}" >${boardVO.title}</a>					
+								<a href="/board/detail${pageCalculate.makeSearchURI(pageCalculate.cri.page) }&brdno=${boardVO.brdno}" >${boardVO.title}</a>	
+								<c:if test="${boardVO.replycnt > 0}">
+									(<c:out value="${boardVO.replycnt}"/>)	<!-- 댓글 개수 -->
+								</c:if>						
 							</div>
 
 							 
