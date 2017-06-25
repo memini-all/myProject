@@ -43,56 +43,10 @@
     <script>
  
 	
-	$(document).ready(function() {
-		
+	$(document).ready(function() {		
 		CKEDITOR.replace( 'content', { 'filebrowserUploadUrl': 'upload4ckeditor'});
-		
-		var formObj = $("form[role='form']");
-			
-		// 등록
-		$("#registBtn").on("click", function(){
-			
-			CKEDITOR.instances["content"].updateElement();
-			
-			if ( ! chkInputValue("#title", "제목")) return false;
-			if ( ! chkInputValue("#content", "내용")) return false;
-			
-			formObj.attr("action", "/board/regist");
-			formObj.attr("method", "post");		
-			formObj.submit();
-		});
-		
-		
-		// 취소
-		$("#cancelBtn").on("click", function(){
-		  	self.location = "/board/list";	  
-		});
-			
 	});
-	
-	// 전송 부분 - 제이쿼리 이용 x
-	/*
-	function fn_formSubmit(){
-		CKEDITOR.instances["content"].updateElement();
-		
-		// 내용 입력 체크
-		if ( ! chkInputValue("#title", "제목")) return false;
-		if ( ! chkInputValue("#content", "내용")) return false;
-	
-		$("#registerForm").submit();
-	} 
-	*/
-	
-	function chkInputValue(id, msg){
 
-		if ( $.trim($(id).val()) == "") {
-			alert(msg+"을(를) 입력해주세요.");
-			$(id).focus();
-			return false;
-		}
-		return true;
-	}
-	
 	</script>
     
 </head>
@@ -140,20 +94,21 @@
 	                        </div>                        
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">파일</label>
-	                            <div class="col-lg-9">
+	                            <div id="fileDiv" class="col-lg-9">
 	                            	<!-- 
 	                            	<c:forEach var="listview" items="${listview}" varStatus="status">
 										<input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>">	
 				            			<a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>"> 							 
 										<c:out value="${listview.filename}"/></a> <c:out value="${listview.size2String()}"/><br/>
 									</c:forEach>					
-									
-									<input type="file" name="uploadfile" multiple="multiple" />
-									<input type="file" name="uploadfile" multiple="multiple" />
-									
+
 									 -->
-									 <input type="file" name="uploadfile" multiple="multiple" />
+									<span class="col-lg-9">
+										<input type="file" name="uploadfile" class="col-xs-6" />
+	    								<button name="fileDelBtn" class="btn btn-outline btn-default btn-sm">삭제</button>
+    					 	 		</span>
 	                            </div>
+
 	                        </div>  
 	                    </div>
 	                </div>
@@ -163,6 +118,7 @@
 					<input type="hidden" name="userno" value="01" />
 				</form>
 				
+				<button id="addFileBtn" class="btn btn-outline btn-primary">파일추가</button>
 				<button type="submit" id="registBtn" class="btn btn-outline btn-primary">작성</button>
 				<button id="cancelBtn" class="btn btn-outline btn-primary">취소</button>
                 
@@ -173,6 +129,98 @@
 
     </div>
     <!-- /#wrapper -->
+    
+    
+    <script type="text/javascript">
+    
+	
+	// 전송 부분 - 제이쿼리 이용 x
+	/*
+	function fn_formSubmit(){
+		CKEDITOR.instances["content"].updateElement();
+		
+		// 내용 입력 체크
+		if ( ! chkInputValue("#title", "제목")) return false;
+		if ( ! chkInputValue("#content", "내용")) return false;
+	
+		$("#registerForm").submit();
+	} 
+	*/
+    
+	var formObj = $("form[role='form']");
+	
+	// 등록
+	$("#registBtn").on("click", function(){
+		
+		CKEDITOR.instances["content"].updateElement();
+		
+		if ( ! fn_chkInputValue("#title", "제목")) return false;
+		if ( ! fn_chkInputValue("#content", "내용")) return false;
+		
+		formObj.attr("action", "/board/regist");
+		formObj.attr("method", "post");	
+		fn_fileUpload();
+		
+
+
+		//formObj.submit();
+	});
+	
+	
+	// 취소
+	$("#cancelBtn").on("click", function(){
+	  	self.location = "/board/list";	  
+	});
+	
+	
+	function fn_fileUpload(){
+		//var formData = new FormData();
+		//formData.append("uploadfile",$("input[name=uploadfile]")[0].files[0]);
+		//formData.append("uploadfile",$("input[name=uploadfile]")[1].files[0]);
+		
+		// 파일개수
+		alert($("input[name=uploadfile]").length);
+		// 파일명
+		alert($("input[name=uploadfile]")[0].files[0].name);
+		
+	}
+	
+	function fn_chkInputValue(id, msg){
+
+		if ( $.trim($(id).val()) == "") {
+			alert(msg+"을(를) 입력해주세요.");
+			$(id).focus();
+			return false;
+		}
+		return true;
+	}
+	
+	
+	
+	
+	var fileNum = 1;
+	
+	// 파일 추가
+	$("#addFileBtn").on("click", function(){
+	  	//"<span class='col-lg-9'><input type='file' name='uploadfile_"+(fileNum++)+"' class='col-xs-6' />"
+		var str = "<span class='col-lg-9'><input type='file' name='uploadfile' class='col-xs-6' />"
+		+ "<button name='fileDelBtn' class='btn btn-outline btn-default btn-sm'>삭제</button></span>";
+
+		$("#fileDiv").append(str);
+		$("button[name='fileDelBtn']").on("click", function(e){
+			e.preventDefault();
+			fn_deleteFile($(this));
+		});
+	});
+	
+	// 파일추가 - 삭제
+	function fn_deleteFile(obj){
+		obj.parent().remove();
+	}
+	
+
+    </script>
+    
 </body>
 
 </html>

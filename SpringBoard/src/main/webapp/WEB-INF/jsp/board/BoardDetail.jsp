@@ -215,7 +215,7 @@
 						</div>
 						<div class="col-lg-2 pull-left">
                				<button class="btn btn-outline btn-primary" id="replyReplyBtn">저장</button> <!--  onclick="replyReplySave()" -->
-               				<button class="btn btn-outline btn-primary" onclick="replyReplyCancel()">취소</button>
+               				<button class="btn btn-outline btn-primary" onclick="fn_replyReplyCancel()">취소</button>
 						</div>
 				</div>								
            
@@ -255,9 +255,9 @@
 					{{userno}} {{regdate}}
 					{{#isView this.rdeletat}}
 					{{else}}
-						<a href="javascript:replyRemove({{repno}})" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
-						<a href="javascript:replyModify({{repno}})" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
-						<a href="javascript:replyReply({{repno}}, {{userno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
+						<a href="javascript:fn_replyRemove({{repno}})" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
+						<a href="javascript:fn_replyModify({{repno}})" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
+						<a href="javascript:fn_replyReply({{repno}}, {{userno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
 					{{/isView}}
 				</div>
 					<!--<div>[삭제된 댓글의 댓글입니다.]</div>-->
@@ -329,15 +329,15 @@
 	var brdno = ${boardVO.brdno};
 	var replyPage = 1;
 	
-	getReplyList("/replies/"+brdno+"/1");
+	fn_getReplyList("/replies/"+brdno+"/1");
 	
 	// 댓글목록과 댓글페이지를 만든다.
-	function getReplyList(pageURI) {
+	function fn_getReplyList(pageURI) {
 
 		$.getJSON(pageURI, function(data) {
 			
-			printTemplate(data.replyList, $("#replieListDiv"), $('#template'));
-			printPage(data.pageCalculate, $(".pagination"));
+			fn_printTemplate(data.replyList, $("#replieListDiv"), $('#template'));
+			fn_printPage(data.pageCalculate, $(".pagination"));
 			
 		});
 	}
@@ -345,7 +345,7 @@
 
 	
 	// 배열형식 댓글데이터, 타겟(div), 템플릿 스크립트를 인자로 받아 템플릿 생성
- 	var printTemplate = function(replyArr, target, templateObject){
+ 	var fn_printTemplate = function(replyArr, target, templateObject){
 
  		var template = Handlebars.compile(templateObject.html());
  		var html = template(replyArr);
@@ -355,7 +355,7 @@
 
 	
 	// 댓글 페이지 생성
-	var printPage = function(pageCalculate, target) {
+	var fn_printPage = function(pageCalculate, target) {
 
 		var str = "";
 
@@ -388,7 +388,7 @@
 		event.preventDefault(); // 일단 페이지 이동을 멈춤 - <a href> 태그 정지
 	
 		replyPage = $(this).attr("href");  // li 태그 아래의 a 태그에서 href 속성 값을 가져온다.
-		getReplyList("/replies/"+brdno+"/"+replyPage);
+		fn_getReplyList("/replies/"+brdno+"/"+replyPage);
 	});
 	
 	// 댓글 등록
@@ -423,7 +423,7 @@
 					console.log("댓글 등록 결과 : " + result);
 					console.log("/replies/" + brdno + "/" + replyPage);
 
-					getReplyList("/replies/" + brdno + "/" + replyPage);
+					fn_getReplyList("/replies/" + brdno + "/" + replyPage);
 					//replyerObj.val("");
 					replyContentObj.val("");
 				}
@@ -435,7 +435,7 @@
 	// 댓글 수정div 부분
 	var updateRepeno = updateRcontent = null;
 	
-	function replyModify(repeno){
+	function fn_replyModify(repeno){
 		
 		hideDiv("#replyDialog");
 
@@ -512,7 +512,7 @@
 
 					updateRepeno = updateRcontent = null;
 					
-					getReplyList("/replies/" + brdno + "/" + replyPage);
+					fn_getReplyList("/replies/" + brdno + "/" + replyPage);
 				}
 			}
 		});	
@@ -537,7 +537,7 @@
 				if (result == 'SUCCESS') {
 			
 					
-					getReplyList("/replies/" + brdno + "/" + replyPage);
+					fn_getReplyList("/replies/" + brdno + "/" + replyPage);
 				}
 			}
 		});	
@@ -546,7 +546,7 @@
 
 	
 	// 댓글 답글창
-	function replyReply(repno, userno){
+	function fn_replyReply(repno, userno){
 		
 		$("#replyDialog").show();
 		
@@ -555,7 +555,7 @@
 		} 
 
 		// 부모글의 repno
-		alert("부모글 번호 : "+repno + " / 부모글 작성자 : "+userno);
+		//alert("부모글 번호 : "+repno + " / 부모글 작성자 : "+userno);
 		
 		var groupNumber = $("#hiddenGroup"+repno).val();
 		
@@ -568,7 +568,7 @@
 	} 
 	
 	// 댓글 답변 취소
-	function replyReplyCancel(){
+	function fn_replyReplyCancel(){
 		hideDiv("#replyDialog");
 	} 
 	
@@ -606,9 +606,9 @@
 					console.log("댓글 답변 등록 결과 : " + result);
 					console.log("/replies/" + brdno + "/" + replyPage);
 
-					getReplyList("/replies/" + brdno + "/" + replyPage);
+					fn_getReplyList("/replies/" + brdno + "/" + replyPage);
 					//$("#repReplyContent").val("");
-					replyReplyCancel();
+					fn_replyReplyCancel();
 				}
 			}
 		});

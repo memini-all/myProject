@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysql.cj.core.util.StringUtils;
@@ -107,11 +108,16 @@ public class BoardController {
 
 	// 글 등록
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
-	public String boardRegist(@ModelAttribute("board") BoardVO board, RedirectAttributes rttr) throws Exception {
+	public String boardRegist(MultipartFile file, @ModelAttribute("board") BoardVO board, RedirectAttributes rttr) throws Exception {
 
 		logger.info(">>>>>>> 등록작업 .......");
 
-		service.boardRegist(board);
+//		logger.info(">>>>>>>>>>>>> 파일명 : " + file.getOriginalFilename());
+//		logger.info(">>>>>>>>>>>>> 크기 : " + file.getSize() / 1024 + " KB");
+//		logger.info(">>>>>>>>>>>>> contentType : " + file.getContentType());
+		
+		
+		//service.boardRegist(board);
 		rttr.addFlashAttribute("msg", "SUCCESS");
 
 		return "redirect:/board/list";

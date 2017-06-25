@@ -6,8 +6,8 @@
 
 	<typeAliases>
 		<typeAlias type="com.spring.project.board.dto.BoardVO" alias="boardVO"/>
-		<typeAlias type="com.spring.project.board.dto.Criteria" alias="criteria"/>
-		<typeAlias type="com.spring.project.board.dto.Criteria" alias="searchCriteria"/>
+		<typeAlias type="com.spring.project.common.util.Criteria" alias="criteria"/>
+		<typeAlias type="com.spring.project.common.util.Criteria" alias="searchCriteria"/>
 		<typeAlias type="com.spring.project.reply.dto.ReplyVO" alias="replyVO"/>
 	</typeAliases>
 

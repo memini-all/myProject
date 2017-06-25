@@ -54,8 +54,8 @@
 			
 			CKEDITOR.instances["content"].updateElement();
 			
-			if ( ! chkInputValue("#title", "제목")) return false;
-			if ( ! chkInputValue("#content", "내용")) return false;
+			if ( ! fn_chkInputValue("#title", "제목")) return false;
+			if ( ! fn_chkInputValue("#content", "내용")) return false;
 			
 			formObj.attr("action", "/board/modify");
 			formObj.attr("method", "post");		
@@ -75,7 +75,7 @@
 	});
 	
 	
-	function chkInputValue(id, msg){
+	function fn_chkInputValue(id, msg){
 
 		if ( $.trim($(id).val()) == "") {
 			alert(msg+"을(를) 입력해주세요.");
