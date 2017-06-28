@@ -67,7 +67,7 @@ public class ReplyController {
 			pCalculate.setCri(cri);
 			pCalculate.setTotalCount(replyCount);
 			
-			List<ReplyVO> rlist = service.replyList(cri, brdno); 	// 댓글 목록
+			List<ReplyVO> rlist = service.selectReplyList(cri, brdno); 	// 댓글 목록
 			Map<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("replyList", rlist); 			// 댓글은 list로
@@ -93,7 +93,7 @@ public class ReplyController {
 		ResponseEntity<String> entity = null;
 		try {
 			logger.info(">>>>>>> 댓글 등록 ........");
-			service.replyRegist(replyVO);
+			service.insertReply(replyVO);
 
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 
@@ -115,7 +115,7 @@ public class ReplyController {
 			logger.info(">>>>>>> 댓글 수정 ........");
 
 			replyVO.setRepno(repno);
-			service.replyModify(replyVO);
+			service.updateReply(replyVO);
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 
 		} catch (Exception e) {
@@ -134,7 +134,7 @@ public class ReplyController {
 		try {
 			logger.info(">>>>>>> 댓글 삭제 ........");
 			
-			service.replyRemove(repno);
+			service.deleteReply(repno);
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 
 		} catch (Exception e) {

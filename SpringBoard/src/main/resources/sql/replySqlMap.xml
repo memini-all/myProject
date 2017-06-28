@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	-->
 	
 	<!-- 댓글조회-3 -->
-	<select id="replyList" parameterType="HashMap" resultType="ReplyVO">
+	<select id="selectReplyList" parameterType="HashMap" resultType="ReplyVO">
 		SELECT t1.repno, t1.brdno, t1.userno, t1.rcontent, t1.rgroup, t1.rparent, t1.rdeletat, t1.regdate, t1.updatedate FROM 
 		( 
 			SELECT 	repno, brdno, userno, IF(rdeletat = 'Y', '[삭제된 댓글입니다.]', rcontent) rcontent, rgroup, rparent, rdeletat, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate, DATE_FORMAT(updatedate, '%Y-%m-%d %H:%i') updatedate
@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 댓글등록 
 		 insert 실행 후 AUTO_INCREMENT 값이 ReplyVO의 변수 repno에 세팅된다.
 	-->
-	<insert id="replyRegist" parameterType="ReplyVO" useGeneratedKeys="true" keyProperty="repno">
+	<insert id="insertReply" parameterType="ReplyVO" useGeneratedKeys="true" keyProperty="repno">
 		INSERT INTO tbl_sreply
 			(brdno, userno, rcontent, rgroup, rparent, rdeletat, regdate, updatedate)
 		VALUES 
@@ -110,7 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<!-- 댓글수정 -->
-	<update id="replyUpdate" parameterType="ReplyVO">
+	<update id="updateReply" parameterType="ReplyVO">
 		UPDATE 
 			tbl_sreply 
 		SET 
@@ -120,7 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<!-- 댓글삭제 -->
-	<delete id="replyDelete" parameterType="Integer">
+	<delete id="deleteReply" parameterType="Integer">
 		UPDATE
 			tbl_sreply 
 		SET 

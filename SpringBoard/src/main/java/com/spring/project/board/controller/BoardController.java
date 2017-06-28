@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysql.cj.core.util.StringUtils;
@@ -32,7 +32,7 @@ import com.spring.project.common.util.SearchCriteria;
 public class BoardController {
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
-
+	
 	@Inject
 	private BoardService service;
 
@@ -43,11 +43,11 @@ public class BoardController {
 
 		logger.info(">>>>>>> 게시물 보기 ........");
 
-		model.addAttribute("list", service.boardList(cri));
+		model.addAttribute("list", service.selectBoardList(cri));
 
 		PageCalculate pCalculate = new PageCalculate();
 		pCalculate.setCri(cri);
-		pCalculate.setTotalCount(service.listCount(cri));
+		pCalculate.setTotalCount(service.countPage(cri));
 
 		model.addAttribute("pageCalculate", pCalculate);
 
@@ -91,9 +91,12 @@ public class BoardController {
 			// 조회수 업데이트
 			service.updateViewCnt(brdno);
 		}
-
+		
+		Map<String, Object> resultMap = service.selectBoardDetail(brdno);
+		
 		logger.info(">>>>>>> 상세보기 ........");
-		model.addAttribute("boardVO", service.boardDetail(brdno));
+		model.addAttribute("boardVO", resultMap.get("boardVO"));
+		model.addAttribute("fileList", resultMap.get("fileList"));
 
 		return "board/BoardDetail";
 	}
@@ -108,16 +111,11 @@ public class BoardController {
 
 	// 글 등록
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
-	public String boardRegist(MultipartFile file, @ModelAttribute("board") BoardVO board, RedirectAttributes rttr) throws Exception {
-
+	public String boardRegist(HttpServletRequest request, @ModelAttribute("board") BoardVO board, RedirectAttributes rttr) throws Exception {
+    	
 		logger.info(">>>>>>> 등록작업 .......");
-
-//		logger.info(">>>>>>>>>>>>> 파일명 : " + file.getOriginalFilename());
-//		logger.info(">>>>>>>>>>>>> 크기 : " + file.getSize() / 1024 + " KB");
-//		logger.info(">>>>>>>>>>>>> contentType : " + file.getContentType());
 		
-		
-		//service.boardRegist(board);
+		service.insertBoard(board, request);
 		rttr.addFlashAttribute("msg", "SUCCESS");
 
 		return "redirect:/board/list";
@@ -130,7 +128,7 @@ public class BoardController {
 
 		logger.info(">>>>>>> 수정 페이지 이동 .........");
 
-		model.addAttribute("boardVO", service.boardDetail(brdno));
+		model.addAttribute("boardVO", service.selectBoardDetail(brdno));
 
 		return "board/BoardModify";
 	}
@@ -141,7 +139,7 @@ public class BoardController {
 
 		logger.info(">>>>>>> 수정작업........");
 
-		service.boardModify(board);
+		service.updateBoard(board);
 
 		// 페이지 정보를 전달 - 수정 후 원래 페이지로 돌아오도록 처리
 		rttr.addAttribute("page", cri.getPage());
@@ -161,7 +159,7 @@ public class BoardController {
 
 		logger.info(">>>>>>> 삭제작업 ........");
 
-		service.boardRemove(brdno);
+		service.deleteBoard(brdno);
 		rttr.addAttribute("page", cri.getPage());
 		rttr.addAttribute("perPageNum", cri.getPerPageNum());
 		rttr.addAttribute("searchType", cri.getSearchType());

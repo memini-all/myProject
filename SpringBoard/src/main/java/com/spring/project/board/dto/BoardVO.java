@@ -3,16 +3,17 @@ package com.spring.project.board.dto;
 
 public class BoardVO {
 
-	private Integer brdno;		// 글번호
-	private Integer userno;		// 작성자 번호
-	private String title;		// 글제목
-	private String content;		// 글내용
-	private String regdate;		//	작성일
-	private String updatedate;	// 수정일
-	private String deleteat;	// 삭제여부
-	private int viewcnt;		// 조회수
-	private int replycnt;		// 댓글수
-	
+	private Integer brdno; // 글번호
+	private Integer userno; // 작성자 번호
+	private String title; // 글제목
+	private String content; // 글내용
+	private String regdate; // 작성일
+	private String updatedate; // 수정일
+	private String deleteat; // 삭제여부
+	private int viewcnt; // 조회수
+	private int replycnt; // 댓글수
+	private int fileCnt;
+
 	public Integer getBrdno() {
 		return brdno;
 	}
@@ -46,7 +47,7 @@ public class BoardVO {
 	}
 
 	public String getRegdate() {
-		
+
 		return regdate;
 	}
 
@@ -86,4 +87,11 @@ public class BoardVO {
 		this.replycnt = replycnt;
 	}
 
+	public int getFileCnt() {
+		return fileCnt;
+	}
+
+	public void setFileCnt(int fileCnt) {
+		this.fileCnt = fileCnt;
+	}
 }

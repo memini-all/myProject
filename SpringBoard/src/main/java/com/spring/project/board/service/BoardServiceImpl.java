@@ -1,15 +1,20 @@
 package com.spring.project.board.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.project.board.dao.BoardDAO;
 import com.spring.project.board.dto.BoardVO;
-import com.spring.project.common.util.Criteria;
+import com.spring.project.common.dto.FileVO;
+import com.spring.project.common.util.FileUtils;
 import com.spring.project.common.util.SearchCriteria;
 
 @Service
@@ -18,47 +23,63 @@ public class BoardServiceImpl implements BoardService {
 	@Inject
 	private BoardDAO boardDAO;
 	
-	@Transactional
-	@Override
-	public void boardRegist(BoardVO board) throws Exception {
+	// common-context.xml에 등록한 파일업로드 경로를 주입
+	@Resource(name = "uploadPath")
+	private String uploadPath;
 	
-		boardDAO.regist(board);
+	@Resource(name="fileUtils")
+	private FileUtils fileUtils;
+	
+	@Transactional
+	@Override
+	public void insertBoard(BoardVO boardVO, HttpServletRequest request) throws Exception {
+	
+		int brdno = boardDAO.insertBoard(boardVO);
+		
+		List<Map<String,Object>> list = fileUtils.uploadFileInfo(brdno, uploadPath, request);
+		
+		for(int i=0, size=list.size(); i<size; i++){	
+			boardDAO.insertFile(list.get(i));
+		}
 	}
 
 	@Override
-	public List<BoardVO> boardList(SearchCriteria cri) throws Exception {
-
-		// vo에서 Regdate 시간값을 못가져옴
-//		List<BoardVO> voList = boardDAO.boardList(cri);	
-//		System.out.println("\n서비스 : "+voList.get(0).getTitle()+" == "+voList.get(0).getRegdate()+"\n");						
-//		return voList;
+	public List<BoardVO> selectBoardList(SearchCriteria cri) throws Exception {
 		
-		return boardDAO.boardList(cri);
+		return boardDAO.selectBoardList(cri);
 	}
 
 	@Transactional
 	@Override
-	public BoardVO boardDetail(Integer brdno) throws Exception {
+	public Map<String, Object> selectBoardDetail(Integer brdno) throws Exception {
 		
-		return boardDAO.detail(brdno);
+		BoardVO boardVO = boardDAO.selectBoardDetail(brdno);
+		List<FileVO> fileList = boardDAO.selectFileList(brdno);
+		
+		Map<String, Object> resultMap = new HashMap<String,Object>();
+		
+		resultMap.put("boardVO", boardVO);
+		resultMap.put("fileList", fileList);
+		
+		return resultMap;
 	}
 
 	@Transactional
 	@Override
-	public void boardModify(BoardVO board) throws Exception {
+	public void updateBoard(BoardVO boardVO) throws Exception {
 		
-		boardDAO.modify(board);
+		boardDAO.updateBoard(boardVO);
 	}
 
 	@Transactional
 	@Override
-	public void boardRemove(Integer brdno) throws Exception {
+	public void deleteBoard(Integer brdno) throws Exception {
 		
-		boardDAO.remove(brdno);
+		boardDAO.deleteBoard(brdno);
 	}
 
 	@Override
-	public int listCount(SearchCriteria cri) throws Exception {
+	public int countPage(SearchCriteria cri) throws Exception {
 		
 		return boardDAO.countPage(cri);
 	}

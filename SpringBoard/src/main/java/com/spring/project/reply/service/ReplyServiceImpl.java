@@ -1,6 +1,8 @@
 package com.spring.project.reply.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -18,16 +20,20 @@ public class ReplyServiceImpl implements ReplyService {
 	private ReplyDAO replyDAO;
 	
 	@Override
-	public List<ReplyVO> replyList(Criteria cri, Integer brdno) throws Exception {
+	public List<ReplyVO> selectReplyList(Criteria cri, Integer brdno) throws Exception {
 
-		return replyDAO.replyList(cri, brdno);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("brdno", brdno);
+		paramMap.put("cri", cri);
+
+		return replyDAO.selectReplyList(paramMap);
 	}
 
 	@Transactional
 	@Override
-	public void replyRegist(ReplyVO replyVO) throws Exception {
+	public void insertReply(ReplyVO replyVO) throws Exception {
 	
-		int repno = replyDAO.replyRegist(replyVO);
+		int repno = replyDAO.insertReply(replyVO);
 		
 		// 답글이 아닌 일반 댓글일 경우 그룹변호 = 댓글번호로 만든다
 		if(replyVO.getRgroup() == 0){
@@ -37,16 +43,16 @@ public class ReplyServiceImpl implements ReplyService {
 
 	@Transactional
 	@Override
-	public void replyModify(ReplyVO replyVO) throws Exception {
+	public void updateReply(ReplyVO replyVO) throws Exception {
 		
-		replyDAO.replyModify(replyVO);
+		replyDAO.updateReply(replyVO);
 	}
 
 	@Transactional
 	@Override
-	public void replyRemove(Integer repno) throws Exception {
+	public void deleteReply(Integer repno) throws Exception {
 		
-		replyDAO.replyRemove(repno);
+		replyDAO.deleteReply(repno);
 	}
 
 	@Override

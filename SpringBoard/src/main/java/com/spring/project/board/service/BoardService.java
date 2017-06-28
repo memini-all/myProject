@@ -1,9 +1,11 @@
 package com.spring.project.board.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.spring.project.board.dto.BoardVO;
-import com.spring.project.common.util.Criteria;
 import com.spring.project.common.util.SearchCriteria;
 
 public interface BoardService {
@@ -13,14 +15,14 @@ public interface BoardService {
 	 * @param board
 	 * @throws Exception
 	 */
-	public void boardRegist(BoardVO board) throws Exception;
+	public void insertBoard(BoardVO boardVO, HttpServletRequest request) throws Exception;
 	
 	/**
 	 * 글 목록 - 페이지 처리
 	 * @return
 	 * @throws Exception
 	 */
-	public List<BoardVO> boardList(SearchCriteria cri) throws Exception;
+	public List<BoardVO> selectBoardList(SearchCriteria cri) throws Exception;
 	
 	/**
 	 * 글 상세보기
@@ -28,7 +30,7 @@ public interface BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public BoardVO boardDetail(Integer brdno) throws Exception;
+	public Map<String, Object> selectBoardDetail(Integer brdno) throws Exception;
 	
 	/**
 	 * 조회수 증가
@@ -42,14 +44,14 @@ public interface BoardService {
 	 * @param board
 	 * @throws Exception
 	 */
-	public void boardModify(BoardVO board) throws Exception;
+	public void updateBoard(BoardVO boardVO) throws Exception;
 	
 	/**
 	 * 글 삭제
 	 * @param brdno
 	 * @throws Exception
 	 */
-	public void boardRemove(Integer brdno) throws Exception;
+	public void deleteBoard(Integer brdno) throws Exception;
 	
 	/**
 	 * 글을 총 개수
@@ -57,5 +59,5 @@ public interface BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int listCount(SearchCriteria cri) throws Exception;
+	public int countPage(SearchCriteria cri) throws Exception;
 }

@@ -150,8 +150,8 @@
 	
 							<!-- 파일첨부 아이콘부분 -->
 							<div class="listHiddenField pull-right field60">
-								<c:if test="${listitem.filecnt>0}">
-									<i class="fa fa-download fa-fw" title="<c:out value="${listitem.filecnt}"/>"></i>
+								<c:if test="${boardVO.fileCnt>0}">
+									<i class="fa fa-download fa-fw" title="<c:out value="${boardVO.fileCnt}개 파일"/>"></i>
 								</c:if>	
 							</div>
 							<div class="listHiddenField pull-left field60"><c:out value="${boardVO.brdno}"/></div> 					<!-- 글번호 -->
@@ -172,8 +172,8 @@
 								<c:out value="글쓴이"/> 
 								<c:out value="${boardVO.regdate}"/>
 								<i class="fa fa-eye fa-fw"></i> <c:out value="${boardVO.viewcnt}"/>
-								<c:if test="${listitem.filecnt>0}">
-									<i class="fa fa-download fa-fw" title="<c:out value="${listitem.filecnt}"/>"></i>
+								<c:if test="${boardVO.fileCnt>0}">
+									<i class="fa fa-download fa-fw" title="<c:out value="${boardVO.fileCnt}"/>"></i>
 								</c:if>									
 							</div>
 

@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.spring.project.board">
 
 	<!-- 글등록 -->
-	<insert id="regist" parameterType="boardVO">
+	<insert id="insertBoard" parameterType="boardVO" useGeneratedKeys="true" keyProperty="brdno">
 		INSERT INTO tbl_sboard
 			(userno, title, content, regdate, updatedate, deleteat, viewcnt)
 		VALUES
@@ -15,11 +15,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 
 	<!-- 글목록 -->
-	<select id="list" parameterType="criteria" resultType="boardVO">
+	<select id="selectBoardList" parameterType="criteria" resultType="boardVO">
 	<![CDATA[
 		SELECT 
 		   brdno, userno, title, content, DATE_FORMAT(regdate,'%Y-%m-%d') regdate, DATE_FORMAT(updatedate,'%Y-%m-%d') updatedate, deleteat, viewcnt, 
-		   (SELECT COUNT(*) FROM tbl_sreply WHERE brdno = BD.brdno AND rdeletat = 'N') replycnt
+		   (SELECT COUNT(*) FROM tbl_sreply WHERE brdno = BD.brdno AND rdeletat = 'N') replycnt,
+		   (SELECT COUNT(*) FROM tbl_sboardfile WHERE brdno = BD.brdno) fileCnt
 		FROM 
 			tbl_sboard AS BD
 		WHERE 
@@ -35,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 글 상세보기 -->
-	<select id="detail" parameterType="Integer" resultType="boardVO">
+	<select id="selectBoardDetail" parameterType="Integer" resultType="boardVO">
 		SELECT
 			brdno, userno, title, content, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate, DATE_FORMAT(updatedate, '%Y-%m-%d %H:%i') updatedate, deleteat, viewcnt
 		FROM
@@ -44,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 글 수정 -->
-	<update id="update" parameterType="boardVO">
+	<update id="updateBoard" parameterType="boardVO">
 		UPDATE
 			tbl_sboard 
 		SET 
@@ -54,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<!-- 글 삭제 -->
-	<delete id="remove" parameterType="Integer">
+	<delete id="deleteBoard" parameterType="Integer">
 		UPDATE
 			tbl_sboard 
 		SET 
@@ -105,6 +106,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</if>
 	</sql>
+	
+	<!-- 파일 정보 저장 -->
+	<insert id="insertFile" parameterType="hashmap">
+		INSERT INTO tbl_sboardfile
+		(
+			brdno,
+			file_name,
+			original_file_name,
+			file_size,
+			file_regdate,
+			file_delat
+		)
+		VALUES
+		(
+			#{brdno},
+			#{file_name},
+			#{original_file_name},
+			#{file_size},
+			NOW(), 
+			'N'
+		)
+	</insert>
+	
+	<!-- 해당 글의 첨부 파일리스트 -->
+	<select id="selectFileList" parameterType="Integer" resultType="fileVO">
+		SELECT	
+			fileno,
+			brdno,
+			file_name,
+			original_file_name,
+			file_size
+		FROM
+			tbl_sboardfile
+		WHERE
+			brdno = #{brdno}
+			AND file_delat = 'N'
+	</select>
 
 	<!--  페이지 1 -->
 	<!-- 

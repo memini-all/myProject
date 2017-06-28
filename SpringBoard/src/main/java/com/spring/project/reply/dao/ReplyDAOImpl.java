@@ -21,20 +21,20 @@ public class ReplyDAOImpl implements ReplyDAO {
 	private static String namespace = "com.spring.project.reply";
 	
 	@Override
-	public List<ReplyVO> replyList(Criteria cri, Integer brdno) throws Exception {
+	public List<ReplyVO> selectReplyList(Map<String, Object> paramMap) throws Exception {
 		// Service로 코드 이동
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("brdno", brdno);
-		paramMap.put("cri", cri);
+		//Map<String, Object> paramMap = new HashMap<String, Object>();
+		//paramMap.put("brdno", brdno);
+		//paramMap.put("cri", cri);
 		
-		return sqlSession.selectList(namespace+".replyList", paramMap);
+		return sqlSession.selectList(namespace+".selectReplyList", paramMap);
 	}
 
 	@Override
-	public int replyRegist(ReplyVO replyVO) throws Exception {
+	public int insertReply(ReplyVO replyVO) throws Exception {
 	
 		// insert 실행 후 AUTO_INCREMENT 값이 ReplyVO의 변수 repno에 세팅된다.
-		sqlSession.insert(namespace+".replyRegist", replyVO);
+		sqlSession.insert(namespace+".insertReply", replyVO);
 		
 		// AUTO_INCREMENT(댓글 repno) 값 전달
 		return replyVO.getRepno();	
@@ -47,15 +47,15 @@ public class ReplyDAOImpl implements ReplyDAO {
 	}
 
 	@Override
-	public void replyModify(ReplyVO replyVO) throws Exception {
+	public void updateReply(ReplyVO replyVO) throws Exception {
 		
-		sqlSession.update(namespace+".replyUpdate", replyVO);
+		sqlSession.update(namespace+".updateReply", replyVO);
 	}
 
 	@Override
-	public void replyRemove(Integer repno) throws Exception {
+	public void deleteReply(Integer repno) throws Exception {
 		
-		sqlSession.delete(namespace+".replyDelete", repno);
+		sqlSession.delete(namespace+".deleteReply", repno);
 	}
 
 

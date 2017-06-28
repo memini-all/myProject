@@ -142,15 +142,18 @@
                         <p><c:out value="${boardVO.content}" escapeXml="false"/></p>
                     </div>
                     
-                    <!-- 첨부파일 있을경우 파일 다운로드 표시 -->
-                    <c:if test="${listview.size()>0}">
+                    <!-- 첨부파일 있을경우 파일 다운로드 표시 --> 
+                    <c:if test="${fileList.size()>0}">
+                   
 		                <div class="panel-footer">
-		                	<c:forEach var="listview" items="${listview}" varStatus="status">	
-		           				<a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>"> 							 
-								<c:out value="${listview.filename}"/></a> <c:out value="${listview.size2String()}"/><br/>
+		                	<c:forEach var="file" items="${fileList}" varStatus="status">	
+		           				<a href="fileDownload?filename=<c:out value="${file.original_file_name}"/>&downname=<c:out value="${file.file_name}"/>">
+		           				<i class="glyphicon glyphicon-save-file" ></i>							 
+								<c:out value="${file.original_file_name}"/></a>  &nbsp;(<c:out value="${file.getCalculateSize()}"/>)<br/>
 							</c:forEach>
 	                     </div>
-                    </c:if>
+	                    
+                    </c:if> 
                     
                 </div>
                 
@@ -159,7 +162,7 @@
 					<button class="btn btn-outline btn-primary" id="modifyBtn" >수정</button>
 	                <button class="btn btn-outline btn-primary" id="removeBtn" >삭제</button>
 				</c:if>
-
+				<p>&nbsp;</p>
 				<!-- 			                               
 				<p>&nbsp;</p>
 				<input type="hidden" id="brdno" name="brdno" value="<c:out value="${boardInfo.brdno}"/>"> 

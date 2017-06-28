@@ -13,7 +13,7 @@ public interface ReplyService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ReplyVO> replyList(Criteria cri, Integer brdno) throws Exception;
+	public List<ReplyVO> selectReplyList(Criteria cri, Integer brdno) throws Exception;
 	
 	
 	/**
@@ -21,21 +21,21 @@ public interface ReplyService {
 	 * @param replyVO 
 	 * @throws Exception
 	 */
-	public void replyRegist(ReplyVO replyVO) throws Exception;
+	public void insertReply(ReplyVO replyVO) throws Exception;
 	
 	/**
 	 * 댓글 수정
 	 * @param replyVO
 	 * @throws Exception
 	 */
-	public void replyModify(ReplyVO replyVO) throws Exception;
+	public void updateReply(ReplyVO replyVO) throws Exception;
 	
 	/**
 	 * 댓글 삭제
 	 * @param repno 댓글번호
 	 * @throws Exception
 	 */
-	public void replyRemove(Integer repno) throws Exception;
+	public void deleteReply(Integer repno) throws Exception;
 	
 	/**
 	 * 게시글에 있는 댓글의 총 수를 구한다.

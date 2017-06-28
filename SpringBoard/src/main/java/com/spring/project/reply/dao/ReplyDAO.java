@@ -1,8 +1,8 @@
 package com.spring.project.reply.dao;
 
 import java.util.List;
+import java.util.Map;
 
-import com.spring.project.common.util.Criteria;
 import com.spring.project.reply.dto.ReplyVO;
 
 public interface ReplyDAO {
@@ -13,14 +13,14 @@ public interface ReplyDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ReplyVO> replyList(Criteria cri, Integer brdno) throws Exception;
+	public List<ReplyVO> selectReplyList(Map<String, Object> paramMap) throws Exception;
 	
 	/**
 	 * 댓글 등록
 	 * @param replyVO 
 	 * @throws Exception
 	 */
-	public int replyRegist(ReplyVO replyVO) throws Exception;
+	public int insertReply(ReplyVO replyVO) throws Exception;
 	
 	/**
 	 * 댓글 그룹번호 수정
@@ -34,14 +34,14 @@ public interface ReplyDAO {
 	 * @param replyVO
 	 * @throws Exception
 	 */
-	public void replyModify(ReplyVO replyVO) throws Exception;
+	public void updateReply(ReplyVO replyVO) throws Exception;
 	
 	/**
 	 * 댓글 삭제
 	 * @param repno 댓글번호
 	 * @throws Exception
 	 */
-	public void replyRemove(Integer repno) throws Exception;
+	public void deleteReply(Integer repno) throws Exception;
 
 	/**
 	 * 게시글에 있는 댓글의 총 수를 구한다.

@@ -1,8 +1,10 @@
 package com.spring.project.board.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.spring.project.board.dto.BoardVO;
+import com.spring.project.common.dto.FileVO;
 import com.spring.project.common.util.Criteria;
 import com.spring.project.common.util.SearchCriteria;
 
@@ -13,14 +15,14 @@ public interface BoardDAO {
 	 * @param board
 	 * @throws Exception
 	 */
-	public void regist(BoardVO board) throws Exception;
+	public int insertBoard(BoardVO boardVO) throws Exception;
 	
 	/**
 	 * 글 목록
 	 * @return
 	 * @throws Exception
 	 */
-	public List<BoardVO> boardList(SearchCriteria cri) throws Exception;
+	public List<BoardVO> selectBoardList(SearchCriteria cri) throws Exception;
 	
 	/**
 	 * 글 상세보기
@@ -28,20 +30,20 @@ public interface BoardDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public BoardVO detail(Integer brdno) throws Exception;
+	public BoardVO selectBoardDetail(Integer brdno) throws Exception;
 	
 	/**
 	 * 글 수정
 	 * @param board
 	 * @throws Exception
 	 */
-	public void modify(BoardVO board) throws Exception;
+	public void updateBoard(BoardVO boardVO) throws Exception;
 
 	/**
 	 * 글 삭제
 	 * @param brdno
 	 */
-	public void remove(Integer brdno) throws Exception;
+	public void deleteBoard(Integer brdno) throws Exception;
 
 	/**
 	 * 조회수 증가
@@ -57,4 +59,19 @@ public interface BoardDAO {
 	 * @throws Exception
 	 */
 	public int countPage(SearchCriteria cri) throws Exception;
+	
+	/**
+	 * 파일정보를 저장
+	 * @param fileMap 파일정보를 담고있는 Map
+	 * @throws Exception
+	 */
+	public void insertFile(Map<String,Object> fileMap) throws Exception;
+	
+	/**
+	 * 해당 글에 첨부된 파일 리스트
+	 * @param brdno 글번호
+	 * @return
+	 * @throws Exception
+	 */
+	public List<FileVO> selectFileList(Integer brdno) throws Exception;
 }

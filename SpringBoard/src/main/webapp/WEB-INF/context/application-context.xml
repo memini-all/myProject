@@ -57,5 +57,5 @@
 	<!-- Bean Scan -->
 	<context:component-scan base-package="com.spring.project.*.service" />
 	<context:component-scan base-package="com.spring.project.*.dao" />
-		
+
 </beans>
