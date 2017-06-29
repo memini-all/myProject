@@ -44,7 +44,7 @@ public interface BoardService {
 	 * @param board
 	 * @throws Exception
 	 */
-	public void updateBoard(BoardVO boardVO) throws Exception;
+	public void updateBoard(BoardVO boardVO, HttpServletRequest request) throws Exception;
 	
 	/**
 	 * 글 삭제

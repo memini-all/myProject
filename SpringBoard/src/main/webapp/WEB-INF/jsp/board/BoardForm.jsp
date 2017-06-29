@@ -102,7 +102,7 @@
 									<div class="fileUploadWrapper">				
 										<div id="fileWrapper" class="fileWrapper" style="position:relative; width:85px;height:45px;">				 								
 											<%-- input의 id명 뒤의 숫자를 변경하지 말것(인덱스 번호로 사용됨) --%>				
-											<input id="file0" onchange="fn_makeUploadElem(this)" class='file' type="file" name="uploadFile0" style="position: absolute;right:0px;top:0px; opacity:0; filter: alpha(opacity=0);cursor: pointer;outline:none;"/>					 				
+											<input id="file0" onchange="fn_makeUploadElem(this)" class='file' type="file" name="uploadFile0" style="width:119px;height:40px; position: absolute;right:0px;top:0px; opacity:0; filter: alpha(opacity=0); cursor: pointer; outline:none;"/>					 				
 											<span class="btn btn-outline btn-default">파일첨부</span>
 										 </div>
 										 <!-- 파일목록 부분 -->
@@ -186,7 +186,7 @@
     
     	var targetElem = $("div#fileWrapper");
     	var fileElem = $("<input id='file"+fileIndex+"' class='file' type='file' name='uploadFile"+ fileIndex 
-    					+ "' style='position: absolute;right:0px;top:0px; opacity:0; filter: alpha(opacity=0);cursor: pointer;outline:none;'/>");
+    					+ "' style='width:119px;height:40px; position: absolute;right:0px;top:0px; opacity:0; filter: alpha(opacity=0);cursor: pointer;outline:none;'/>");
     	//var fileUpBtnElem = $("<span class='fileUp'>파일첨부</span>");
     	
     	$(fileElem).change(function(){
@@ -218,10 +218,10 @@
 
     
   //업로드 파일 리스트 삭제
-    var fn_deleteFileList = function(fileListElem,fileElemIndex){
+    var fn_deleteFileList = function(fileListElem,fileIndex){
     	//기본으로 마크업된 input:file의 인덱스 번호가 0으로 시작되는데
     	//전역변수로 증가 시킨 상태이므로 -1을 시켜서 인덱스 번호를 맞춰준다.
-    	var fileElemIdx = fileElemIndex - 1;
+    	var fileElemIdx = fileIndex - 1;
     	var fileWrapperElem = $("div").filter("#fileWrapper");
     	
     	$(fileWrapperElem).find("input:file").filter("#file"+fileElemIdx).remove();	

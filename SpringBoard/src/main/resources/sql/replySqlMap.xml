@@ -8,7 +8,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 테스트용 - 댓글조회 -->	   
 	<select id="listAll" parameterType="Integer" resultType="ReplyVO">
 		SELECT
-			repno, brdno, userno, rcontent, rgroup, rparent, rdeletat, regdate, updatedate
+			repno
+			, brdno
+			, userno
+			, rcontent
+			, rgroup
+			, rparent
+			, rdeletat
+			, regdate
+			, updatedate
 		FROM 
 		   tbl_sreply 
 		WHERE 
@@ -88,14 +96,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 	rdeletat = 'N' AND rgroup = #{_parameter} AND repno! = #{_parameter}
 	</select>
 
-	<!-- 댓글등록 
-		 insert 실행 후 AUTO_INCREMENT 값이 ReplyVO의 변수 repno에 세팅된다.
-	-->
+	<!-- 댓글등록 - insert 실행 후 AUTO_INCREMENT 값이 ReplyVO의 변수 repno에 세팅된다. -->
 	<insert id="insertReply" parameterType="ReplyVO" useGeneratedKeys="true" keyProperty="repno">
 		INSERT INTO tbl_sreply
-			(brdno, userno, rcontent, rgroup, rparent, rdeletat, regdate, updatedate)
+			(
+				brdno
+				, userno
+				, rcontent
+				, rgroup
+				, rparent
+				, rdeletat
+				, regdate
+				, updatedate
+			)
 		VALUES 
-			(#{brdno}, #{userno}, #{rcontent}, #{rgroup}, #{rparent}, 'N', NOW(), NOW())
+			(
+				#{brdno}
+				, #{userno}
+				, #{rcontent}
+				, #{rgroup}
+				, #{rparent}
+				, 'N'
+				, NOW()
+				, NOW()
+			)
 	</insert>
 
 	
@@ -114,7 +138,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE 
 			tbl_sreply 
 		SET 
-			rcontent = #{rcontent}, updatedate = NOW()
+			rcontent = #{rcontent}
+			, updatedate = NOW()
 		WHERE 
 			repno = #{repno}
 	</update>

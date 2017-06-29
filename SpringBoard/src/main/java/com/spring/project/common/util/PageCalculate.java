@@ -50,8 +50,6 @@ public class PageCalculate {
 		// 이전, 다음 계산
 		prev = startPage == 1 ? false : true;
 		next = endPage * currentPageCnt >= totalCount ? false : true;
-
-		// System.out.println("tempEndPage : "+tempEndPage);
 	}
 
 
@@ -66,8 +64,6 @@ public class PageCalculate {
 									.queryParam("page", page)
 									.queryParam("perPageNum", cri.getPerPageNum())
 									.build();
-
-		 //System.out.println("\nURL : "+uriComponents.toUriString()+"\n");
 
 		return uriComponents.toUriString();
 	}
@@ -85,8 +81,6 @@ public class PageCalculate {
 									.queryParam("searchType", ((SearchCriteria) cri).getSearchType())
 									.queryParam("keyword", encoding(((SearchCriteria) cri).getKeyword()))
 									.build();
-
-		//System.out.println("\nURL : "+uriComponents.toUriString()+"\n");
 		
 		return uriComponents.toUriString();
 	}

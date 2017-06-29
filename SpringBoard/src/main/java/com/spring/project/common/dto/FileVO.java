@@ -35,6 +35,8 @@ public class FileVO {
 		}
 	}
 	
+	/*********** getter & setter *************/
+	
 	public Integer getFileno() {
 		return fileno;
 	}

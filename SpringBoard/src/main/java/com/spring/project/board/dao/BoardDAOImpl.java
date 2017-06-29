@@ -86,4 +86,18 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return sqlsession.selectList(namespace+".selectFileList", brdno);
 	}
+
+
+	@Override
+	public void deleteFileList(Integer brdno) throws Exception {
+		
+		sqlsession. update(namespace+".deleteFileList", brdno);
+	}
+
+
+	@Override
+	public void updateFile(Map<String, Object> fileMap) throws Exception {
+		
+		sqlsession. update(namespace+".updateFile", fileMap);
+	}
 }

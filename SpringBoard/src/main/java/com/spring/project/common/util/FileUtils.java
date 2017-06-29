@@ -49,8 +49,6 @@ public class FileUtils {
         // 파일 저장될 경로
         String savedFilePath = calcPath(uploadPath);
         
-        logger.info(">>>>>>> 파일경로 ........"+uploadPath);
-        
         while(iterator.hasNext()){
         	// 파일을 가져온다.
         	multipartFile = multipartReq.getFile(iterator.next());
@@ -59,9 +57,8 @@ public class FileUtils {
         		
         		originalFileName = multipartFile.getOriginalFilename();		// 원본 파일명
         		savedFileName = uid.toString() + "_" + originalFileName;	// 저장될 파일명
-
-        		logger.info(">>>>>>> 원본파일명 ........"+originalFileName);
-        		logger.info(">>>>>>> 파일사이즈 ........"+multipartFile.getSize());
+        		
+        		//logger.info(">>>>>>> 원본파일명 ........"+originalFileName);
         		
         		File file = new File(uploadPath + savedFilePath, savedFileName);
         		
@@ -80,6 +77,67 @@ public class FileUtils {
         
 	}
 	
+	
+	public List<Map<String,Object>> updateFileInfo(Integer brdno, String uploadPath, HttpServletRequest request) throws Exception{
+
+		// MultipartHttpServletRequest에서 파일명을 추출한다.
+		MultipartHttpServletRequest multipartReq = (MultipartHttpServletRequest)request;
+    	Iterator<String> iterator = multipartReq.getFileNames();
+    	
+    	MultipartFile multipartFile = null;
+    	String originalFileName = null;
+    	String savedFileName = null;
+    	
+    	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        Map<String, Object> listMap = null; 
+        
+        // randomUUID() : 중복되지 않는 난수 생성
+     	UUID uid = UUID.randomUUID();
+        
+        // 파일 저장될 경로
+        String savedFilePath = calcPath(uploadPath);
+        
+        while(iterator.hasNext()){
+        	// 파일을 가져온다.
+        	multipartFile = multipartReq.getFile(iterator.next());
+        	
+        	if(multipartFile.isEmpty() == false){	// 새롭게 첨부된 파일이 있는경우
+        		
+        		originalFileName = multipartFile.getOriginalFilename();		// 원본 파일명
+        		savedFileName = uid.toString() + "_" + originalFileName;	// 저장될 파일명
+        		
+        		//logger.info(">>>>>>> 원본파일명 ........"+originalFileName);
+        		
+        		File file = new File(uploadPath + savedFilePath, savedFileName);
+        		
+        		// 파일생성
+        		multipartFile.transferTo(file);  
+        		
+        		listMap = new HashMap<String,Object>();
+        		listMap.put("isNew", "Y");
+        		listMap.put("brdno", brdno);
+        		listMap.put("file_name", savedFileName);
+        		listMap.put("original_file_name", originalFileName);
+        		listMap.put("file_size", multipartFile.getSize());
+        		list.add(listMap);
+        	}
+        	else{	// 기존 파일이 수정된경우
+        		String existName = multipartFile.getName();  
+        			
+        		if(existName.contains("existFile")){ 
+        			String fileNo = existName.substring(existName.indexOf("_")+1);
+                	listMap = new HashMap<String,Object>();
+                	listMap.put("isNew", "N");
+                	listMap.put("brdno", brdno);
+                	listMap.put("fileno", fileNo);
+                	list.add(listMap);
+                }
+        	}
+        }
+		return list;
+   
+	}
+	
 	/**
 	 * 파일이 저장될 폴더 생성에 필요한 년/월/일 정보를 생성한다.
 	 * @param uploadPath
@@ -95,10 +153,6 @@ public class FileUtils {
 		String monthPath = yearPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
 		// 일을 얻는다.
 		String datePath = monthPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.DATE));
-
-		logger.info(">>>>>>>>>>>>> datePath : " + datePath);
-		
-		logger.info("\n        >>>>>>>>>>>>> UploadFileUtils.calcPath() 메서드 실행\n");
 		
 		makeDir(uploadPath, yearPath, monthPath, datePath);
 		
@@ -115,13 +169,9 @@ public class FileUtils {
 		if (new File(paths[paths.length - 1]).exists()) {
 			return;
 		}
-		
-		logger.info("\n        >>>>>>>>>>>>> UploadFileUtils.makeDir() 메서드 실행\n");
 
 		for (String path : paths) {
 			File dirPath = new File(uploadPath + path);
-			
-			logger.info("        >>>>>>>>>>>>> makeDir() File dirPath : " + dirPath);
 			
 			if (!dirPath.exists()) {
 				dirPath.mkdirs(); // 폴더 생성

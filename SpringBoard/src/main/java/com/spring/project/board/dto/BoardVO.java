@@ -12,7 +12,7 @@ public class BoardVO {
 	private String deleteat; // 삭제여부
 	private int viewcnt; // 조회수
 	private int replycnt; // 댓글수
-	private int fileCnt;
+	private int fileCnt; // 파일개수
 
 	public Integer getBrdno() {
 		return brdno;

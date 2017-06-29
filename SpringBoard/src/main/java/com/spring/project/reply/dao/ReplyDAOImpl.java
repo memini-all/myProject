@@ -1,6 +1,5 @@
 package com.spring.project.reply.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,6 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.spring.project.common.util.Criteria;
 import com.spring.project.reply.dto.ReplyVO;
 
 @Repository
@@ -22,10 +20,6 @@ public class ReplyDAOImpl implements ReplyDAO {
 	
 	@Override
 	public List<ReplyVO> selectReplyList(Map<String, Object> paramMap) throws Exception {
-		// Service로 코드 이동
-		//Map<String, Object> paramMap = new HashMap<String, Object>();
-		//paramMap.put("brdno", brdno);
-		//paramMap.put("cri", cri);
 		
 		return sqlSession.selectList(namespace+".selectReplyList", paramMap);
 	}

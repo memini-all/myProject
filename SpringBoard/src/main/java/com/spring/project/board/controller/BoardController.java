@@ -128,18 +128,21 @@ public class BoardController {
 
 		logger.info(">>>>>>> 수정 페이지 이동 .........");
 
-		model.addAttribute("boardVO", service.selectBoardDetail(brdno));
+		Map<String, Object> resultMap = service.selectBoardDetail(brdno);
+		model.addAttribute("boardVO", resultMap.get("boardVO"));
+		model.addAttribute("fileList", resultMap.get("fileList"));
 
 		return "board/BoardModify";
 	}
 
 	// 수정처리
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public String boardModify(BoardVO board, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
-
+	public String boardModify(HttpServletRequest request, BoardVO board, SearchCriteria cri, 
+			RedirectAttributes rttr) throws Exception {
+		
 		logger.info(">>>>>>> 수정작업........");
 
-		service.updateBoard(board);
+		service.updateBoard(board, request);
 
 		// 페이지 정보를 전달 - 수정 후 원래 페이지로 돌아오도록 처리
 		rttr.addAttribute("page", cri.getPage());

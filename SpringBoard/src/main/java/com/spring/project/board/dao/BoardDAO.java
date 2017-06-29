@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.spring.project.board.dto.BoardVO;
 import com.spring.project.common.dto.FileVO;
-import com.spring.project.common.util.Criteria;
 import com.spring.project.common.util.SearchCriteria;
 
 public interface BoardDAO {
@@ -74,4 +73,18 @@ public interface BoardDAO {
 	 * @throws Exception
 	 */
 	public List<FileVO> selectFileList(Integer brdno) throws Exception;
+	
+	/**
+	 * 해당 글에 첨부된 모든 파일의 file_delat을 Y로 변경한다. (파일삭제)
+	 * @param brdno
+	 * @throws Exception
+	 */
+	public void deleteFileList(Integer brdno) throws Exception;
+	
+	/**
+	 * 특정 파일의 file_delat 값을 N으로 변경한다.
+	 * @param fileMap 파일정보를 담고있는 Map
+	 * @throws Exception
+	 */
+	public void updateFile(Map<String,Object> fileMap) throws Exception;
 }

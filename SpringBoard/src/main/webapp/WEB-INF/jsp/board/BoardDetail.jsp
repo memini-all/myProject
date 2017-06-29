@@ -147,7 +147,7 @@
                    
 		                <div class="panel-footer">
 		                	<c:forEach var="file" items="${fileList}" varStatus="status">	
-		           				<a href="fileDownload?filename=<c:out value="${file.original_file_name}"/>&downname=<c:out value="${file.file_name}"/>">
+		           				<a href="/fileDownload?fileName=<c:out value="${file.getFile_regdate()}/"/><c:out value="${file.file_name}"/>&downName=<c:out value="${file.original_file_name}"/>">
 		           				<i class="glyphicon glyphicon-save-file" ></i>							 
 								<c:out value="${file.original_file_name}"/></a>  &nbsp;(<c:out value="${file.getCalculateSize()}"/>)<br/>
 							</c:forEach>

@@ -66,9 +66,25 @@ public class BoardServiceImpl implements BoardService {
 
 	@Transactional
 	@Override
-	public void updateBoard(BoardVO boardVO) throws Exception {
+	public void updateBoard(BoardVO boardVO, HttpServletRequest request) throws Exception {
 		
 		boardDAO.updateBoard(boardVO);
+		boardDAO.deleteFileList(boardVO.getBrdno());
+		
+		List<Map<String,Object>> list = fileUtils.updateFileInfo(boardVO.getBrdno(), uploadPath, request);
+		
+		Map<String,Object> tempMap = null;
+		
+		for(int i=0; i < list.size(); i++){
+			tempMap = list.get(i);	
+			if(tempMap.get("isNew").equals("Y")){
+				boardDAO.insertFile(tempMap);
+			}
+			else{
+				boardDAO.updateFile(tempMap);
+			}
+		}
+		
 	}
 
 	@Transactional
