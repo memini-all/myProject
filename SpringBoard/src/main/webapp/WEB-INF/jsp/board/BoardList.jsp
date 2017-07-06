@@ -76,6 +76,12 @@
 	
 	$(document).ready(function() {
 	
+		var result = '${msg}';
+
+		if(result == 'LOCK'){
+			alert("계정이 잠겨있어 로그인 할 수 없습니다. \n운영자에게 문의하세요.");
+		}
+		
 		// 글쓰기
 		$('#newBtn').on("click", function(event) {
 			self.location = "/board/post";

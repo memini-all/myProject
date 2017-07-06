@@ -163,6 +163,7 @@ public class BoardController {
 		logger.info(">>>>>>> 삭제작업 ........");
 
 		service.deleteBoard(brdno);
+		
 		rttr.addAttribute("page", cri.getPage());
 		rttr.addAttribute("perPageNum", cri.getPerPageNum());
 		rttr.addAttribute("searchType", cri.getSearchType());

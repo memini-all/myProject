@@ -92,6 +92,7 @@ public class BoardServiceImpl implements BoardService {
 	public void deleteBoard(Integer brdno) throws Exception {
 		
 		boardDAO.deleteBoard(brdno);
+		boardDAO.deleteFileList(brdno);
 	}
 
 	@Override

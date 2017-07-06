@@ -10,6 +10,8 @@
 		<typeAlias type="com.spring.project.common.util.Criteria" alias="searchCriteria"/>
 		<typeAlias type="com.spring.project.reply.dto.ReplyVO" alias="replyVO"/>
 		<typeAlias type="com.spring.project.common.dto.FileVO" alias="fileVO"/>
+		<typeAlias type="com.spring.project.login.dto.LoginVO" alias="loginVO"/>
+		<typeAlias type="com.spring.project.user.dto.UserVO" alias="userVO"/>
 	</typeAliases>
 
 </configuration>

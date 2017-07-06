@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -62,24 +62,23 @@
                         <li>
                             <a href="/board/list"><i class="fa fa-files-o fa-fw"></i> 게시판</a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html">Flot Charts</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">Morris.js Charts</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                        </li>
-                        <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                        </li>
+                      
+                        <c:choose>
+							<c:when test="${sessionScope.login == null}">
+								<li>
+									<a href="/view/login"><i class="fa fa-table fa-fw"></i> 로그인</a>
+								</li>
+                       			<li>
+                            		<a href="#"><i class="fa fa-id-card-o fa-fw"></i> 회원가입</a>
+                        		</li>
+							</c:when>
+							<c:otherwise>
+								<li>
+                            		<a href="/logout"><i class="fa fa-edit fa-fw"></i> 로그아웃</a>
+                        		</li>		    	
+							</c:otherwise>
+						</c:choose>
+   
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
