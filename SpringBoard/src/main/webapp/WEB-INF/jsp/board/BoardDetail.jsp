@@ -92,6 +92,7 @@
 			formObj.attr("action", "/board/remove")		
 			formObj.submit();
 		});
+
 	});
  	 
   	</script>
@@ -158,7 +159,8 @@
                 </div>
                 
                 <button class="btn btn-outline btn-primary" id="listBtn" >목록</button>
-				<c:if test='${boardInfo.userno==sessionScope.userno}' >
+			
+				<c:if test="${boardVO.userno == sessionScope.login.userno || sessionScope.login.authority == 'AD' }">
 					<button class="btn btn-outline btn-primary" id="modifyBtn" >수정</button>
 	                <button class="btn btn-outline btn-primary" id="removeBtn" >삭제</button>
 				</c:if>
@@ -172,17 +174,19 @@
 				<c:if test="${bgInfo.bgreply=='Y'}"> </c:if>
 				-->
 				<!-- 댓글 입력창 -->
-                <div class="panel panel-default">
-					<div class="panel-body">
-						<div class="col-lg-6">
-							<textarea class="form-control" id="replyContent" name="rcontent" maxlength="500" placeholder="댓글을 달아주세요."></textarea>
-						</div>
-						<div class="col-lg-6">
-							<button class="btn btn-outline btn-primary" id="replyAddBtn">저장</button>
+				<c:if test="${sessionScope.login != null}">
+	                <div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-lg-6">
+								<textarea class="form-control" id="replyContent" name="rcontent" maxlength="500" placeholder="댓글을 달아주세요."></textarea>
+							</div>
+							<div class="col-lg-6">
+								<button class="btn btn-outline btn-primary" id="replyAddBtn">저장</button>
+							</div>
 						</div>
 					</div>
-				</div>
-					
+				</c:if>	
+				
 					<!-- 댓글목록 -->	
 					<div id="replieListDiv"> 
 					</div>
@@ -236,7 +240,54 @@
 	<!-- 댓글 템플릿 : 화면에서 하나의 댓글을 구성 -->
 	<script id="template" type="text/x-handlebars-template">
 	{{#each .}}
-	<div class="panel panel-default replyItm" id="replyItem{{repno}}" style="margin-left: {{depth rparent}}px;">
+	<div class="panel panel-default replyItm" id="replyItem{{repno}}" style="margin-left: {{depth level}}px;">
+		<input type="hidden" id="hiddenParent{{repno}}" value="{{rparent}}">
+		<input type="hidden" id="hiddenGroup{{repno}}" value="{{rgroup}}">
+		<div class="panel-body">             
+			<div class="pull-left photoOutline">
+				<c:choose>
+					<c:when test="${replylist.photo==null}">
+						<a href="" class="img-circle">
+							<i class="glyphicon glyphicon-user noPhoto"></i>
+						</a>
+					</c:when>
+					<c:otherwise>
+					<img class="img-circle" src="fileDownload?downname=<c:out value="${replylist.photo}"/>" title="<c:out value="${replylist.rewriter}"/>"/>
+					</c:otherwise>
+				</c:choose>
+			</div>	
+														
+			<div class="photoTitle">
+				<div> 
+					<strong>{{uname}}</strong> &nbsp; <font color="#9E9E9E">{{regdate}}</font>
+					<c:if test="${sessionScope.login !=null }">
+						{{#checkUser userno}}
+							<a href="javascript:fn_replyRemove({{repno}})" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
+							<a href="javascript:fn_replyModify({{repno}})" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
+						{{/checkUser}}
+							<a href="javascript:fn_replyReply({{repno}}, {{userno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
+					</c:if>
+				</div>
+				
+				{{#isDeleteAt pdelete}}
+					<br><font color="#B7B7B7" size="2px">[삭제된 댓글의 댓글입니다.]</font><br>
+				{{/isDeleteAt}}
+
+     			<br><strong><font color="#B7B7B7" size="2px">{{pname}}</font></strong>
+				<div id="reply{{repno}}">{{breaklines rcontent}}</div>
+			</div>
+		</div>
+	</div>			
+	{{/each}}
+	</script> 
+ 
+ 
+  	<script type="text/javascript">
+  
+  	/*
+  	
+  		{{#each .}}
+	<div class="panel panel-default replyItm" id="replyItem{{repno}}" style="margin-left: {{depth level}}px;">
 		<input type="hidden" id="hiddenParent{{repno}}" value="{{rparent}}">
 		<input type="hidden" id="hiddenGroup{{repno}}" value="{{rgroup}}">
 		<div class="panel-body">             
@@ -257,34 +308,41 @@
 				<div> 
 					{{userno}} {{regdate}}
 					{{#isView this.rdeletat}}
-					{{else}}
-						<a href="javascript:fn_replyRemove({{repno}})" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
-						<a href="javascript:fn_replyModify({{repno}})" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
-						<a href="javascript:fn_replyReply({{repno}}, {{userno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
+					{{else}} 	
+				
+						<c:if test="${sessionScope.login !=null }">
+						{{#checkUser userno}}
+							<a href="javascript:fn_replyRemove({{repno}})" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
+							<a href="javascript:fn_replyModify({{repno}})" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
+						{{/checkUser}}
+							<a href="javascript:fn_replyReply({{repno}}, {{userno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
+						</c:if>
 					{{/isView}}
 				</div>
-					<!--<div>[삭제된 댓글의 댓글입니다.]</div>-->
+					<!--<div>[삭제된 댓글의 댓글입니다.]</div> -->
 					{{#isDeleteAt}}
 						<div id="reply{{repno}}"><font color="red">{{rcontent}}</font></div>
 					{{else}}
      				 	<div id="reply{{repno}}">{{breaklines rcontent}}</div>
-   					{{/isDeleteAt}}
+					{{/isDeleteAt}}
 
 			</div>
 			<br><font color="red">글번호 : {{repno}} / 그룹 : {{rgroup}} / 부모 : {{rparent}}</font>
+			<br>작성자 : {{uname}}
 		</div>
 	</div>			
 	{{/each}}
-	</script> 
- 
- 
-  	<script type="text/javascript">
- 
+  	
+  	
+  	*/
+
+  	/*
 	Handlebars.registerHelper('isView', function(delAt, options) {	   
 
 		// 최상위 댓글이 삭제되어있을경우, 삭제,수정,답글 버튼 생성x
 		return delAt == "Y" ? options.fn(this) : options.inverse(this);
 	});
+	
 	
 	Handlebars.registerHelper('isDeleteAt', function(options) {	   
 
@@ -301,33 +359,63 @@
 		}
 	
 	});
+	*/
 	
+	/******************** registerHelper *********************/
+	
+	// 로그인한 유저
+	var loginUser = '${sessionScope.login.userno}';
+	// 유저 권한
+  	var userAuthority = '${sessionScope.login.authority}';
+	
+	// 댓글 작성자와 로그인한 유저가 일치하는지 비교
+	Handlebars.registerHelper('checkUser', function(userno, options) {	   
+		
+		if(userAuthority == 'AD'){
+			return options.fn(this);	// 관리자일 경우 수정,삭제창 보이도록
+		}
+		else{
+			return loginUser == userno ? options.fn(this) : options.inverse(this);	
+		}
+	});
+	
+	// 부모글이 삭제된 댓글의 경우 [삭제된 댓글의 댓글입니다.] 메시지 추가
+	Handlebars.registerHelper('isDeleteAt', function(pdelete, options) {	   
+		return pdelete == "Y" ? options.fn(this) : options.inverse(this);
+	});
+	
+	// 답글일 경우 답글부분이 들여쓰기 되도록
+	Handlebars.registerHelper('depth', function(level) {	   
+		if(level > 1)	return 40		
+	});
   	
-	// registerHelper()를 이용해서 필요한 기능 구현
-	// 댓글내용 줄바꿈 처리
+
+	// 댓글내용 정규표현식 처리
 	Handlebars.registerHelper('breaklines', function(text) {
 	   
+		var parent = this.rparent;	// 부모 댓글번호
+		var delAt = this.rdeletat;	// 삭제여부
+		
 		text = Handlebars.Utils.escapeExpression(text);
-	   //text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
 	
 	    text = text.replace(/</gi,"&lt;");
 	    text = text.replace(/>/gi,"&gt;");
 	    text = text.replace(/\"/gi,"&quot;");
 	    text = text.replace(/\'/gi,"&#39;");
-	    text = text.replace(/ /gi, "&nbsp;");
+	  //text = text.replace(/ /gi, "&nbsp;");
 	    text = text.replace(/\n/gi,"<br />");
-	    
-	   // console.log("registerHelper 결과 : " + text);
-	    
+
+	   if(parent == 0 && delAt == 'Y'){
+		   text = "<font color='#A5A5A5'>"+ text + "</font>";
+	   }  
+	   
 	    return new Handlebars.SafeString(text);
 	});
 	
-	Handlebars.registerHelper('depth', function(rparent) {	   
-		if(rparent > 0)	return 40		
-	});
+	/******************** registerHelper *********************/
 	
   	
-  	
+	
  	// 글번호와 초기 보여줄 페이지
 	var brdno = ${boardVO.brdno};
 	var replyPage = 1;

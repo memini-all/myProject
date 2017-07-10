@@ -131,10 +131,13 @@
 						</div>
 					</div>
 	                
-						<!-- 글쓰기 버튼 -->
-					<button type="button" class="btn btn-default pull-right" id="newBtn">
-					<i class="fa fa-edit fa-fw"></i> 글쓰기 </button>      
-						
+					<!-- 글쓰기 버튼 : 로그인 사용자만 보이도록 -->
+					<c:if test="${sessionScope.login != null}">
+						<button type="button" class="btn btn-default pull-right" id="newBtn">
+							<i class="fa fa-edit fa-fw"></i> 글쓰기
+						</button> 
+					</c:if>
+	
 	        	</div>
 			</div>
 				

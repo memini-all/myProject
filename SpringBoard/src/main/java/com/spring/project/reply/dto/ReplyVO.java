@@ -1,6 +1,5 @@
 package com.spring.project.reply.dto;
 
-
 public class ReplyVO {
 
 	private Integer repno; // 댓글번호
@@ -12,6 +11,11 @@ public class ReplyVO {
 	private String rdeletat; // 댓글 삭제여부
 	private String regdate; // 댓글 작성일
 	private String updatedate; // 댓글 수정일
+	private String uname; // 댓글 작성자 이름
+	private int childCnt; // 답글의 개수
+	private String pname; // 부모댓글 작성자 이름
+	private String pdelete; // 부모댓글 삭제여부
+	private int level; // 댓글 레벨
 
 	public Integer getRepno() {
 		return repno;
@@ -38,7 +42,7 @@ public class ReplyVO {
 	}
 
 	public String getRcontent() {
-		
+
 		return rcontent;
 	}
 
@@ -86,4 +90,43 @@ public class ReplyVO {
 		this.updatedate = updatedate;
 	}
 
+	public String getUname() {
+		return uname;
+	}
+
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
+
+	public int getChildCnt() {
+		return childCnt;
+	}
+
+	public void setChildCnt(int childCnt) {
+		this.childCnt = childCnt;
+	}
+
+	public String getPname() {
+		return pname;
+	}
+
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+
+	public String getPdelete() {
+		return pdelete;
+	}
+
+	public void setPdelete(String pdelete) {
+		this.pdelete = pdelete;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
 }

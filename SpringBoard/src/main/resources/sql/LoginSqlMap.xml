@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.project.login">
+
+	
+	<!-- 아이디 체크 -->
+	<select id="isExistId" parameterType="String" resultType="boolean">
+		SELECT  
+			IF(COUNT(*) > 0, 'true', 'false')
+		FROM    
+			tbl_suser
+		WHERE  
+			userid = #{userid}
+	</select>
+
+
+	<!-- 로그인 체크 -->
+	<select id="loginCheck" parameterType="loginVO" resultType="userVO">
+		SELECT 
+			userno
+			, userid
+			, userpw
+			, username
+			, email
+			, authority
+			, is_withdraw
+			, loginFaile
+			, islock
+		FROM
+			tbl_suser
+		WHERE
+			userid = #{userid} AND userpw = #{userpw}	
+	</select>
+
+
+	<!-- 로그인 실패횟수 초기화 -->
+	<update id="resetFailCount" parameterType="String">
+		UPDATE 
+			tbl_suser 
+		SET 
+            loginFaile = 0
+            , islock = 'N'
+        WHERE 
+        	userid = #{_parameter}    
+	</update>
+
+
+	<!-- 로그인 실패횟수 증가 -->
+	<update id="plusFailCount" parameterType="String">
+		UPDATE 
+			tbl_suser 
+		SET 
+            loginFaile = loginFaile + 1
+        WHERE 
+        	userid = #{_parameter}    
+	</update>
+	
+	
+	<!-- 로그인 실패횟수 조회 -->
+	<select id="selectLoginFailCnt" parameterType="String" resultType="Integer">
+		SELECT
+			loginFaile
+		FROM
+			tbl_suser
+		WHERE 
+			userid = #{_parameter} 
+	</select>
+	
+	
+	<!-- 계정 잠금여부 체크 -->
+	<select id="selectAccountLock" parameterType="String" resultType="boolean">
+		SELECT
+			IF(islock = 'Y', 'true', 'false')
+		FROM
+			tbl_suser
+		WHERE 
+			userid = #{_parameter} 
+	</select>
+	
+	
+	<!-- 로그인 5회 실패시 계정 잠금 -->
+	<update id="accountLock" parameterType="String">
+		UPDATE 
+			tbl_suser 
+		SET 
+            islock = 'Y'
+        WHERE 
+        	userid = #{_parameter}    
+	</update>
+	
+	
+</mapper>

@@ -145,33 +145,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertFile" parameterType="hashmap">
 		INSERT INTO tbl_sboardfile
 		(
-			brdno,
-			file_name,
-			original_file_name,
-			file_size,
-			file_regdate,
-			file_delat
+			brdno
+			, file_name
+			, original_file_name
+			, file_size
+			, file_regdate
+			, file_delat
 		)
 		VALUES
 		(
-			#{brdno},
-			#{file_name},
-			#{original_file_name},
-			#{file_size},
-			NOW(), 
-			'N'
+			#{brdno}
+			, #{file_name}
+			, #{original_file_name}
+			, #{file_size}
+			, NOW()
+			, 'N'
 		)
 	</insert>
 	
 	<!-- 해당 글의 첨부 파일리스트 -->
 	<select id="selectFileList" parameterType="Integer" resultType="fileVO">
 		SELECT	
-			fileno,
-			brdno,
-			file_name,
-			original_file_name,
-			file_size,
-			DATE_FORMAT(file_regdate, '%Y/%m/%d') file_regdate
+			fileno
+			, brdno
+			, file_name
+			, original_file_name
+			, file_size
+			, DATE_FORMAT(file_regdate, '%Y/%m/%d') file_regdate
 		FROM
 			tbl_sboardfile
 		WHERE

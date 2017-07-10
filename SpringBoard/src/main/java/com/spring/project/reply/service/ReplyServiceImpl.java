@@ -25,7 +25,7 @@ public class ReplyServiceImpl implements ReplyService {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("brdno", brdno);
 		paramMap.put("cri", cri);
-
+		
 		return replyDAO.selectReplyList(paramMap);
 	}
 
