@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -72,6 +73,7 @@ public class ReplyController {
 			
 			map.put("replyList", rlist); 			// 댓글은 list로
 			map.put("pageCalculate", pCalculate); 	// 페이지 관련 정보는 PageCalculate 객체로 전달
+			//map.put("imgPath", profileImgPath);
 			
 			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 
@@ -93,6 +95,7 @@ public class ReplyController {
 		ResponseEntity<String> entity = null;
 		try {
 			logger.info(">>>>>>> 댓글 등록 ........");
+
 			service.insertReply(replyVO);
 
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);

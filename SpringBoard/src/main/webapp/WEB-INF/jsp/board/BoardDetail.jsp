@@ -245,16 +245,12 @@
 		<input type="hidden" id="hiddenGroup{{repno}}" value="{{rgroup}}">
 		<div class="panel-body">             
 			<div class="pull-left photoOutline">
-				<c:choose>
-					<c:when test="${replylist.photo==null}">
-						<a href="" class="img-circle">
-							<i class="glyphicon glyphicon-user noPhoto"></i>
-						</a>
-					</c:when>
-					<c:otherwise>
-					<img class="img-circle" src="fileDownload?downname=<c:out value="${replylist.photo}"/>" title="<c:out value="${replylist.rewriter}"/>"/>
-					</c:otherwise>
-				</c:choose>
+
+				{{#profileImg pimage}}
+					<i class="glyphicon glyphicon-user noPhoto"></i>
+				{{else}} 	
+					<img class="img-circle" src="/profile/image/{{userno}}" /> 	
+				{{/profileImg}}
 			</div>	
 														
 			<div class="photoTitle">
@@ -367,7 +363,7 @@
 	var loginUser = '${sessionScope.login.userno}';
 	// 유저 권한
   	var userAuthority = '${sessionScope.login.authority}';
-	
+  	
 	// 댓글 작성자와 로그인한 유저가 일치하는지 비교
 	Handlebars.registerHelper('checkUser', function(userno, options) {	   
 		
@@ -387,6 +383,32 @@
 	// 답글일 경우 답글부분이 들여쓰기 되도록
 	Handlebars.registerHelper('depth', function(level) {	   
 		if(level > 1)	return 40		
+	});
+	
+	// 프로필 이미지 유무
+	Handlebars.registerHelper('profileImg', function(fileName, options) {	 
+
+		return fileName == null ? options.fn(this) : options.inverse(this);	
+	});
+	
+	// 이미지 확장자
+	Handlebars.registerHelper('checkType', function(pimage) {	   
+	
+		var fileLength = pimage.length; 
+		/** 
+		 * lastIndexOf('.') * 뒤에서부터 '.'의 위치를 찾기위한 함수 
+		 * 검색 문자의 위치를 반환한다. * 파일 이름에 '.'이 포함되는 경우가 있기 때문에 lastIndexOf() 사용 
+		 */ 
+		var lastDot = pimage.lastIndexOf('.');
+
+		var fileName = pimage.substring(0, lastDot);
+		// 확장자 명만 추출한 후 소문자로 변경 
+		var fileExt = pimage.substring(lastDot+1, fileLength).toLowerCase();
+
+		console.log("파일명 : "+fileName +" / " + "확장자 : "+fileExt);
+		
+		return fileName +"/"+ fileExt;
+		
 	});
   	
 
@@ -414,8 +436,7 @@
 	
 	/******************** registerHelper *********************/
 	
-  	
-	
+ 
  	// 글번호와 초기 보여줄 페이지
 	var brdno = ${boardVO.brdno};
 	var replyPage = 1;
@@ -427,9 +448,10 @@
 
 		$.getJSON(pageURI, function(data) {
 			
+			console.log(data);
+			
 			fn_printTemplate(data.replyList, $("#replieListDiv"), $('#template'));
 			fn_printPage(data.pageCalculate, $(".pagination"));
-			
 		});
 	}
 	// end getReplyList()
@@ -486,7 +508,7 @@
 	$("#replyAddBtn").on("click", function() {
 	
 		//var replyerObj = $("#newReplyWriter"); // 작성자
-		var replyer = "1" //replyerObj.val();
+		var replyer = loginUser;
 	 	var replyContentObj = $("#replyContent");
 		var rcontent = replyContentObj.val();
 

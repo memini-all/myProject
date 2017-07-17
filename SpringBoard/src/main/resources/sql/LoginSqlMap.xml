@@ -91,5 +91,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         	userid = #{_parameter}    
 	</update>
 	
+	<!-- 로그인 기록 저장 -->
+	<insert id="insertLoginHistory" parameterType="hashmap">
+		INSERT INTO tbl_login_history
+			(
+				userno
+				, ldate
+				, conip
+				, ltype
+			)
+		VALUES
+			(
+				#{userno}
+				, NOW()
+				, #{ip}
+				, #{type}
+			)
+	</insert>
+
 	
 </mapper>

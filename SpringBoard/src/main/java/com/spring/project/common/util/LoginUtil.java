@@ -1,13 +1,16 @@
 package com.spring.project.common.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HttpUtil {
+public class LoginUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginUtil.class);
 
 	/**
 	 * Client의 IP주소를 가져온다.
@@ -15,7 +18,7 @@ public class HttpUtil {
 	 * @param request
 	 * @return
 	 */
-	public String getIp(HttpServletRequest request) {
+	private String getIp(HttpServletRequest request) {
 
 		String ip = request.getHeader("X-Forwarded-For");
 
@@ -46,4 +49,25 @@ public class HttpUtil {
 		return ip;
 
 	}
+	
+	/**
+	 * 로그인 정보를 담은 Map을 생성한다.
+	 * @param userno 사용자 번호
+	 * @param request HttpServletRequest
+	 * @param type 유형 - 로그인/로그아웃
+	 * @return
+	 */
+	public Map<String, Object> getLoginHistoryMap(int userno, HttpServletRequest request, String type) {
+
+		String ip = getIp(request);
+		String loginType = type.equals("I") ? "LOGIN" : "LOGOUT";
+			
+		Map<String, Object> loginMap = new HashMap<String, Object>();
+		loginMap.put("userno", userno);
+		loginMap.put("ip", ip);
+		loginMap.put("type", loginType);
+		
+		return loginMap;
+    }
+
 }

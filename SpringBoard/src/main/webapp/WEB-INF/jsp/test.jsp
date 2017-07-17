@@ -37,7 +37,6 @@
 	margin: 3px;
 	text-decoration: none;
 }
-
 </style>
 
 <script src="/resources/sb-admin/vendor/jquery/jquery.min.js"></script>
@@ -54,12 +53,13 @@
 			작성자 : <input type='text' name='replyer' id='newReplyWriter'>
 		</div>
 		<div>
-			댓글 :  <input type='text' name='replytext' id='newReplyText'>
+			댓글 : <input type='text' name='replytext' id='newReplyText'>
 		</div>
-		<br><button id="replyAddBtn">댓글 등록</button>
+		<br>
+		<button id="replyAddBtn">댓글 등록</button>
 	</div>
 	<!-- end 댓글 작성 -->
-	
+
 	<!-- 댓글 수정,삭제 -->
 	<div id='modDiv' style="display: none;">
 		<div class='modal-title'></div>
@@ -85,44 +85,39 @@
 
 
 	<!-- jQuery 2.1.4 -->
-	 <script src="/resources/sb-admin/vendor/jquery/jquery.min.js"></script>
+	<script src="/resources/sb-admin/vendor/jquery/jquery.min.js"></script>
 
 	<script>
-	
-		
 		var brdno = 65;
 		// 댓글 1페이지	
 		//getPageList(1);
-		
 
 		// 특정 게시물의 댓글 전체 조회하는 함수
 		//function getAllList(){
-			$.getJSON("/replies/all/" + brdno, function(data){  // data : JSON 데이터 , 댓글목록(list) 및 PageMaker 객체
-				
-				
-				var str ="";
-				console.log("getAllList() 댓글 개수 : "+data.length);  
-				
-				
-				$(data).each(
-				
-					function(){  
+		$.getJSON("/replies/all/" + brdno, function(data) { // data : JSON 데이터 , 댓글목록(list) 및 PageMaker 객체
+
+			var str = "";
+			console.log("getAllList() 댓글 개수 : " + data.length);
+
+			$(data).each(
+
+					function() {
 						str += "<li data-rno='"+this.repno+"' class='replyLi'>"
-							+ this.repno 
-							+ " : " 
-							+ this.rcontent
-							+ "<button>MOD</button></li>";
+								+ this.repno + " : " + this.rcontent
+								+ "<button>MOD</button></li>";
 					});
-				
-				$("#replies").html(str);
-				
-			});
+
+			$("#replies").html(str);
+
+		});
 		//}
 		// end getAllList()
-		
-
-		
 	</script>
+
+	<script type="text/javascript">
+
+	</script>
+
 
 </body>
 </html>

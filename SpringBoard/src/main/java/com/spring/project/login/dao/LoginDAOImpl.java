@@ -1,5 +1,7 @@
 package com.spring.project.login.dao;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -60,6 +62,13 @@ public class LoginDAOImpl implements LoginDAO {
 	public void accountLock(String userID) throws Exception {
 		
 		sqlSession.update(namespace + ".accountLock", userID);
+	}
+
+	@Transactional
+	@Override
+	public void insertLoginHistory(Map<String, Object> loginMap) throws Exception {
+	
+		sqlSession.insert(namespace+".insertLoginHistory", loginMap);
 	}
 
 }

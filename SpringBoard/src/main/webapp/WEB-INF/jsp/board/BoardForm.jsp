@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -98,27 +99,28 @@
 	                         <!-- 파일첨부 -->		
 	                        <div class="row form-group">
 	                        	<label class="col-lg-1">파일</label>						
-		                     	<div class="col-lg-9">			
+		                     	<div class="col-lg-9">	
+		                     			
 									<div class="fileUploadWrapper">				
 										<div id="fileWrapper" class="fileWrapper" style="position:relative; width:85px;height:45px;">				 								
 											<%-- input의 id명 뒤의 숫자를 변경하지 말것(인덱스 번호로 사용됨) --%>				
 											<input id="file0" onchange="fn_makeUploadElem(this)" class='file' type="file" name="uploadFile0" style="width:119px;height:40px; position: absolute;right:0px;top:0px; opacity:0; filter: alpha(opacity=0); cursor: pointer; outline:none;"/>					 				
 											<span class="btn btn-outline btn-default">파일첨부</span>
 										 </div>
-										 <!-- 파일목록 부분 -->
+										 <!-- 파일목록 부분   -->
 										<div class="attachFileList">
 										</div>
 												
 									</div>
+
 								</div>	
 							</div>
 	                        <!-- 파일첨부 끝 -->		        
 	                    </div>
 	                </div>
 					
-					<!-- 작성자 : 현재는 hidden으로 임의의 값을 넣음 -->
-					<!-- 추후 세션에 저장된 로그인한 아이디를 넘겨주고 controller에서 그걸 토대로 회원번호를 검색하도록 설정 -->
-					<input type="hidden" name="userno" value="01" />
+
+					<input type="hidden" name="userno" value="${sessionScope.login.userno}" />
 				</form>
 				
 				<button type="submit" id="registBtn" class="btn btn-outline btn-primary">작성</button>
@@ -135,19 +137,6 @@
     
     <script type="text/javascript">
 
- 
-	// 전송 부분 - 제이쿼리 이용 x
-	/*
-	function fn_formSubmit(){
-		CKEDITOR.instances["content"].updateElement();
-		
-		// 내용 입력 체크
-		if ( ! chkInputValue("#title", "제목")) return false;
-		if ( ! chkInputValue("#content", "내용")) return false;
-	
-		$("#registerForm").submit();
-	} 
-	*/
     
 	var formObj = $("form[role='form']");
 	
@@ -187,12 +176,14 @@
     	var targetElem = $("div#fileWrapper");
     	var fileElem = $("<input id='file"+fileIndex+"' class='file' type='file' name='uploadFile"+ fileIndex 
     					+ "' style='width:119px;height:40px; position: absolute;right:0px;top:0px; opacity:0; filter: alpha(opacity=0);cursor: pointer;outline:none;'/>");
+
     	//var fileUpBtnElem = $("<span class='fileUp'>파일첨부</span>");
     	
     	$(fileElem).change(function(){
     		fn_makeUploadElem(this);	//recursive				
     	});
     	
+
     	$(targetElem).append(fileElem);
     	//$(targetElem).append(fileUpBtnElem);
     	//$(fileElemObj).hide();	

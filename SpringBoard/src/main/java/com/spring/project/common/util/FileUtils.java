@@ -22,6 +22,46 @@ public class FileUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
+	
+	/**
+	 * 프로필 이미지를 업로드 한다.
+	 * @param uploadPath 파일업로드 경로
+	 * @param request
+	 * @return 파일명
+	 * @throws Exception
+	 */
+	public String profileImgFileInfo(String profileImgPath, HttpServletRequest request) throws Exception{
+		
+		// MultipartHttpServletRequest에서 파일명을 추출한다.
+		MultipartHttpServletRequest multipartReq = (MultipartHttpServletRequest)request;
+		Iterator<String> iterator = multipartReq.getFileNames();
+		
+		MultipartFile multipartFile = null;
+    	String originalFileName = null;
+    	String savedFileName = null;
+    	
+    	// randomUUID() : 중복되지 않는 난수 생성
+     	UUID uid = UUID.randomUUID();
+         	
+        while(iterator.hasNext()){
+        	// 파일을 가져온다.
+        	multipartFile = multipartReq.getFile(iterator.next());
+        	
+        	if(multipartFile.isEmpty() == false){
+        		
+        		originalFileName = multipartFile.getOriginalFilename();		// 원본 파일명
+        		savedFileName = uid.toString() + "_" + originalFileName;	// 저장될 파일명
+        		
+        		File file = new File(profileImgPath, savedFileName);
+        		
+        		// 파일생성
+        		multipartFile.transferTo(file);  
+        	}
+        }
+        
+        return savedFileName;   
+	}
+	
 	/**
 	 * 파일을 업로드한다.
 	 * @param brdno 글번호
@@ -77,7 +117,14 @@ public class FileUtils {
         
 	}
 	
-	
+	/**
+	 * 업로드할 파일이 수정되었을 경우 해당 작업을 처리한다.
+	 * @param brdno 글번호
+	 * @param uploadPath 파일업로드 경로
+	 * @param request
+	 * @return List<Map<String,Object>> 파일정보를 담은 list
+	 * @throws Exception
+	 */
 	public List<Map<String,Object>> updateFileInfo(Integer brdno, String uploadPath, HttpServletRequest request) throws Exception{
 
 		// MultipartHttpServletRequest에서 파일명을 추출한다.

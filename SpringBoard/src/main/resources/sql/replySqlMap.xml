@@ -69,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						, rdeletat
 						, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate
 						, DATE_FORMAT(updatedate, '%Y-%m-%d %H:%i') updatedate
-						, (SELECT u.username FROM tbl_sreply r, tbl_suser u  WHERE r.repno = tr.repno AND u.userno = r.userno) uname		
+						, (SELECT u.username FROM tbl_sreply r, tbl_suser u  WHERE r.repno = tr.repno AND u.userno = r.userno) uname	
 						, (SELECT COUNT(*) FROM tbl_sreply WHERE rparent = tr.repno) childCnt  												
 						, (SELECT u.username FROM tbl_sreply r, tbl_suser u   WHERE r.repno = tr.rparent AND u.userno = r.userno) pname		
 						, (SELECT rdeletat FROM tbl_sreply WHERE repno = tr.rparent) pdelete  												

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.project.user">
+
+	<!-- 회원가입 -->
+    <insert id="insertUser" parameterType="userVO" >
+		INSERT INTO tbl_suser
+			(
+				userid
+				, userpw
+				, username
+				, email
+				, authority
+				, profile_Img
+				, is_withdraw
+				, loginFaile
+				, islock
+				, regdate
+			)
+		VALUES
+			(
+				#{userid}
+				, #{userpw}
+				, #{username}
+				, #{email}
+				, 'US'
+				, #{profile_Img}
+				, 'N'
+				, 0
+				, 'N'
+				, NOW()
+			)
+    </insert>
+
+	<!-- 사용자 아이디 조회 - 중복체크 -->
+	<select id="selectUserId" parameterType="String" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			tbl_suser
+		WHERE
+			is_withdraw = 'N' AND userid = #{userid}        
+    </select> 
+	
+	
+	<!-- 프로필 이미지 조회 -->
+	<select id="selectProfileImg" parameterType="Integer" resultType="String">
+		SELECT 
+			profile_Img
+		FROM 
+			tbl_suser
+		WHERE
+			userno = #{userno}        
+    </select> 
+
+</mapper>

@@ -77,9 +77,6 @@ public class BoardController {
 		String viewCntCookie = mapCookie.get("viewcount");
 		// 저장될 새로운 쿠키값 생성
 		String newReadCount = "|" + brdno;
-
-		logger.info(">>>>>>> viewCntCookie ........" + viewCntCookie);
-		logger.info(">>>>>>> newReadCount  ........" + newReadCount);
 		
 		// 저장된 쿠키에 새로운 쿠키값이 존재하는 지 검사
 		if (StringUtils.indexOfIgnoreCase(viewCntCookie, newReadCount) == -1) {
@@ -114,7 +111,7 @@ public class BoardController {
 	public String boardRegist(HttpServletRequest request, @ModelAttribute("board") BoardVO board, RedirectAttributes rttr) throws Exception {
     	
 		logger.info(">>>>>>> 등록작업 .......");
-		
+
 		service.insertBoard(board, request);
 		rttr.addFlashAttribute("msg", "SUCCESS");
 

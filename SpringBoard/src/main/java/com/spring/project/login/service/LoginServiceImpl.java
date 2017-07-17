@@ -72,6 +72,14 @@ public class LoginServiceImpl implements LoginService {
 		
 		return resultMap;
 	}
+
+	
+	@Transactional
+	@Override
+	public void insertLoginHistory(Map<String, Object> loginMap) throws Exception {
+		
+		loginDAO.insertLoginHistory(loginMap);
+	}
 	
 
 

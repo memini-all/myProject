@@ -23,6 +23,12 @@
 		</constructor-arg>
 	</bean>
 	
+	<!-- 프로필 이미지파일 경로 -->
+	<bean id="profileImgPath" class="java.lang.String">
+		<constructor-arg value="E:\\uploadFile\\profileImg">
+		</constructor-arg>
+	</bean>
+	
 	<!-- FileUtils -->
     <bean id="fileUtils" class="com.spring.project.common.util.FileUtils">
 	</bean>
@@ -31,8 +37,8 @@
 	<bean id="sessionStore" class="com.spring.project.common.util.SessionStore">
 	</bean>
 	
-	<!-- HttpUtil -->
-	<bean id="httpUtil" class="com.spring.project.common.util.HttpUtil">
+	<!-- LoginUtil -->
+	<bean id="loginUtil" class="com.spring.project.common.util.LoginUtil">
 	</bean>
 
 </beans>

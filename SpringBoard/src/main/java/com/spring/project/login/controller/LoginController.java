@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
-import com.spring.project.common.util.HttpUtil;
+import com.spring.project.common.util.LoginUtil;
 import com.spring.project.login.dto.LoginVO;
 import com.spring.project.login.service.LoginService;
 import com.spring.project.user.dto.UserVO;
@@ -31,8 +31,8 @@ public class LoginController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
-	@Resource(name="httpUtil")
-	private HttpUtil httpUtil;
+	@Resource(name="loginUtil")
+	private LoginUtil loginUtil;
 	
 	@Inject
 	private LoginService service;
@@ -46,10 +46,6 @@ public class LoginController {
 	public String login(LoginVO loginVO, HttpServletRequest request, HttpSession session, Model model, RedirectAttributes rttr) throws Exception{
 		
 		logger.info(">>>>>>>>>>>> login 실행");
-
-		// 클라이언트의 IP주소를 가져와 loginVO에 담는다.
-		String ip = httpUtil.getIp(request);	
-		loginVO.setIp(ip);
 		
 		Map<String, Object> resultMap = service.login(loginVO);	
 		String result = (String)resultMap.get("msg");
@@ -66,9 +62,15 @@ public class LoginController {
 			return "redirect:/board/list";			// 메인화면으로 리다이렉트
 		}
 
+		UserVO userVO = (UserVO)resultMap.get("userVO");
+		
 		// 3. 로그인 성공시
-		model.addAttribute("userVO", resultMap.get("userVO"));
-
+		model.addAttribute("userVO", userVO);
+		
+		// 4. 로그인 기록을 저장
+		Map<String, Object> loginMap = loginUtil.getLoginHistoryMap(userVO.getUserno(), request, "I");
+		service.insertLoginHistory(loginMap);
+		
 		return "board/BoardList";
 	}
 	
@@ -77,7 +79,7 @@ public class LoginController {
 	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		
 		Object obj = session.getAttribute("login");
-
+		
 		// 로그인 되어있는 상태라면..
 		if(obj != null){
 			
@@ -88,6 +90,10 @@ public class LoginController {
 			session.removeAttribute("login"); // 세션에서 정보 삭제
 			session.invalidate();
 			
+			// 로그아웃 기록을 저장
+			Map<String, Object> loginMap = loginUtil.getLoginHistoryMap(userVO.getUserno(), request, "O");
+			service.insertLoginHistory(loginMap);
+			
 			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
 			
 			// 쿠키삭제
@@ -95,7 +101,7 @@ public class LoginController {
 				loginCookie.setPath("/");
 				loginCookie.setMaxAge(0);
 				response.addCookie(loginCookie);
-			}
+			}	
 		}
 
 		return "redirect:/board/list";

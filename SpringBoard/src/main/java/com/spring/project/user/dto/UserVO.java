@@ -12,6 +12,7 @@ public class UserVO {
 	private String is_withdraw; // 탈퇴여부
 	private int loginFaile; // 로그인 실패횟수
 	private String islock; // 계정 잠금여부
+	private String regdate; // 가입일
 
 	public Integer getUserno() {
 		return userno;
@@ -91,6 +92,14 @@ public class UserVO {
 
 	public void setIslock(String islock) {
 		this.islock = islock;
+	}
+
+	public String getRegdate() {
+		return regdate;
+	}
+
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
 	}
 
 }

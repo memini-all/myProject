@@ -31,13 +31,22 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
+                    
+	                    <c:choose>
+						    <c:when test="${sessionScope.login != null}">
+								<li><a href="#"><i class="fa fa-user fa-fw"></i> 회원정보</a>
+		                        </li>
+		                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> 로그인 기록</a>
+		                        </li>
+		                        <li class="divider"></li>
+		                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 로그아웃</a>
+		                        </li>
+						    </c:when>
+						    <c:otherwise>
+						    	<a href="/view/login"><i class="fa fa-sign-in fa-fw"></i> 로그인</a>
+						    </c:otherwise>
+						</c:choose>
+                        
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
@@ -66,15 +75,15 @@
                         <c:choose>
 							<c:when test="${sessionScope.login == null}">
 								<li>
-									<a href="/view/login"><i class="fa fa-table fa-fw"></i> 로그인</a>
+									<a href="/view/login"><i class="fa fa-sign-in fa-fw"></i> 로그인</a>
 								</li>
                        			<li>
-                            		<a href="#"><i class="fa fa-id-card-o fa-fw"></i> 회원가입</a>
+                            		<a href="/user/join"><i class="fa fa-user fa-fw"></i> 회원가입</a>
                         		</li>
 							</c:when>
 							<c:otherwise>
 								<li>
-                            		<a href="/logout"><i class="fa fa-edit fa-fw"></i> 로그아웃</a>
+                            		<a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 로그아웃</a>
                         		</li>		    	
 							</c:otherwise>
 						</c:choose>

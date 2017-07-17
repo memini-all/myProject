@@ -12,6 +12,7 @@ public class ReplyVO {
 	private String regdate; // 댓글 작성일
 	private String updatedate; // 댓글 수정일
 	private String uname; // 댓글 작성자 이름
+	private String pimage; // 댓글 작성자 프로필이미지
 	private int childCnt; // 답글의 개수
 	private String pname; // 부모댓글 작성자 이름
 	private String pdelete; // 부모댓글 삭제여부
@@ -96,6 +97,14 @@ public class ReplyVO {
 
 	public void setUname(String uname) {
 		this.uname = uname;
+	}
+
+	public String getPimage() {
+		return pimage;
+	}
+
+	public void setPimage(String pimage) {
+		this.pimage = pimage;
 	}
 
 	public int getChildCnt() {
