@@ -12,8 +12,10 @@ public class LoginVO {
 	private String userpw; // 비밀번호
 	private boolean useCookie; // 로그인상태유지 체크
 	private int loginFaile; // 로그인 실패횟수
-	private String ip;
-	
+	private String ldate; // 로그인날짜
+	private String conip; // 접속 아이피
+	private String ltype; // 로그인유형 - 로그인/로그아웃
+
 	public String getUserid() {
 		return userid;
 	}
@@ -46,12 +48,28 @@ public class LoginVO {
 		this.loginFaile = loginFaile;
 	}
 
-	public String getIp() {
-		return ip;
+	public String getLdate() {
+		return ldate;
 	}
 
-	public void setIp(String ip) {
-		this.ip = ip;
+	public void setLdate(String ldate) {
+		this.ldate = ldate;
+	}
+
+	public String getConip() {
+		return conip;
+	}
+
+	public void setConip(String conip) {
+		this.conip = conip;
+	}
+
+	public String getLtype() {
+		return ltype;
+	}
+
+	public void setLtype(String ltype) {
+		this.ltype = ltype;
 	}
 
 }

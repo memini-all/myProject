@@ -34,13 +34,11 @@
                     
 	                    <c:choose>
 						    <c:when test="${sessionScope.login != null}">
-								<li><a href="#"><i class="fa fa-user fa-fw"></i> 회원정보</a>
-		                        </li>
-		                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> 로그인 기록</a>
-		                        </li>
+								<li><a href="#"><i class="fa fa-user fa-fw"></i> 회원정보</a></li>
+								<li><a href="#"><i class="fa fa-commenting-o fa-fw"></i> 나의 활동</a></li>	
+		                        <li><a href="/user/history"><i class="fa fa-history fa-fw"></i> 로그인 기록</a></li>
 		                        <li class="divider"></li>
-		                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 로그아웃</a>
-		                        </li>
+		                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 로그아웃</a></li>
 						    </c:when>
 						    <c:otherwise>
 						    	<a href="/view/login"><i class="fa fa-sign-in fa-fw"></i> 로그인</a>

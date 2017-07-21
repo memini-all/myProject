@@ -1,8 +1,11 @@
 package com.spring.project.login.dao;
 
+import java.util.List;
 import java.util.Map;
 
+import com.spring.project.common.util.Criteria;
 import com.spring.project.login.dto.LoginVO;
+import com.spring.project.reply.dto.ReplyVO;
 import com.spring.project.user.dto.UserVO;
 
 public interface LoginDAO {
@@ -67,4 +70,19 @@ public interface LoginDAO {
 	 * @throws Exception
 	 */
 	public void insertLoginHistory(Map<String,Object> loginMap) throws Exception;
+	
+	/**
+	 * 해당유저의 로그인기록을 조회한다.
+	 * @param userno
+	 * @throws Exception
+	 */
+	public List<LoginVO> selectLoginHistoryList(Map<String, Object> paramMap) throws Exception;
+
+	/**
+	 * 로그인 기록 횟수를 조회한다.
+	 * @param userno
+	 * @return
+	 * @throws Exception
+	 */
+	public int selectLoginCount(int userno) throws Exception;
 }

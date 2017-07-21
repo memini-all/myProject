@@ -229,7 +229,7 @@
 			
 			if ( ( kb_Size / 1024) > 1 ) { 
 				
-				fileSize = (Math.round( ( kb_Size / 1024 ) * 100) / 100);
+				fileSize = (Math.round( ( kb_Size / 1024 ) * 100) / 100); 
 				return fileSize + " Mb";
 				
 			}else{ 

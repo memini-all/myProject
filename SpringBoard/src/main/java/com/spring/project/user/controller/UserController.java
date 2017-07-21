@@ -1,9 +1,14 @@
 package com.spring.project.user.controller;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.project.common.util.Criteria;
+import com.spring.project.login.dto.LoginVO;
+import com.spring.project.reply.dto.ReplyVO;
 import com.spring.project.user.dto.UserVO;
 import com.spring.project.user.service.UserService;
 
@@ -49,9 +59,74 @@ public class UserController {
 		return "redirect:/board/list";
 	}
 	
+	
+	// 로그인 기록
+	@RequestMapping(value = "/history", method = RequestMethod.GET)
+	public String userLoginHistory(HttpServletRequest request, Model model) throws Exception{
+
+		HttpSession session = request.getSession();
+		
+		Object sessionObj =  session.getAttribute("login");
+		
+		if(sessionObj != null){
+			
+			UserVO userVO = (UserVO)sessionObj;
+			
+			logger.info(">>>>>>> 로그인 기록 .......");
+			logger.info(">>>>>>> 로그인 기록 ......."+userVO.getUserid() + ", no : "+userVO.getUserno());
+			
+			List<LoginVO> historyList = service.selectLoginHistoryList(new Criteria(), userVO.getUserno());
+			int loginCount = service.selectLoginCount(userVO.getUserno());
+			
+			model.addAttribute("historyList", historyList);
+			model.addAttribute("loginCount", loginCount);
+			
+			return "/user/UserHistory";
+		}
+		
+		// 로그인 하지 않고 접근할 경우 로그인 화면 리다이렉트
+		return "redirect:/view/login";	
+	}
+	
+	// 로그인 기록 - 더보기 클릭시
+	@RequestMapping(value = "/history/{userno}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> userLoginHistoryAjax(@PathVariable("userno") Integer userno, int start, int end) throws Exception{
+
+		ResponseEntity<Map<String, Object>> entity = null;
+
+		try {
+			
+			logger.info(">>>>>>> 로그인기록 Ajax ........"+userno);
+			
+			logger.info(">>>>>>> 로그인기록 시작 ........"+start);
+			logger.info(">>>>>>> 로그인기록 끝 ........"+end);
+
+			Criteria cri = new Criteria();
+			cri.setPage(start);
+			cri.setPerPageNum(end);
+			
+			//List<LoginVO> historyList = service.selectLoginHistoryList(userno);		
+			
+			List<LoginVO> historyList = service.selectLoginHistoryList(cri, userno);	
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("historyList", historyList);
+			
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+
+		} catch (Exception e) { 
+			e.printStackTrace();
+			// 등록작업 실패시 BAD_REQUEST 전송
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+
+	
+	
 	// 아이디 중복체크 
 	@RequestMapping(value = "/checkid", method = RequestMethod.GET)
-	public ResponseEntity<Integer> checkUserID(String userid){
+	public ResponseEntity<Integer> checkUserID(String userid) throws Exception{
 		
 		ResponseEntity<Integer> entity = null;
 

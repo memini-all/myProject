@@ -91,7 +91,6 @@ function fn_chkInputValue(id, msg){
 
 var result = '${msg}';
 
-
 if(result == 'FAIL'){
 	alert("아이디 또는 비밀번호를 다시 확인하세요.");
 }

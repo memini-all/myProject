@@ -1,5 +1,6 @@
 package com.spring.project.login.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.project.common.util.Criteria;
 import com.spring.project.login.dto.LoginVO;
 import com.spring.project.user.dto.UserVO;
 
@@ -69,6 +71,19 @@ public class LoginDAOImpl implements LoginDAO {
 	public void insertLoginHistory(Map<String, Object> loginMap) throws Exception {
 	
 		sqlSession.insert(namespace+".insertLoginHistory", loginMap);
+	}
+
+
+	@Override
+	public List<LoginVO> selectLoginHistoryList(Map<String, Object> paramMap) throws Exception {
+		
+		return sqlSession.selectList(namespace + ".selectLoginHistoryList", paramMap);
+	}
+
+	@Override
+	public int selectLoginCount(int userno) throws Exception {
+		
+		return sqlSession.selectOne(namespace + ".selectLoginCount", userno);
 	}
 
 }
