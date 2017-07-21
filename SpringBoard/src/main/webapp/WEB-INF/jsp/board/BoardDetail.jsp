@@ -246,7 +246,7 @@
 		<div class="panel-body">             
 			<div class="pull-left photoOutline">
 
-				{{#profileImg pimage}}
+				{{#profileImg userimg}}
 					<i class="glyphicon glyphicon-user noPhoto"></i>
 				{{else}} 	
 					<img class="img-circle" src="/profile/image/{{userno}}" /> 	
@@ -385,12 +385,14 @@
 		if(level > 1)	return 40		
 	});
 	
-	// 프로필 이미지 유무
-	Handlebars.registerHelper('profileImg', function(fileName, options) {	 
 
-		return fileName == null ? options.fn(this) : options.inverse(this);	
+	// 프로필 이미지 유무
+	Handlebars.registerHelper('profileImg', function(userimg, options) {	 
+
+		return userimg == null ? options.fn(this) : options.inverse(this);	
 	});
 	
+
 	// 이미지 확장자
 	Handlebars.registerHelper('checkType', function(pimage) {	   
 	
@@ -455,7 +457,7 @@
 		});
 	}
 	// end getReplyList()
-
+	
 	
 	// 배열형식 댓글데이터, 타겟(div), 템플릿 스크립트를 인자로 받아 템플릿 생성
  	var fn_printTemplate = function(replyArr, target, templateObject){

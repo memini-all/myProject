@@ -95,27 +95,29 @@ public class CommonController {
 
 		String fileName = service.selectProfileImg(userno);
 		
-		// 확장자 추출
-		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
-					
-		// 확장자에 해당하는 MediaType을 가져온다.
-		MediaType mType = MediaUtils.getMediaType(formatName);
-		
-		try {
-
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(mType);
-
-			in = new FileInputStream(profileImgPath + "/" + fileName);
-
-			// 리턴 타입은 파일 데이터이다.
-			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+		if(fileName != null){
+			// 확장자 추출
+			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
+						
+			// 확장자에 해당하는 MediaType을 가져온다.
+			MediaType mType = MediaUtils.getMediaType(formatName);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-		} finally {
-			in.close();
+			try {
+
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(mType);
+				
+				in = new FileInputStream(profileImgPath + "/" + fileName);
+
+				// 리턴 타입은 파일 데이터이다.
+				entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+			} finally {
+				in.close();
+			}
 		}
 		
 		return entity;

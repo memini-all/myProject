@@ -18,14 +18,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.project.common.util.Criteria;
+import com.spring.project.common.util.SearchCriteria;
 import com.spring.project.login.dto.LoginVO;
-import com.spring.project.reply.dto.ReplyVO;
 import com.spring.project.user.dto.UserVO;
 import com.spring.project.user.service.UserService;
 
@@ -65,7 +65,6 @@ public class UserController {
 	public String userLoginHistory(HttpServletRequest request, Model model) throws Exception{
 
 		HttpSession session = request.getSession();
-		
 		Object sessionObj =  session.getAttribute("login");
 		
 		if(sessionObj != null){
@@ -95,17 +94,10 @@ public class UserController {
 		ResponseEntity<Map<String, Object>> entity = null;
 
 		try {
-			
-			logger.info(">>>>>>> 로그인기록 Ajax ........"+userno);
-			
-			logger.info(">>>>>>> 로그인기록 시작 ........"+start);
-			logger.info(">>>>>>> 로그인기록 끝 ........"+end);
 
 			Criteria cri = new Criteria();
 			cri.setPage(start);
-			cri.setPerPageNum(end);
-			
-			//List<LoginVO> historyList = service.selectLoginHistoryList(userno);		
+			cri.setPerPageNum(end);	
 			
 			List<LoginVO> historyList = service.selectLoginHistoryList(cri, userno);	
 			
@@ -123,6 +115,103 @@ public class UserController {
 	}
 
 	
+	// 회원정보 보기
+	@RequestMapping(value = "/info", method = RequestMethod.GET)
+	public String userInfo(HttpServletRequest request, Model model) throws Exception{
+		
+		logger.info(">>>>>>> 회원정보 보기 .......");
+		
+		HttpSession session = request.getSession();
+		Object sessionObj =  session.getAttribute("login");
+		
+		if(sessionObj != null){
+			
+			UserVO userVO = (UserVO)sessionObj;	
+			UserVO userInfo = service.selectUserInfo(userVO.getUserno());
+			
+			logger.info(">>>>>>> 회원정보 보기 ......."+userInfo.getUsername());
+			
+			model.addAttribute("userVO", userInfo);
+			
+			return "/user/UserInfo";
+		}
+		
+		// 로그인 하지 않고 접근할 경우 로그인 화면 리다이렉트
+		return "redirect:/view/login";	
+
+	}
+	
+	// 회원정보 수정 화면
+	@RequestMapping(value = "/view/update", method = RequestMethod.GET)
+	public String userUpdateView(HttpServletRequest request, Model model) throws Exception{
+			
+		logger.info(">>>>>>> 회원정보 수정 화면 .......");
+			
+		HttpSession session = request.getSession();
+		Object sessionObj =  session.getAttribute("login");
+			
+		if(sessionObj != null){
+				
+			UserVO userVO = (UserVO)sessionObj;	
+			UserVO userInfo = service.selectUserInfo(userVO.getUserno());
+
+			model.addAttribute("userVO", userInfo);
+				
+			return "/user/UserModify";
+		}
+			
+		// 로그인 하지 않고 접근할 경우 로그인 화면 리다이렉트
+		return "redirect:/view/login";	
+	}
+	
+	
+	// 회원정보 수정
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String userUpdate(HttpServletRequest request, @ModelAttribute("userVO") UserVO userVO, RedirectAttributes rttr) throws Exception{
+			
+		logger.info(">>>>>>> 회원정보 수정 .......");
+
+		service.updateUser(userVO, request);
+		
+		rttr.addFlashAttribute("msg", "SUCCESS");
+
+		return "redirect:/user/info";
+	}
+	
+	
+	// 삭제처리
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public ResponseEntity<String> userDelete(@ModelAttribute("userVO") UserVO userVO) throws Exception {
+
+		logger.info(">>>>>>> 탈퇴작업 ........");
+
+		logger.info(">>>>>>> 탈퇴회원 ........"+userVO.getUserno()+" / "+userVO.getUserpw());
+
+		ResponseEntity<String> entity = null;
+
+		
+		try {
+			
+			int result = service.selectDeleteUserInfo(userVO);
+	
+			if(result == 0){
+				entity = new ResponseEntity<String>("NOUSER", HttpStatus.OK);
+			}
+			else if(result == 1){
+					
+				service.deleteUser(userVO.getUserno());
+				entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 탈퇴작업 실패시 에러 메시지 전송
+			entity = new ResponseEntity<String>("에러 : " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+		
+	}
+
 	
 	// 아이디 중복체크 
 	@RequestMapping(value = "/checkid", method = RequestMethod.GET)

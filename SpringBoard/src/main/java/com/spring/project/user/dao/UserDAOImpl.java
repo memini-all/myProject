@@ -37,5 +37,33 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSession.selectOne(namespace+".selectProfileImg", userno);
 	}
 
+
+	@Override
+	public UserVO selectUserInfo(int userno) throws Exception {
+		
+		return sqlSession.selectOne(namespace+".selectUserInfo", userno);
+	}
+
+	@Transactional
+	@Override
+	public void updateUser(UserVO userVO) throws Exception {
+		
+		sqlSession.update(namespace+".updateUser", userVO);
+	}
+
+
+	@Override
+	public int selectDeleteUserInfo(UserVO userVO) throws Exception {
+		
+		return sqlSession.selectOne(namespace+".selectDeleteUserInfo", userVO);
+	}
+
+	@Transactional
+	@Override
+	public void deleteUser(int userno) throws Exception {
+		
+		sqlSession.delete(namespace+".deleteUser", userno);
+	}
+
 	
 }

@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM 
 			tbl_suser
 		WHERE
-			is_withdraw = 'N' AND userid = #{userid}        
+			userid = #{userid}        
     </select> 
 	
 	
@@ -56,5 +56,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			userno = #{userno}        
     </select> 
 
+
+	<!-- 회원정보 보기 -->
+	<select id="selectUserInfo" parameterType="Integer" resultType="userVO">
+		SELECT 
+			userno
+			, userid
+			, userpw
+			, username
+			, email
+			, authority
+			, profile_Img
+			, is_withdraw
+			, loginFaile
+			, islock
+			, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate
+		FROM
+			tbl_suser
+		WHERE
+			is_withdraw = 'N' AND userno = #{userno}	
+	</select>
+
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateUser" parameterType="userVO">
+		UPDATE 
+			tbl_suser 
+		SET 
+            userpw = #{userpw}
+            , username = #{username}
+            , email = #{email}
+            , profile_Img = #{profile_Img}
+        WHERE 
+        	userno = #{userno}   
+	</update>
+	
+	
+	<!--탈퇴할 회원정보 확인 -->
+	<select id="selectDeleteUserInfo" parameterType="userVO" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			tbl_suser
+		WHERE
+			userno = #{userno} AND userpw = #{userpw}
+	</select>
+	
+	<!-- 회원탈퇴 -->
+	<update id="deleteUser" parameterType="Integer">
+		UPDATE 
+			tbl_suser 
+		SET 
+            is_withdraw = 'Y'
+        WHERE 
+        	userno = #{userno}   
+	</update>
 
 </mapper>

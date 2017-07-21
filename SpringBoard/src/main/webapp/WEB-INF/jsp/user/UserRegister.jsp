@@ -65,8 +65,6 @@
 				<div class="panel-body">
 				
 					<form id="form1" name="form1" role="form" enctype="multipart/form-data">
-						<input type="hidden" name="userno" id="userno"> 
-						<input type="hidden" name="deptno" id="deptno">
 
 						<div class="row form-group">
 							<div class="col-lg-1"></div>
@@ -115,7 +113,7 @@
 
 						<div class="row form-group">
 							<div class="col-lg-1"></div>
-							<label class="control-label col-xs-4 col-sm-2">사진</label>
+							<label class="control-label col-xs-4 col-sm-2">프로필 이미지</label>
 							<div class="col-lg-2">
 								<img id="thumbnailImg" style="width: 100%; height: 120px; max-width: 100px;">
 							</div>
@@ -221,7 +219,7 @@
 						idCheck = 0;	
 						fn_activeButton("N");
 						$("#idMsg").css("color", "#FF2424"); 
-						$("#idMsg").html("중복된 아이디 입니다.");
+						$("#idMsg").html("이미 사용중이거나 탈퇴한 아이디입니다.");
 					}
 				},
 			});
@@ -452,6 +450,7 @@
 	// 프로필 사진 삭제	
 	$("#delBtn").on("click", function(){
 		$("#profileImg").val("");
+		$("#thumbnailImg").removeAttr("src"); // 썸네일 이미지 제거
 	});
 
 	
