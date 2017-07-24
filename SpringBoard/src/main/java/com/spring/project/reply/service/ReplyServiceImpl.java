@@ -61,11 +61,28 @@ public class ReplyServiceImpl implements ReplyService {
 		return replyDAO.replyCount(brdno);
 	}
 
-	// 테스트용
 	@Override
-	public List<ReplyVO> listAll(Integer brdno) throws Exception {
+	public int selectUserReplyCnt(int userno) throws Exception {
 		
-		return replyDAO.listAll(brdno);
+		return replyDAO.selectUserReplyCnt(userno);
+	}
+
+	@Override
+	public List<ReplyVO> selectUserReplyList(Criteria cri, int userno) throws Exception {
+	
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("userno", userno);
+		paramMap.put("cri", cri);
+		
+		return replyDAO.selectUserReplyList(paramMap);
+	}
+
+	
+	@Transactional
+	@Override
+	public void deleteUserReply(List<Integer> repnoList) throws Exception {
+		
+		replyDAO.deleteUserReply(repnoList);
 	}
 
 }

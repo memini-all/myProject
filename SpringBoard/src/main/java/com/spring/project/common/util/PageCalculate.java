@@ -65,6 +65,9 @@ public class PageCalculate {
 									.queryParam("perPageNum", cri.getPerPageNum())
 									.build();
 
+		
+		System.out.println("\n>>>>>> makeURI : "+uriComponents.toUriString()+"\n");
+		
 		return uriComponents.toUriString();
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.project.board.dao.BoardDAO;
 import com.spring.project.board.dto.BoardVO;
 import com.spring.project.common.dto.FileVO;
+import com.spring.project.common.util.Criteria;
 import com.spring.project.common.util.FileUtils;
 import com.spring.project.common.util.SearchCriteria;
 
@@ -106,6 +107,32 @@ public class BoardServiceImpl implements BoardService {
 	public void updateViewCnt(Integer brdno) throws Exception {
 	
 		boardDAO.updateViewCnt(brdno);
+	}
+
+	@Override
+	public int selectUserArticleCnt(int userno) throws Exception {
+		
+		return boardDAO.selectUserArticleCnt(userno);
+	}
+
+	
+	@Override
+	public List<BoardVO> selectUserArticleList(Criteria cri, int userno) throws Exception {
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("userno", userno);
+		paramMap.put("cri", cri);
+		
+		return boardDAO.selectUserArticleList(paramMap);
+	}
+
+	
+	@Transactional
+	@Override
+	public void deleteUserArticle(List<Integer> brdnoList) throws Exception {
+		
+		boardDAO.deleteUserArticle(brdnoList);
+		boardDAO.deleteUserArticleFile(brdnoList);	// 첨부파일도 삭제
 	}
 
 }

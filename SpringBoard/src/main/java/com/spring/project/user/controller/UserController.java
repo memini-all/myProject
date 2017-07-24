@@ -129,8 +129,6 @@ public class UserController {
 			UserVO userVO = (UserVO)sessionObj;	
 			UserVO userInfo = service.selectUserInfo(userVO.getUserno());
 			
-			logger.info(">>>>>>> 회원정보 보기 ......."+userInfo.getUsername());
-			
 			model.addAttribute("userVO", userInfo);
 			
 			return "/user/UserInfo";
@@ -183,13 +181,10 @@ public class UserController {
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ResponseEntity<String> userDelete(@ModelAttribute("userVO") UserVO userVO) throws Exception {
 
-		logger.info(">>>>>>> 탈퇴작업 ........");
-
-		logger.info(">>>>>>> 탈퇴회원 ........"+userVO.getUserno()+" / "+userVO.getUserpw());
+		logger.info(">>>>>>> 회원 탈퇴 ........");
 
 		ResponseEntity<String> entity = null;
-
-		
+	
 		try {
 			
 			int result = service.selectDeleteUserInfo(userVO);
@@ -212,6 +207,29 @@ public class UserController {
 		
 	}
 
+	
+	// 활동내역
+	@RequestMapping(value = "/activity", method = RequestMethod.GET)
+	public String userActivity(HttpServletRequest request, Model model) throws Exception{
+
+		HttpSession session = request.getSession();
+		Object sessionObj =  session.getAttribute("login");
+		
+		if(sessionObj != null){
+			
+			logger.info(">>>>>>> 활동 기록 .......");
+
+			UserVO userVO = (UserVO)sessionObj;
+			UserVO userInfo = service.selectUserInfo(userVO.getUserno());
+			
+			model.addAttribute("userVO", userInfo);
+				
+			return "/user/UserActivity";
+		}
+		
+		// 로그인 하지 않고 접근할 경우 로그인 화면 리다이렉트
+		return "redirect:/view/login";	
+	}
 	
 	// 아이디 중복체크 
 	@RequestMapping(value = "/checkid", method = RequestMethod.GET)

@@ -67,8 +67,8 @@
 
 function fn_formSubmit(){
 	
-	if ( ! fn_chkInputValue("#userid", "아이디")) return false;
-	if ( ! fn_chkInputValue("#userpw", "비밀번호")) return false;
+	if ( fn_chkInputValue("#userid", "아이디") ) return false;
+	if ( fn_chkInputValue("#userpw", "비밀번호") ) return false;
 	
 	var formObj = $("form[role='form']");
 	
@@ -78,14 +78,27 @@ function fn_formSubmit(){
 }
 
 // 입력값 체크
-function fn_chkInputValue(id, msg){
+function fn_chkInputValue(value, msg){
 
-	if ( $.trim($(id).val()) == "") {
+	var inputVal = $(value).val();
+	
+	var regxBlank = /[\s]/g;
+	
+	if( regxBlank.test(inputVal) == true ){
+ 
+		alert("공백은 사용할 수 없습니다.");
+		$(value).focus();
+		return true;
+	}
+	else if( inputVal == "" | inputVal == null){			
+  
 		alert(msg+"을(를) 입력해주세요.");
-		$(id).focus();
+		$(value).focus();
+		return true;
+	}
+	else{
 		return false;
 	}
-	return true;
 }
 
 
@@ -112,14 +125,14 @@ if(result == 'FAIL'){
                         <form role="form" id="form1" name="form1">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="ID" name="userid" id="userid" type="email" autofocus value="<c:out value="${userid}"/>">
+                                    <input class="form-control" placeholder="ID" name="userid" id="userid" autofocus value="<c:out value="${userid}"/>">
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="userpw" id="userpw" type="password" value="" onkeydown="if(event.keyCode == 13) { fn_formSubmit();}">
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Y">Remember Me
+                                        <input type="checkbox" name="useCookie" >Remember Me
                                     </label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->

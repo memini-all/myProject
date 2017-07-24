@@ -137,7 +137,7 @@
 							<i class="fa fa-edit fa-fw"></i> 글쓰기
 						</button> 
 					</c:if>
-	
+			
 	        	</div>
 			</div>
 				

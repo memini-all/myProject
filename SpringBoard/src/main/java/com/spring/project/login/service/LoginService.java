@@ -21,21 +21,5 @@ public interface LoginService {
 	 * @throws Exception
 	 */
 	public void insertLoginHistory(Map<String,Object> loginMap) throws Exception;
-	
-	
-	/**
-	 * 로그인 실패 횟수를 조회한다.
-	 * @param userID
-	 * @return
-	 * @throws Exception
-	 */
-//	public int selectLoginFailCnt(String userID) throws Exception;
-	
-	/**
-	 * 계정의 잠김 여부를 조회한다.
-	 * @param userID
-	 * @return
-	 * @throws Exception
-	 */
-//	public boolean selectAccountLock(String userID) throws Exception;
+
 }

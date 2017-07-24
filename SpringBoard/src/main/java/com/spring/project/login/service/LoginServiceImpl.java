@@ -80,22 +80,5 @@ public class LoginServiceImpl implements LoginService {
 		
 		loginDAO.insertLoginHistory(loginMap);
 	}
-	
-
-
-//	@Override
-//	public int selectLoginFailCnt(String userID) throws Exception {
-//		
-//		return loginDAO.selectLoginFailCnt(userID);
-//	}
-//
-//	@Override
-//	public boolean selectAccountLock(String userID) throws Exception {
-//
-//		return loginDAO.selectAccountLock(userID);
-//	}
-
-
-	
 
 }

@@ -61,10 +61,30 @@ public interface ReplyDAO {
 	
 	
 	/**
-	 * 테스트용
-	 * @param brdno
+	 * 내가 쓴 댓글의 총 개수
+	 * @param userno
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ReplyVO> listAll(Integer brdno) throws Exception;
+	public int selectUserReplyCnt(int userno) throws Exception;
+	
+	
+	/**
+	 * 내가 쓴 댓글 조회
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ReplyVO> selectUserReplyList(Map<String, Object> paramMap) throws Exception;
+	
+	
+	/**
+	 * 내가 쓴 댓글 삭제
+	 * @param brdnoList 삭제 할 댓글번호 List
+	 * @throws Exception
+	 */
+	public void deleteUserReply(List<Integer> repnoList) throws Exception;
+
 }
+
+

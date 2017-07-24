@@ -1,6 +1,7 @@
 package com.spring.project.board.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -10,20 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysql.cj.core.util.StringUtils;
 import com.spring.project.board.dto.BoardVO;
 import com.spring.project.board.service.BoardService;
+import com.spring.project.common.util.Criteria;
 import com.spring.project.common.util.PageCalculate;
 import com.spring.project.common.util.SearchCriteria;
 
@@ -53,6 +57,43 @@ public class BoardController {
 
 		return "board/BoardList";
 	}
+	
+
+	// 내가 작성한 글 목록
+	@RequestMapping(value = "/user/{userno}/{page}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> userArticleList4Ajax(
+			@PathVariable("userno") Integer userno, @PathVariable("page") Integer page) {
+
+		ResponseEntity<Map<String, Object>> entity = null;
+
+		try {
+			logger.info(">>>>>>> 작성글 조회 ........");
+			
+			int articleCount = service.selectUserArticleCnt(userno); // 작성한 글의 총 개수
+			
+			Criteria cri = new Criteria();
+			cri.setPage(page);
+			
+			PageCalculate pCalculate = new PageCalculate();
+			pCalculate.setCri(cri);
+			pCalculate.setTotalCount(articleCount);
+
+			List<BoardVO> articleList = service.selectUserArticleList(cri, userno);
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			map.put("articleList", articleList); 	// 글은 list로
+			map.put("pageCalculate", pCalculate); 	// 페이지 관련 정보는 PageCalculate 객체로 전달
+			
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 조회작업 실패시 BAD_REQUEST 전송
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
 
 	// 글 상세보기
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -171,4 +212,28 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
+
+
+	// 내가 작성한 글 삭제
+	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)
+	public ResponseEntity<String> userArticleDelete4Ajax(
+			@RequestParam(value="delBrdnoArr[]") List<Integer> arrayParams) {
+
+		ResponseEntity<String> entity = null;
+		
+		try {
+			logger.info(">>>>>>> 내가 쓴 글 삭제 ........"+arrayParams);
+			
+			service.deleteUserArticle(arrayParams);
+			
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 삭제작업 실패시 에러 메시지 전송
+			entity = new ResponseEntity<String>("에러 : " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
 }

@@ -59,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	]]>
 	</select>
 
+
 	<!-- 글 상세보기 -->
 	<select id="selectBoardDetail" parameterType="Integer" resultType="boardVO">
 		SELECT
@@ -76,6 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			brdno = #{brdno}
 	</select>
 
+
 	<!-- 글 수정 -->
 	<update id="updateBoard" parameterType="boardVO">
 		UPDATE
@@ -88,6 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			brdno = #{brdno}
 	</update>
 
+
 	<!-- 글 삭제 -->
 	<delete id="deleteBoard" parameterType="Integer">
 		UPDATE
@@ -97,6 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			brdno = #{brdno}		
 	</delete>
+	
 	
 	<!-- 글 개수를 구한다 -->
 	<select id="countPage" parameterType="searchCriteria" resultType="int">
@@ -111,6 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 검색조건 (동적 쿼리)을 추가 -->
 	<include refid="search"></include>
 	</select>
+	
 	
 	<!-- 조회수 업데이트 -->
 	<update id="updateViewCnt" parameterType="Integer">
@@ -141,6 +146,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</sql>
 	
+	
 	<!-- 파일 정보 저장 -->
 	<insert id="insertFile" parameterType="hashmap">
 		INSERT INTO tbl_sboardfile
@@ -163,6 +169,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
 	</insert>
 	
+	
 	<!-- 해당 글의 첨부 파일리스트 -->
 	<select id="selectFileList" parameterType="Integer" resultType="fileVO">
 		SELECT	
@@ -178,6 +185,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			brdno = #{brdno} AND file_delat = 'N'
 	</select>
 	
+	
+	<!-- 첨부파일 삭제 -->
 	<update id="deleteFileList" parameterType="Integer">
 		UPDATE 
 			tbl_sboardfile 
@@ -187,6 +196,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			brdno = #{brdno}
 	</update>
 	
+	
+	<!-- 첨부파일 수정 -->
 	<update id="updateFile" parameterType="hashmap">
 		UPDATE 
 			tbl_sboardfile 
@@ -195,38 +206,71 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 			brdno = #{brdno} AND fileno =#{fileno}
 	</update>
+	
+	
+	<!-- 내가쓴 글의 총 개수 -->
+	<select id="selectUserArticleCnt" parameterType="Integer" resultType="int">
+		SELECT
+			COUNT(brdno) 
+		FROM
+			tbl_sboard
+		WHERE 
+			userno = #{userno} AND deleteat = 'N'
+	</select>
+	
+	
+	<!-- 내가 쓴 글목록 -->
+	<select id="selectUserArticleList" parameterType="hashmap" resultType="boardVO">
+		SELECT
+			brdno
+			, userno
+			, title
+			, content
+			, DATE_FORMAT(regdate,'%Y-%m-%d') regdate
+			, DATE_FORMAT(updatedate, '%Y-%m-%d') updatedate
+			, deleteat
+			, viewcnt
+			, (SELECT COUNT(*) FROM tbl_sreply WHERE brdno = BD.brdno AND rdeletat = 'N') replycnt
+			, (SELECT COUNT(*) FROM tbl_sboardfile WHERE brdno = BD.brdno) fileCnt
+		FROM
+			tbl_sboard AS BD
+		WHERE 
+			userno = #{userno} AND deleteat = 'N'
+		ORDER BY 
+			brdno DESC, regdate DESC
+		LIMIT 
+			#{cri.pageStart}, #{cri.perPageNum}		
+	</select>
+	
 
-	<!--  페이지 1 -->
-	<!-- 
-	<select id="listPage" parameterType="Integer" resultType="boardVO">
-	<![CDATA[
-		SELECT 
-		   brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt 
-		FROM 
-		   tbl_sboard 
-		WHERE 
-			brdno > 0 AND deleteat = 'N'
-		ORDER BY 
-			brdno DESC, regdate DESC
-		LIMIT #{page}, 10
-	]]>
-	</select>
-	 -->
-	<!--  페이지 2 -->
-	<!-- 
-	<select id="listCriteria" parameterType="criteria" resultType="boardVO">
-	 <![CDATA[
-	 	SELECT 
-		   brdno, userno, title, content, regdate, updatedate, deleteat, viewcnt 
-		FROM 
-		   tbl_sboard 
-		WHERE 
-			brdno > 0 AND deleteat = 'N'
-		ORDER BY 
-			brdno DESC, regdate DESC
-		LIMIT #{pageStart}, #{perPageNum}
-	 ]]>
-	</select>
-	 -->
+	<!-- 내가 쓴 글 삭제 -->
+	<update id="deleteUserArticle">
+		UPDATE 
+			tbl_sboard 
+		SET
+			deleteat = 'Y'
+		WHERE
+			brdno IN
+						<!-- foreach 이용 복수의 게시글 삭제 -->
+			<foreach collection="list" item="brdno"  open="(" close=")" separator=",">
+            	#{brdno}
+        	</foreach>
+	</update>
+	
+	
+	<!-- 내가 쓴 글 삭제시 첨부파일 삭제 -->
+	<update id="deleteUserArticleFile" parameterType="Integer">
+		UPDATE 
+			tbl_sboardfile 
+		SET
+			file_delat = 'Y'
+		WHERE
+			brdno IN
+						<!-- foreach 이용 복수의 게시글 삭제 -->
+			<foreach collection="list" item="brdno"  open="(" close=")" separator=",">
+            	#{brdno}
+        	</foreach>
+	</update>
+
 
 </mapper>

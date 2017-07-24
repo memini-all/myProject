@@ -155,6 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         	repno = #{_parameter}    
 	</update>
 
+
 	<!-- 댓글수정 -->
 	<update id="updateReply" parameterType="ReplyVO">
 		UPDATE 
@@ -166,6 +167,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			repno = #{repno}
 	</update>
 
+
 	<!-- 댓글삭제 -->
 	<delete id="deleteReply" parameterType="Integer">
 		UPDATE
@@ -176,14 +178,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			repno = #{repno}
 	</delete>
 	
+	
 	<!-- 댓글 수 -->
 	<select id="replyCount" parameterType="Integer" resultType="int">
 		SELECT 
-			COUNT(brdno) 
+			COUNT(repno) 
 		FROM 
 			tbl_sreply 
 		WHERE 
 			brdno = #{brdno} AND rdeletat = 'N'
 	</select>
+
+
+	<!-- 내가 쓴 댓글의 총 개수 -->
+	<select id="selectUserReplyCnt" parameterType="Integer" resultType="int">
+		SELECT
+			COUNT(repno) 
+		FROM
+			tbl_sreply
+		WHERE 
+			userno = #{userno} AND rdeletat = 'N'
+	</select>
+	
+	
+	<!-- 내가 쓴 댓글 -->
+	<select id="selectUserReplyList" parameterType="HashMap" resultType="ReplyVO">
+		SELECT
+			repno
+			, brdno
+			, userno
+			, rcontent 
+			, DATE_FORMAT(regdate, '%Y-%m-%d') regdate
+			, DATE_FORMAT(updatedate, '%Y-%m-%d') updatedate	
+		FROM
+			tbl_sreply											
+		WHERE 
+			userno = #{userno} AND rdeletat = 'N'
+		ORDER BY
+			repno DESC, regdate DESC
+		LIMIT 
+			#{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	
+	<!-- 내가 쓴 댓글 삭제 -->
+	<update id="deleteUserReply">
+		UPDATE 
+			tbl_sreply 
+		SET
+			rdeletat = 'Y'
+		WHERE
+			repno IN
+						<!-- foreach 이용 복수의 게시글 삭제 -->
+			<foreach collection="list" item="repno"  open="(" close=")" separator=",">
+            	#{repno}
+        	</foreach>
+	</update>
 
 </mapper>

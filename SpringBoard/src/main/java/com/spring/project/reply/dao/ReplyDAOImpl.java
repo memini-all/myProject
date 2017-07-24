@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.project.reply.dto.ReplyVO;
 
@@ -18,12 +19,15 @@ public class ReplyDAOImpl implements ReplyDAO {
 	
 	private static String namespace = "com.spring.project.reply";
 	
+	
 	@Override
 	public List<ReplyVO> selectReplyList(Map<String, Object> paramMap) throws Exception {
 		
 		return sqlSession.selectList(namespace+".selectReplyList", paramMap);
 	}
 
+	
+	@Transactional
 	@Override
 	public int insertReply(ReplyVO replyVO) throws Exception {
 	
@@ -34,18 +38,24 @@ public class ReplyDAOImpl implements ReplyDAO {
 		return replyVO.getRepno();	
 	}
 	
+	
+	@Transactional
 	@Override
 	public void updateReplyGroup(Integer repno) throws Exception {
 
 		sqlSession.update(namespace+".updateReplyGroup", repno);
 	}
 
+	
+	@Transactional
 	@Override
 	public void updateReply(ReplyVO replyVO) throws Exception {
 		
 		sqlSession.update(namespace+".updateReply", replyVO);
 	}
 
+	
+	@Transactional
 	@Override
 	public void deleteReply(Integer repno) throws Exception {
 		
@@ -59,17 +69,32 @@ public class ReplyDAOImpl implements ReplyDAO {
 		return sqlSession.selectOne(namespace+".replyCount", brdno);
 	}
 
+	
 	@Override
 	public int checkReplyChild(Integer repno) throws Exception {
 		
 		return sqlSession.selectOne(namespace+".checkChild", repno);
 	}
 
-	// 테스트용..
+	
 	@Override
-	public List<ReplyVO> listAll(Integer brdno) throws Exception {
+	public int selectUserReplyCnt(int userno) throws Exception {
 		
-		return sqlSession.selectList(namespace+".listAll", brdno);
+		return sqlSession.selectOne(namespace+".selectUserReplyCnt", userno);
 	}
 
+	
+	@Override
+	public List<ReplyVO> selectUserReplyList(Map<String, Object> paramMap) throws Exception {
+		
+		return sqlSession.selectList(namespace+".selectUserReplyList", paramMap);
+	}
+
+	@Transactional
+	@Override
+	public void deleteUserReply(List<Integer> repnoList) throws Exception {
+		
+		sqlSession.update(namespace+".deleteUserReply", repnoList);
+	}
+	
 }
