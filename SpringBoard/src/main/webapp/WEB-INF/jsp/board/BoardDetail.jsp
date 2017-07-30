@@ -40,6 +40,9 @@
 	<!-- handlebars JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 
+	<!-- Conmmon JavaScript -->
+    <script src="/resources/js/common.js"></script>
+
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -542,7 +545,10 @@
 					//replyerObj.val("");
 					replyContentObj.val("");
 				}
-			}
+			}, 
+	        error : function(request,status,error){
+				fn_errorPage(request.status);
+        	}
 		});
 	});
 
@@ -620,7 +626,10 @@
 					
 					fn_getReplyList("/replies/" + brdno + "/" + replyPage);
 				}
-			}
+			}, 
+	        error : function(request,status,error){
+				fn_errorPage(request.status);
+        	}
 		});	
 	});
 	
@@ -645,7 +654,10 @@
 					
 					fn_getReplyList("/replies/" + brdno + "/" + replyPage);
 				}
-			}
+			}, 
+	        error : function(request,status,error){
+				fn_errorPage(request.status);
+        	}
 		});	
 		
 	}
@@ -716,7 +728,10 @@
 					//$("#repReplyContent").val("");
 					fn_replyReplyCancel();
 				}
-			}
+			}, 
+	        error : function(request,status,error){
+				fn_errorPage(request.status);
+        	}
 		});
 	});
 	

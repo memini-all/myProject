@@ -28,7 +28,7 @@
 		<filter-name>hiddenHttpMethodFilter</filter-name>
 		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
 	</filter>
-	
+
 	<filter-mapping>
 		<filter-name>hiddenHttpMethodFilter</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -66,7 +66,28 @@
 
 	<!-- Session 30 min -->
 	<session-config>
-	    <session-timeout>30</session-timeout>
+		<session-timeout>30</session-timeout>
 	</session-config>
+
+	<!-- error -->
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/common/error/throwable</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/common/error/exception</location>
+	</error-page>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/common/error/404</location>
+	</error-page>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/common/error/500</location>
+	</error-page>
 
 </web-app>

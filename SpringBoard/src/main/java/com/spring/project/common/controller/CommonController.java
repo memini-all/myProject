@@ -40,7 +40,7 @@ public class CommonController {
 	public String boardList() throws Exception {
 
 		logger.info(">>>>>>> CommonController");
-		return "board/BoardList";
+		return "redirect:/board/list";
 	}
 	
 	

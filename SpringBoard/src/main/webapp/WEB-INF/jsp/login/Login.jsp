@@ -36,6 +36,9 @@
     <!-- Custom Theme JavaScript -->
     <script src="/resources/sb-admin/dist/js/sb-admin-2.js"></script>
 	
+	<!-- Conmmon JavaScript -->
+    <script src="/resources/js/common.js"></script>
+	
 	<!-- handlebars JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 
@@ -306,7 +309,7 @@ if(result == 'FAIL'){
 				}
 			},
 			error : function(request,status,error){
-				alert("code : "+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				fn_errorPage(request.status);
 			}    
 		});
 		
@@ -343,7 +346,9 @@ if(result == 'FAIL'){
 				}
 			},
 			error : function(request,status,error){
-				alert("code : "+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				//alert("code : "+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				
+				fn_errorPage(request.status);
 			}    
 		});
 		

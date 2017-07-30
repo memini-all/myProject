@@ -44,7 +44,7 @@
 	
 	<!-- Conmmon JavaScript -->
     <script src="/resources/js/common.js"></script>
-    
+
 </head>
 <body>
 
@@ -56,7 +56,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						<i class="fa fa-user fa-fw"></i> 회원가입
+						<i class="fa fa-user fa-fw"></i> 회원정보 수정
 					</h1>
 				</div>
 				<!-- /.col-lg-12 -->
@@ -68,21 +68,23 @@
 				<div class="panel-body">
 				
 					<form id="form1" name="form1" role="form" enctype="multipart/form-data">
+					
+						<input type="hidden" name="userno" id="userno" value="${userVO.userno}"> 
 
 						<div class="row form-group">
 							<div class="col-lg-1"></div>
 							<label id="idLb" class="control-label col-xs-4 col-sm-2"><font color="#ED4C00" >* </font>아이디</label>
-							<div class="col-lg-3">
-								<input type="text" class="form-control" id="userid" name="userid" maxlength="20">
+							<div class="col-lg-3 form-check disabled">
+								<input type="text" class="form-control" id="userid" name="userid" maxlength="20"
+									 readonly disabled="disabled" value="${userVO.userid}">
 							</div>
-							<div class="col-lg-4"  id="idMsg"></div> 
 						</div>
 						
 						<div class="row form-group" id="pwDiv">
 							<div class="col-lg-1"></div>
 							<label class="control-label col-xs-4 col-sm-2"><font color="#ED4C00" >* </font>비밀번호</label>
 							<div class="col-lg-3">
-								<input type="password" class="form-control" id="userpw" name="userpw" maxlength="20">
+								<input type="password" class="form-control" id="userpw" name="userpw" maxlength="20" value="${userVO.userpw}">
 							</div>
 							<div class="col-lg-5" id="pwMsg" ></div> 
 						</div>
@@ -91,7 +93,7 @@
 							<div class="col-lg-1"></div>
 							<label class="control-label col-xs-4 col-sm-2">비밀번호 확인</label>
 							<div class="col-lg-3">
-								<input type="password" class="form-control" id="userpw2" name="userpw2" maxlength="20">
+								<input type="password" class="form-control" id="userpw2" name="userpw2" maxlength="20" value="${userVO.userpw}">
 							</div>
 							<div class="col-lg-5" id="repwMsg" ></div> 
 						</div>
@@ -100,7 +102,7 @@
 							<div class="col-lg-1"></div>
 							<label class="control-label col-xs-4 col-sm-2"><font color="#ED4C00" >* </font>이름</label>
 							<div class="col-lg-3">
-								<input type="text" class="form-control" id="username" name="username" maxlength="20" >
+								<input type="text" class="form-control" id="username" name="username" maxlength="20" value="${userVO.username}">
 							</div>
 							<div class="col-lg-5" id="nameMsg" ></div> 
 						</div>
@@ -109,7 +111,7 @@
 							<div class="col-lg-1"></div>
 							<label class="control-label col-xs-4 col-sm-2"><font color="#ED4C00" >* </font>이메일</label>
 							<div class="col-lg-3" style="float:left;">
-								<input type="text"class="form-control" id="email" name="email" maxlength="35" >
+								<input type="text"class="form-control" id="email" name="email" maxlength="35" value="${userVO.email}">
 							</div>	
 							<div class="col-lg-5" id="mailMsg" ></div> 
 						</div>
@@ -118,7 +120,8 @@
 							<div class="col-lg-1"></div>
 							<label class="control-label col-xs-4 col-sm-2">프로필 이미지</label>
 							<div class="col-lg-2">
-								<img id="thumbnailImg" style="width: 100%; height: 120px; max-width: 100px;">
+								<img id="thumbnailImg" style="width: 100%; height: 120px; max-width: 100px;" >	
+								<input type="hidden" name="profile_Img" id="hiddenImg" value="${userVO.profile_Img}"> 
 							</div>
 							<div class="col-lg-6 col-sm-6 col-12">
 								<label class="btn btn-default">
@@ -137,7 +140,7 @@
 				<!-- /.panel-body -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" id="cancelBtn">취소</button>
-					<button type="button" class="btn btn-default" id="registBtn" disabled="disabled" >등록</button> <!-- onclick="fn_addUserSave()" -->
+					<button type="button"  class="btn btn-default" id="modBtn" disabled="disabled" >회원정보 수정</button>
 				</div>
 			</div>
 			<!-- /#panel -->
@@ -151,89 +154,48 @@
 <script type="text/javascript">
 
 
+	$(document).ready(function(){
+		
+		var userno = ${userVO.userno};
+		
+		$.ajax({
+			url : '/profile/image/'+userno,
+			success : function(result) {
+				
+				if(result == null || result == ""){
+					$("#thumbnailImg").removeAttr("src");
+				}
+				else{
+					$("#thumbnailImg").attr({ 
+						src: "/profile/image/"+userno
+					});
+				}
+			}, 
+	        error:function(request,status,error){
+        		fn_errorPage(request.status);
+        	}	
+		});
+	});
+
+
 	var formObj = $("form[role='form']");
 	
-	// 회원가입
-	$("#registBtn").on("click", function(){
+	// 회원정보 수정
+	$("#modBtn").on("click", function(){
 
-		formObj.attr("action", "/user/register");
+		formObj.attr("action", "/user/update");
 		formObj.attr("method", "post");	
 		formObj.submit();
 	});
 	
 
-	//  아이디와 비밀번호가 맞지 않을 경우 가입버튼 비활성화를 위한 변수설정
-    var idCheck = 0;
+	//  가입버튼 비활성화를 위한 변수설정
     var pwdCheck = 0;
     var repwCheck = 0;
 	var nameCheck = 0;
 	var emailCheck = 0;
 
-	// 아이디 체크
-	$("#userid").focusout(function(){
-		
-		//var userid = $.trim( $("#userid").val() );
-		
-		var regId = /^[a-z0-9]{5,19}$/;	
-		var userid = $("#userid").val();
-		var tempID = $("#userid").val().toLowerCase();	
-		
-		
-		if(tempID.indexOf("admin") != -1){
-			
-			fn_activeButton("N");
-		
-			$("#idMsg").css("color", "#FF2424");   
-			$("#idMsg").html(userid+" 는 사용할 수 없습니다.");
-			$("#userid").val("");
-			return false;
-		}
-		
-		if( fn_isEmpty(userid, "#idMsg") ){
-			idCheck = 0;
-		}	
-		else if( regId.test(userid) == false ){
-			idCheck = 0;
-			fn_activeButton("N");
-			$("#idMsg").css("color", "#FF2424");   
-			$("#idMsg").html("5~20자의 영문 소문자, 숫자만 가능합니다.");	
-		}
-		else{
-			$.ajax({
-				url : "/user/checkid",
-				data : {userid: userid},
-				success: function(result){
-						
-					if(userid=="" && result=='0') {
-						
-						idCheck = 0;
-						fn_activeButton("N");
-						$("#idMsg").css("color", "#FF2424");   	
-					}
-					else if(result == 0){ 
-
-						idCheck = 1;						
-						$("#idMsg").css("color", "#47C83E");   
-						$("#idMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");	
-
-						fn_validCheck(idCheck, pwdCheck, repwCheck, nameCheck, emailCheck);
-					}
-					else{ 				
-						idCheck = 0;	
-						fn_activeButton("N");
-						$("#idMsg").css("color", "#FF2424"); 
-						$("#idMsg").html("이미 사용중이거나 탈퇴한 아이디입니다.");
-					}
-				}, 
-		        error:function(request,status,error){
-	        		fn_errorPage(request.status);
-	        	}
-				
-			});
-		}
-		
-	});
-
+	
 	// 비밀번호 체크
 	$("#userpw").focusout(function(){
 
@@ -255,7 +217,7 @@
 			$("#pwMsg").css("color", "#47C83E");   
 			$("#pwMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");
 			
-			fn_validCheck(idCheck, pwdCheck, repwCheck, nameCheck, emailCheck);
+			fn_validCheck(pwdCheck, repwCheck, nameCheck, emailCheck);
 		}
 
 	});
@@ -291,7 +253,7 @@
 			$("#repwMsg").css("color", "#47C83E");   
 			$("#repwMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");	
 			
-			fn_validCheck(idCheck, pwdCheck, repwCheck, nameCheck, emailCheck);
+			fn_validCheck(pwdCheck, repwCheck, nameCheck, emailCheck);
 		}
 
 	});
@@ -318,11 +280,12 @@
 			$("#nameMsg").css("color", "#47C83E");   
 			$("#nameMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");
 			
-			fn_validCheck(idCheck, pwdCheck, repwCheck, nameCheck, emailCheck);
+			fn_validCheck(pwdCheck, repwCheck, nameCheck, emailCheck);
 		}
 
 	});
 
+	
 	// 이메일 
 	$("#email").focusout(function(){
 		
@@ -371,7 +334,7 @@
 			$("#mailMsg").css("color", "#47C83E");   
 			$("#mailMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");	
      			
-			fn_validCheck(idCheck, pwdCheck, repwCheck, nameCheck, emailCheck);    
+			fn_validCheck(pwdCheck, repwCheck, nameCheck, emailCheck);    
 	    }
 		else{
 			emailCheck = 0;
@@ -382,17 +345,17 @@
 	});
 
 	
-	// 등록버튼 활성, 비활성
+	// 회원정보 수정버튼 활성, 비활성
 	function fn_activeButton(flag){
 		
 		// 등록버튼 활성
 		if(flag == "Y"){
-			$("#registBtn").prop("disabled", false);
-			$("#registBtn").removeClass("btn btn-default").addClass("btn btn-primary");
+			$("#modBtn").prop("disabled", false);
+			$("#modBtn").removeClass("btn btn-default").addClass("btn btn-primary");
 		}
 		else{	// 비활성
-			$("#registBtn").prop("disabled", true);
-			$("#registBtn").removeClass("btn btn-primary").addClass("btn btn-default");	
+			$("#modBtn").prop("disabled", true);
+			$("#modBtn").removeClass("btn btn-primary").addClass("btn btn-default");	
 		}
 	}
 	
@@ -421,10 +384,9 @@
 
     
 	// 유효성 체크
-	function fn_validCheck(idVal, pwVal, repwVal, nameVal, emailVal){
+	function fn_validCheck(pwVal, repwVal, nameVal, emailVal){
 		
-		if( idVal == 1 && pwVal == 1 && repwVal == 1 && 
-				nameVal == 1 && emailVal == 1 ){
+		if( pwVal == 1 && repwVal == 1 && nameVal == 1 && emailVal == 1 ){
 			fn_activeButton("Y");
 		}else{
 			fn_activeButton("N");
@@ -456,8 +418,11 @@
 	
 	// 프로필 사진 삭제	
 	$("#delBtn").on("click", function(){
-		$("#profileImg").val("");
+		
+		$("#profileImg").val(""); // 새로운 프로필 이미지 제거
 		$("#thumbnailImg").removeAttr("src"); // 썸네일 이미지 제거
+		
+		$("#hiddenImg").val("");  // 기존에 프로필 이미지 파일명 제거
 	});
 
 	
@@ -504,14 +469,15 @@
 	            var dataURI = canvas.toDataURL("image/jpeg");
 	            //썸네일 이미지 보여주기
 	            document.querySelector('#thumbnailImg').src = dataURI;
+	            $("#hiddenImg").val("");  // 기존에 프로필 이미지 파일명 삭제
 	        };
 		}    
 	}
 	
 
-	// 회원가입 취소
+	// 회원정보 수정 취소
 	$("#cancelBtn").on("click", function(){
-	  	self.location = "/board/list";	  
+	  	self.location = "/user/info";	  
 	});
 
 
