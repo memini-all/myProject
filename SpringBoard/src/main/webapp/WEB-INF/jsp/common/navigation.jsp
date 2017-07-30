@@ -9,7 +9,6 @@
     <![endif]-->
 
 
-
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -56,10 +55,12 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
+                        
                             <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
+                                <input type="text" class="form-control" placeholder="Search..." 
+                                			id="navKeywordInput" onkeydown="if(event.keyCode == 13){ fn_naviSearch(); }">
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
+                                <button class="btn btn-default" type="button" id='navSearchBtn'>
                                     <i class="fa fa-search" style="font-size:1.45em"></i>
                                 </button>
                             </span>
@@ -86,72 +87,17 @@
 							</c:otherwise>
 						</c:choose>
    
+   						<c:if test="${sessionScope.login.authority == 'AD'}">
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-cogs fa-fw"></i> 관리자<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
-                                </li>
-                                <li>
-                                    <a href="buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="notifications.html">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="typography.html">Typography</a>
-                                </li>
-                                <li>
-                                    <a href="icons.html"> Icons</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grid</a>
+                                    <a href="/user/mgt"><i class="fa fa-users fa-fw"></i> 사용자 관리</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                    <!-- /.nav-third-level -->
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="blank.html">Blank Page</a>
-                                </li>
-                                <li>
-                                    <a href="login.html">Login Page</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                       </c:if>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -159,4 +105,27 @@
             <!-- /.navbar-static-side -->
         </nav>
 
+
+	<script>
+
+	// 상단 검색버튼
+	$('#navSearchBtn').on('click', function(event){
+		
+		fn_naviSearch();
+	});
+	
+	
+	function fn_naviSearch(){
+		
+		var url =  "/board/list"
+			+ '${pageCalculate.makeURI(1)}'
+			+ "&searchType="
+			+ $("select option:selected").val()
+			+ "&keyword="
+			+ encodeURIComponent($('#navKeywordInput').val());
+	
+			self.location = url;
+	}
+
+	</script>
 

@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
 	<!-- 사용자 아이디 조회 - 중복체크 -->
-	<select id="selectUserId" parameterType="String" resultType="int">
+	<select id="selectDuplUserId" parameterType="String" resultType="int">
 		SELECT 
 			COUNT(*)
 		FROM 
@@ -102,6 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			userno = #{userno} AND userpw = #{userpw}
 	</select>
 	
+	
 	<!-- 회원탈퇴 -->
 	<update id="deleteUser" parameterType="Integer">
 		UPDATE 
@@ -110,6 +111,158 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             is_withdraw = 'Y'
         WHERE 
         	userno = #{userno}   
+	</update>
+	
+	
+	<!-- 관리자 모드 : 사용자 조회 -->
+	<select id="selectUserList" parameterType="HashMap" resultType="userVO">
+		SELECT 
+			userno
+			, userid
+			, userpw
+			, username
+			, email
+			, authority
+			, profile_Img
+			, is_withdraw
+			, loginFaile
+			, islock
+			, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate
+		FROM
+			tbl_suser
+			
+		<if test="keyword != null">
+			WHERE 	
+				userid like CONCAT('%', #{keyword}, '%') OR username LIKE CONCAT('%', #{keyword}, '%')
+		</if>
+		
+		ORDER BY
+		    regdate DESC
+		LIMIT 
+			#{cri.pageStart}, #{cri.perPageNum}    		
+	</select>
+	
+	
+	<!-- 회원 수 조회 -->
+	<select id="selectUserCount" parameterType="String" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			tbl_suser
+		WHERE 
+			userid like CONCAT('%', #{_parameter}, '%') OR username LIKE CONCAT('%', #{_parameter}, '%')	
+	</select>
+	
+	
+		
+	<!-- 관리자 모드 : 탈퇴한 사용자 조회 -->
+	<select id="selectWithdrawUser" parameterType="criteria" resultType="userVO">
+		SELECT 
+			userno
+			, userid
+			, userpw
+			, username
+			, email
+			, authority
+			, profile_Img
+			, is_withdraw
+			, loginFaile
+			, islock
+			, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate
+		FROM
+			tbl_suser
+		WHERE 
+			is_withdraw = 'Y'
+		ORDER BY
+		    regdate DESC
+		LIMIT 
+			#{pageStart}, #{perPageNum}
+	</select>
+	
+	
+	<!-- 관리자 모드 : 계정 잠금된 사용자 조회 -->
+	<select id="selectLockUser" parameterType="criteria" resultType="userVO">
+		SELECT 
+			userno
+			, userid
+			, userpw
+			, username
+			, email
+			, authority
+			, profile_Img
+			, is_withdraw
+			, loginFaile
+			, islock
+			, DATE_FORMAT(regdate, '%Y-%m-%d %H:%i') regdate
+		FROM
+			tbl_suser
+		WHERE 
+			islock = 'Y'
+		ORDER BY
+		    regdate DESC
+		LIMIT 
+			#{pageStart}, #{perPageNum}
+	</select>
+
+
+	<!-- 관리자 모드 : 사용자 정보 수정 -->
+	<update id="updateMgtUser" parameterType="userVO">
+		UPDATE 
+			tbl_suser 
+		SET
+			is_withdraw = #{is_withdraw}
+			, islock = #{islock}
+
+		<choose>
+			<when test="islock.equalsIgnoreCase('N')">
+				, loginFaile = 0
+			</when>
+			<when test="islock.equalsIgnoreCase('Y')">
+				, loginFaile = 5
+			</when>
+		</choose>
+
+		WHERE
+			userno = #{userno}
+	</update>
+	
+	
+	<!-- 아이디 찾기 -->
+	<select id="selectUserId" parameterType="HashMap" resultType="String">
+		SELECT 
+			userid
+		FROM
+			tbl_suser
+		WHERE 
+			is_withdraw = 'N' 
+			AND username = #{username} 
+			AND email = #{email} 
+	</select>
+	
+	
+	<!--비밀번호 찾기 -->
+	<select id="selectUserPw" parameterType="String" resultType="userVO">
+		SELECT 
+			userno
+			, userid
+			, userpw
+			, islock
+		FROM
+			tbl_suser
+		WHERE 
+			is_withdraw = 'N' 
+			AND userid = #{userid} 
+	</select>
+
+
+	<!-- 비밀번호 수정 -->
+	<update id="updatetUserPw" parameterType="HashMap">
+		UPDATE 
+			tbl_suser 
+		SET 
+            userpw = #{userpw}  
+        WHERE 
+        	userno = #{userno}  
 	</update>
 
 </mapper>

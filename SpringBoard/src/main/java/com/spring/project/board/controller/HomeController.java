@@ -37,10 +37,10 @@ public class HomeController {
 	}
 	
 	// Ajax 테스트용
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	@RequestMapping(value = "/test3", method = RequestMethod.GET)
 	public void ajaxTest() {
 	    
-		logger.info(">>>>>>> HomeController 실행 - test.jsp 리턴 ..... ");
+		logger.info(">>>>>>> HomeController 실행 - test3.jsp 리턴 ..... ");
 	
 	}
 	

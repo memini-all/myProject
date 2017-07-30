@@ -1,11 +1,15 @@
 package com.spring.project.user.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.project.common.util.Criteria;
 import com.spring.project.user.dto.UserVO;
 
 @Repository
@@ -25,9 +29,9 @@ public class UserDAOImpl implements UserDAO {
 
 	
 	@Override
-	public int selectUserId(String userid) throws Exception {
+	public int selectDuplUserId(String userid) throws Exception {
 		
-		return sqlSession.selectOne(namespace+".selectUserId", userid);
+		return sqlSession.selectOne(namespace+".selectDuplUserId", userid);
 	}
 
 
@@ -65,5 +69,63 @@ public class UserDAOImpl implements UserDAO {
 		sqlSession.delete(namespace+".deleteUser", userno);
 	}
 
+
+	@Override
+	public List<UserVO> selectUserList(Map<String, Object> paramMap) throws Exception {
+		
+		return sqlSession.selectList(namespace+".selectUserList", paramMap);
+	}
+
+
+	@Override
+	public int selectUserCount(String keyword) throws Exception {
+		
+		return sqlSession.selectOne(namespace+".selectUserCount", keyword);
+	}
+
+
+	@Override
+	public List<UserVO> selectWithdrawUser(Criteria cri) throws Exception {
+		
+		return sqlSession.selectList(namespace+".selectWithdrawUser", cri);
+	}
+
+
+	@Override
+	public List<UserVO> selectLockUser(Criteria cri) throws Exception {
+		
+		return sqlSession.selectList(namespace+".selectLockUser", cri);
+	}
+
 	
+	@Transactional
+	@Override
+	public void updateMgtUser(UserVO userVO) throws Exception {
+		
+		sqlSession.update(namespace+".updateMgtUser", userVO);
+	}
+
+
+	@Override
+	public String selectUserId(Map<String, Object> paramMap) throws Exception {
+		
+		return sqlSession.selectOne(namespace+".selectUserId", paramMap);
+	}
+
+
+	@Override
+	public UserVO selectUserPw(String userid) throws Exception {
+		
+		return sqlSession.selectOne(namespace+".selectUserPw", userid);
+	}
+
+
+	@Transactional
+	@Override
+	public void updatetUserPw(Map<String, Object> paramMap) throws Exception {
+		
+		sqlSession.update(namespace+".updatetUserPw", paramMap);
+	}
+
+
 }

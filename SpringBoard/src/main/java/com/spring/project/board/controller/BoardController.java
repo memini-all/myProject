@@ -57,43 +57,7 @@ public class BoardController {
 
 		return "board/BoardList";
 	}
-	
 
-	// 내가 작성한 글 목록
-	@RequestMapping(value = "/user/{userno}/{page}", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> userArticleList4Ajax(
-			@PathVariable("userno") Integer userno, @PathVariable("page") Integer page) {
-
-		ResponseEntity<Map<String, Object>> entity = null;
-
-		try {
-			logger.info(">>>>>>> 작성글 조회 ........");
-			
-			int articleCount = service.selectUserArticleCnt(userno); // 작성한 글의 총 개수
-			
-			Criteria cri = new Criteria();
-			cri.setPage(page);
-			
-			PageCalculate pCalculate = new PageCalculate();
-			pCalculate.setCri(cri);
-			pCalculate.setTotalCount(articleCount);
-
-			List<BoardVO> articleList = service.selectUserArticleList(cri, userno);
-			Map<String, Object> map = new HashMap<String, Object>();
-			
-			map.put("articleList", articleList); 	// 글은 list로
-			map.put("pageCalculate", pCalculate); 	// 페이지 관련 정보는 PageCalculate 객체로 전달
-			
-			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			// 조회작업 실패시 BAD_REQUEST 전송
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		return entity;
-	}
-	
 
 	// 글 상세보기
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -212,7 +176,43 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
+	
 
+	// 내가 작성한 글 목록
+	@RequestMapping(value = "/user/{userno}/{page}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> userArticleList4Ajax(
+			@PathVariable("userno") Integer userno, @PathVariable("page") Integer page) {
+
+		ResponseEntity<Map<String, Object>> entity = null;
+
+		try {
+			logger.info(">>>>>>> 작성글 조회 ........");
+			
+			int articleCount = service.selectUserArticleCnt(userno); // 작성한 글의 총 개수
+			
+			Criteria cri = new Criteria();
+			cri.setPage(page);
+			
+			PageCalculate pCalculate = new PageCalculate();
+			pCalculate.setCri(cri);
+			pCalculate.setTotalCount(articleCount);
+
+			List<BoardVO> articleList = service.selectUserArticleList(cri, userno);
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			map.put("articleList", articleList); 	// 글은 list로
+			map.put("pageCalculate", pCalculate); 	// 페이지 관련 정보는 PageCalculate 객체로 전달
+			
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 조회작업 실패시 BAD_REQUEST 전송
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
 
 	// 내가 작성한 글 삭제
 	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)

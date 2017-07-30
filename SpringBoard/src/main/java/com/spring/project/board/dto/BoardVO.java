@@ -1,10 +1,10 @@
 package com.spring.project.board.dto;
 
-
 public class BoardVO {
 
 	private Integer brdno; // 글번호
 	private Integer userno; // 작성자 번호
+	private String username; // 글 작성자
 	private String title; // 글제목
 	private String content; // 글내용
 	private String regdate; // 작성일
@@ -28,6 +28,14 @@ public class BoardVO {
 
 	public void setUserno(Integer userno) {
 		this.userno = userno;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getTitle() {

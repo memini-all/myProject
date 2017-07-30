@@ -62,17 +62,6 @@
 
 
 <script>
-	/*
-	function fn_move(formid, url, msg){
-	
-		if (msg) {
-			if (!confirm( msg + " 하시겠습니까??")) return;
-		}
-		var form = document.getElementById(formid);
-		form.action=url;
-		form.submit();
-	}
-	*/
 	
 	$(document).ready(function() {
 	
@@ -87,20 +76,38 @@
 			self.location = "/board/post";
 		});
 		
-		// 검색
+		// 검색버튼
 		$('#searchBtn').on('click', function(event){
-			
-			var url =  "/board/list"
-						+ '${pageCalculate.makeURI(1)}'
-						+ "&searchType="
-						+ $("select option:selected").val()
-						+ "&keyword="
-						+ encodeURIComponent($('#keywordInput').val());
-				
-			self.location = url;
+			fn_search($('#keywordInput').val());
 		});
 
 	});
+	
+	// 검색
+	function fn_search(value){
+
+		var url =  "/board/list"
+			+ '${pageCalculate.makeURI(1)}'
+			+ "&searchType="
+			+ $("select option:selected").val()
+			+ "&keyword="
+			+ encodeURIComponent(value);
+	
+			self.location = url;
+	}
+	
+	
+	// 작성자 클릭시 작성글 표시
+	function fn_writerSearch(value){
+
+		var url =  "/board/list"
+			+ '${pageCalculate.makeURI(1)}'
+			+ "&searchType=w"
+			+ "&keyword="
+			+ encodeURIComponent(value);
+	
+			self.location = url;
+	}
 	
 </script>
 
@@ -115,7 +122,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Notifications</h1>
+					<h1 class="page-header">게시판</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -123,13 +130,9 @@
 			<div class="row">
 	        	<div class="col-lg-12">
 	                	<!-- 게시판 아이콘 -->
-		                <button id="boardlistBtn" type="button" class="btn btn-default" onclick="showBoardList()"><i class="fa  fa-files-o fa-fw"></i> <c:out value="${bgInfo.bgname}"/></button>      
-		                <div id="boardlistDiv" style="width: 250px; height:300px; display: none;" class="popover fade bottom in" role="tooltip">
-						<div style="left:15%;" class="arrow"></div>
-						<div class="popover-content">
-							<div id="tree"></div>	
-						</div>
-					</div>
+		                <button id="boardlistBtn" type="button" class="btn btn-default" onclick="self.location.href='/board/list'">
+		                	<i class="fa  fa-files-o fa-fw"></i>
+		                </button>      
 	                
 					<!-- 글쓰기 버튼 : 로그인 사용자만 보이도록 -->
 					<c:if test="${sessionScope.login != null}">
@@ -137,10 +140,10 @@
 							<i class="fa fa-edit fa-fw"></i> 글쓰기
 						</button> 
 					</c:if>
-			
+
 	        	</div>
 			</div>
-				
+			<font style="font-size:1px">&nbsp;</font>
 			<div class="panel panel-default">
 	            <div class="panel-body">
 					<div class="boardHead">
@@ -163,10 +166,12 @@
 									<i class="fa fa-download fa-fw" title="<c:out value="${boardVO.fileCnt}개 파일"/>"></i>
 								</c:if>	
 							</div>
-							<div class="listHiddenField pull-left field60"><c:out value="${boardVO.brdno}"/></div> 					<!-- 글번호 -->
+							<div class="listHiddenField pull-left field60"><c:out value="${boardVO.brdno}"/></div> 					
 							<div class="listHiddenField pull-right field60 textCenter"><c:out value="${boardVO.viewcnt}"/></div>
 							<div class="listHiddenField pull-right field100 textCenter"><c:out value="${boardVO.regdate}"/></div>
-							<div class="listHiddenField pull-right field100 textCenter"><c:out value="글쓴이"/></div> 				<!-- 작성자 -->
+							<div class="listHiddenField pull-right field100 textCenter">
+								<a href="javascript:fn_writerSearch('<c:out value="${boardVO.username}"/>');"><c:out value="${boardVO.username}"/></a>
+							</div> 		
 							<div class="listTitle">
 														<!-- 목록에서 글제목 클릭 시 페이지 정보 넘긴다. -->	
 								<a href="/board/detail${pageCalculate.makeSearchURI(pageCalculate.cri.page) }&brdno=${boardVO.brdno}" >${boardVO.title}</a>	
@@ -259,7 +264,7 @@
 							
 						</div>					    
 					    
-				    	<!-- 검색 -->
+				    	<!-- 기존 검색 부분
 						<div class="form-group">
 						
 							<div class="col-lg-2" style="width:auto;">
@@ -284,7 +289,29 @@
 							</div>
 
 						</div>
-
+	 -->
+						<!-- 검색 -->
+						<div class="form-group col-lg-5" >
+							<div class="input-group">
+								
+						      <div class="input-group-btn" style="width:auto;">
+						        <select class="selectpicker form-control"  name="searchType" style="width:auto;">
+	                                	<option value="t" <c:out value="${cri.searchType eq 't' ? 'selected' : '' }"/> >제목</option>
+	                                	<option value="c" <c:out value="${cri.searchType eq 'c' ? 'selected' : '' }"/> >내용</option>
+	                                	<option value="w" <c:out value="${cri.searchType eq 'w' ? 'selected' : ''}"/> >작성자</option>
+	                                	<option value="tc" <c:out value="${cri.searchType eq 'tc' ? 'selected' : ''}"/> >제목+내용</option>
+	                            </select>
+						      </div>
+						      		<!-- 검색입력창 및 버튼 -->
+						      <input type="text" class="form-control" placeholder="Search..." id="keywordInput" value='${cri.keyword }'
+						      		onkeydown="if(event.keyCode == 13){ fn_search(this.value); }">
+						      <span class="input-group-btn">
+						        <button type="button" class="btn btn-outline btn-primary" id='searchBtn'>검색</button>
+						      </span>
+						    </div>
+						</div>
+					
+						<!-- /검색 -->
 
 	            </div>
 	            <!-- panel-body -->

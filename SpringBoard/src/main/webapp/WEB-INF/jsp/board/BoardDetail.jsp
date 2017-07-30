@@ -108,7 +108,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> <c:out value="${bgInfo.bgname}"/></h1>
+                    <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -134,7 +134,7 @@
                     <div class="panel-heading">
                         	<c:out value="${boardVO.title}"/>
                         <span class="pull-right text-muted">
-                        	[ <a href="#">작성자</a> ]  [<c:out value="${boardVO.regdate}"/>]
+                        	[ <a href="javascript:fn_writerSearch('<c:out value="${boardVO.username}"/>');"><c:out value="${boardVO.username}"/></a>]  [<c:out value="${boardVO.regdate}"/>]
                         	<i class="fa fa-eye fa-fw"></i> <c:out value="${boardVO.viewcnt}"/>
                         </span>
                     </div>
@@ -201,7 +201,6 @@
 
 				<!-- 댓글 수정창 -->	
 				<div id="replyModDiv" style="width: 99%; display:none">
-						<input type="hidden" id="brdno2" name="brdno" value="<c:out value="${boardInfo.brdno}"/>"> 
 						<input type="hidden" id="modRepeno" name="repeno">
 						<div class="col-lg-6">
 							<textarea class="form-control" id="modContent" name="rcontent" rows="3" maxlength="500"></textarea>
@@ -582,15 +581,6 @@
 	
 	} 
 	
-	// 댓글 수정 취소 
-	/* 
-	$("#ModCancelBtn").on("click", function() {
-		hideDiv("#replyModDiv");
-		
-		$("#reply"+updateRepeno).html(updateRcontent);
-		updateRepeno = updateRcontent = null;
-	});
-	*/
 	
 	// 댓글 수정 취소
 	function replyModCancel(){
@@ -730,6 +720,19 @@
 		});
 	});
 	
+	
+	// 작성자 클릭시 작성글 표시
+	function fn_writerSearch(value){
+
+		var url =  "/board/list?"
+			+ "page=1"
+			+ "&perPageNum=${cri.perPageNum}"
+			+ "&searchType=w"
+			+ "&keyword="
+			+ encodeURIComponent(value);
+	
+			self.location = url;
+	}
 	
 	function hideDiv(id){
 		$(id).hide();
