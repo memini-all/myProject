@@ -140,7 +140,10 @@
     
 	var formObj = $("form[role='form']");
 	
-	// 글 등록
+
+	/*
+	 * 글 등록
+	 */
 	$("#registBtn").on("click", function(){
 		
 		CKEDITOR.instances["content"].updateElement();
@@ -155,7 +158,9 @@
 	});
 	
 	
-	// 글등록 취소
+	/*
+	 * 글등록 취소
+	 */
 	$("#cancelBtn").on("click", function(){
 	  	self.location = "/board/list";	  
 	});
@@ -164,6 +169,10 @@
     // 파일 인덱스값
     var fileIndex = 0;	
     
+    
+	/*
+	 * 파일첨부
+	 */
     var fn_makeUploadElem = function(fileElemObj){
 
     	// 파일 용량체크
@@ -177,19 +186,13 @@
     	var fileElem = $("<input id='file"+fileIndex+"' class='file' type='file' name='uploadFile"+ fileIndex 
     					+ "' style='width:119px;height:40px; position: absolute;right:0px;top:0px; opacity:0; filter: alpha(opacity=0);cursor: pointer;outline:none;'/>");
 
-    	//var fileUpBtnElem = $("<span class='fileUp'>파일첨부</span>");
     	
     	$(fileElem).change(function(){
     		fn_makeUploadElem(this);	//recursive				
     	});
     	
 
-    	$(targetElem).append(fileElem);
-    	//$(targetElem).append(fileUpBtnElem);
-    	//$(fileElemObj).hide();	
-    	
-    	//파일 목록 추가 / 삭제
-    	//var fileElemObjVal = $(fileElemObj).val();	
+    	$(targetElem).append(fileElem);	
     	
     	var fileValues = $(fileElemObj).val().split("\\");
     	var fileName = fileValues[fileValues.length-1]; 				// 파일명
@@ -207,9 +210,11 @@
     }
     
 
-    
-  //업로드 파일 리스트 삭제
+  	/*
+	 * 업로드 파일 리스트 삭제
+	 */
     var fn_deleteFileList = function(fileListElem,fileIndex){
+	  
     	//기본으로 마크업된 input:file의 인덱스 번호가 0으로 시작되는데
     	//전역변수로 증가 시킨 상태이므로 -1을 시켜서 인덱스 번호를 맞춰준다.
     	var fileElemIdx = fileIndex - 1;
@@ -220,7 +225,9 @@
     };
 	
 
-	// 파일 용량단위 계산
+	/*
+	 * 파일 용량단위 계산
+	 */
 	function fn_sizeCalculator(fileSize){
 		
 		var kb_Size = (fileSize / 1024);
@@ -242,7 +249,10 @@
 		}
 	}
 	
-	// 개별 파일 사이즈 체크 
+	
+	/*
+	 * 개별 파일 사이즈 체크 
+	 */
 	function fn_fileSizeChk(fileObj){
 		
 		var maxSize = 1024 * 1024 * 10; // 10mb까지
@@ -256,7 +266,10 @@
 		return true;
 	}
 	
-	// 전체 파일 사이즈 체크
+	
+	/*
+	 * 전체 파일 사이즈 체크
+	 */
 	function fn_allFileSizeChk(){
 		
 		var fileSizeSum = 0;
@@ -277,7 +290,10 @@
 		return true;
 	}
 
-	// 입력값 체크
+
+	/*
+	 * 입력값 체크
+	 */
 	function fn_chkInputValue(id, msg){
 
 		if ( $.trim($(id).val()) == "") {

@@ -180,7 +180,10 @@
 
 	var formObj = $("form[role='form']");
 	
-	// 회원정보 수정
+	
+	/* 
+	 *	회원정보 수정
+	 */
 	$("#modBtn").on("click", function(){
 
 		formObj.attr("action", "/user/update");
@@ -196,7 +199,9 @@
 	var emailCheck = 0;
 
 	
-	// 비밀번호 체크
+	/* 
+	 *	비밀번호 체크
+	 */
 	$("#userpw").focusout(function(){
 
 		var regPw = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{5,20}$/;
@@ -222,7 +227,10 @@
 
 	});
 
-	// 비밀번호 확인
+
+	/* 
+	 *	비밀번호 확인
+	 */
 	$("#userpw2").focusout(function(){
 		
 		var regPw = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{5,20}$/;
@@ -259,7 +267,9 @@
 	});
 
 
-	// 이름
+	/* 
+	 *	이름 체크
+	 */
 	$("#username").focusout(function(){
 		
 		var regName = /^[a-zA-Z가-힣]{2,12}$/;
@@ -286,7 +296,9 @@
 	});
 
 	
-	// 이메일 
+	/* 
+	 *	이메일 체크
+	 */
 	$("#email").focusout(function(){
 		
 		var email = $("#email").val();
@@ -345,7 +357,9 @@
 	});
 
 	
-	// 회원정보 수정버튼 활성, 비활성
+	/* 
+	 *	회원정보 수정버튼 활성, 비활성
+	 */
 	function fn_activeButton(flag){
 		
 		// 등록버튼 활성
@@ -360,7 +374,9 @@
 	}
 	
 	
-	// 공백 체크
+	/* 
+	 *	공백 체크
+	 */
 	function fn_isEmpty(value, divElmt){
 
 		var regxBlank = /[\s]/g;
@@ -383,7 +399,9 @@
 	}
 
     
-	// 유효성 체크
+	/* 
+	 *	유효성 체크
+	 */
 	function fn_validCheck(pwVal, repwVal, nameVal, emailVal){
 		
 		if( pwVal == 1 && repwVal == 1 && nameVal == 1 && emailVal == 1 ){
@@ -394,7 +412,9 @@
 	}
 
 
-	// 프로필 이미지 파일 체크
+	/* 
+	 *	프로필 이미지 파일 체크
+	 */
 	function fn_fileTypeCheck(fileElmt){
 		
 		var fileTypes = ['jpg','gif','png','jpeg'];
@@ -416,7 +436,9 @@
 	}
 	
 	
-	// 프로필 사진 삭제	
+	/* 
+	 *	프로필 사진 삭제	
+	 */
 	$("#delBtn").on("click", function(){
 		
 		$("#profileImg").val(""); // 새로운 프로필 이미지 제거
@@ -425,8 +447,10 @@
 		$("#hiddenImg").val("");  // 기존에 프로필 이미지 파일명 제거
 	});
 
-	
-	// 프로필 이미지 파일 용량체크 
+	 
+	/* 
+	 *	프로필 이미지 파일 용량체크 
+	 */
 	function fn_fileSizeChk(fileElmt){
 		
 		var maxSize = 1024 * 1024 * 3; // 3mb까지
@@ -441,7 +465,9 @@
 	}
 	
 	
-	// 썸네일 이미지 생성
+	/* 
+	 *	썸네일 이미지 생성
+	 */
 	function fn_makeThumbnail(fileElmt){
 		
 		var imgfile = fileElmt.files[0];
@@ -475,7 +501,9 @@
 	}
 	
 
-	// 회원정보 수정 취소
+	/* 
+	 *	회원정보 수정 취소
+	 */
 	$("#cancelBtn").on("click", function(){
 	  	self.location = "/user/info";	  
 	});

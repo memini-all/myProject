@@ -168,14 +168,7 @@
 	                <button class="btn btn-outline btn-primary" id="removeBtn" >삭제</button>
 				</c:if>
 				<p>&nbsp;</p>
-				<!-- 			                               
-				<p>&nbsp;</p>
-				<input type="hidden" id="brdno" name="brdno" value="<c:out value="${boardInfo.brdno}"/>"> 
-				 -->
-				 
-				<!-- 댓글등록여부 확인 
-				<c:if test="${bgInfo.bgreply=='Y'}"> </c:if>
-				-->
+
 				<!-- 댓글 입력창 -->
 				<c:if test="${sessionScope.login != null}">
 	                <div class="panel panel-default">
@@ -282,84 +275,7 @@
 
  
   	<script type="text/javascript">
-  
-  	/*
-  	
-  		{{#each .}}
-	<div class="panel panel-default replyItm" id="replyItem{{repno}}" style="margin-left: {{depth level}}px;">
-		<input type="hidden" id="hiddenParent{{repno}}" value="{{rparent}}">
-		<input type="hidden" id="hiddenGroup{{repno}}" value="{{rgroup}}">
-		<div class="panel-body">             
-			<div class="pull-left photoOutline">
-				<c:choose>
-					<c:when test="${replylist.photo==null}">
-						<a href="" class="img-circle">
-							<i class="glyphicon glyphicon-user noPhoto"></i>
-						</a>
-					</c:when>
-					<c:otherwise>
-					<img class="img-circle" src="fileDownload?downname=<c:out value="${replylist.photo}"/>" title="<c:out value="${replylist.rewriter}"/>"/>
-					</c:otherwise>
-				</c:choose>
-			</div>	
-														
-			<div class="photoTitle">
-				<div> 
-					{{userno}} {{regdate}}
-					{{#isView this.rdeletat}}
-					{{else}} 	
-				
-						<c:if test="${sessionScope.login !=null }">
-						{{#checkUser userno}}
-							<a href="javascript:fn_replyRemove({{repno}})" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
-							<a href="javascript:fn_replyModify({{repno}})" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
-						{{/checkUser}}
-							<a href="javascript:fn_replyReply({{repno}}, {{userno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
-						</c:if>
-					{{/isView}}
-				</div>
-					<!--<div>[삭제된 댓글의 댓글입니다.]</div> -->
-					{{#isDeleteAt}}
-						<div id="reply{{repno}}"><font color="red">{{rcontent}}</font></div>
-					{{else}}
-     				 	<div id="reply{{repno}}">{{breaklines rcontent}}</div>
-					{{/isDeleteAt}}
 
-			</div>
-			<br><font color="red">글번호 : {{repno}} / 그룹 : {{rgroup}} / 부모 : {{rparent}}</font>
-			<br>작성자 : {{uname}}
-		</div>
-	</div>			
-	{{/each}}
-  	
-  	
-  	*/
-
-  	/*
-	Handlebars.registerHelper('isView', function(delAt, options) {	   
-
-		// 최상위 댓글이 삭제되어있을경우, 삭제,수정,답글 버튼 생성x
-		return delAt == "Y" ? options.fn(this) : options.inverse(this);
-	});
-	
-	
-	Handlebars.registerHelper('isDeleteAt', function(options) {	   
-
-		// this는 replyVO이다. 	
-		var parent = this.rparent;
-		var delAt = this.rdeletat;
-
-		// 최상위 댓글이 삭제되어있을경우
-		if(parent == 0){		
-			return delAt == "Y" ? options.fn(this) : options.inverse(this);
-		}
-		else{
-			return options.inverse(this);
-		}
-	
-	});
-	*/
-	
 	/******************** registerHelper *********************/
 	
 	// 로그인한 유저
@@ -367,7 +283,10 @@
 	// 유저 권한
   	var userAuthority = '${sessionScope.login.authority}';
   	
-	// 댓글 작성자와 로그인한 유저가 일치하는지 비교
+  	
+	/*
+	 * 댓글 작성자와 로그인한 유저가 일치하는지 비교
+	 */
 	Handlebars.registerHelper('checkUser', function(userno, options) {	   
 		
 		if(userAuthority == 'AD'){
@@ -378,32 +297,44 @@
 		}
 	});
 	
-	// 부모글이 삭제된 댓글의 경우 [삭제된 댓글의 댓글입니다.] 메시지 추가
+	
+	/*
+	 * 부모글이 삭제된 댓글의 경우 [삭제된 댓글의 댓글입니다.] 메시지 추가
+	 */
 	Handlebars.registerHelper('isDeleteAt', function(pdelete, options) {	   
 		return pdelete == "Y" ? options.fn(this) : options.inverse(this);
 	});
 	
-	// 답글일 경우 답글부분이 들여쓰기 되도록
+
+	/*
+	 *  답글일 경우 답글부분이 들여쓰기 되도록
+	 */
 	Handlebars.registerHelper('depth', function(level) {	   
 		if(level > 1)	return 40		
 	});
 	
 
-	// 프로필 이미지 유무
+	/*
+	 * 프로필 이미지 유무
+	 */
 	Handlebars.registerHelper('profileImg', function(userimg, options) {	 
 
 		return userimg == null ? options.fn(this) : options.inverse(this);	
 	});
 	
 
-	// 이미지 확장자
+	/*
+	 * 이미지 확장자
+	 */
 	Handlebars.registerHelper('checkType', function(pimage) {	   
 	
 		var fileLength = pimage.length; 
+		
 		/** 
 		 * lastIndexOf('.') * 뒤에서부터 '.'의 위치를 찾기위한 함수 
 		 * 검색 문자의 위치를 반환한다. * 파일 이름에 '.'이 포함되는 경우가 있기 때문에 lastIndexOf() 사용 
 		 */ 
+		 
 		var lastDot = pimage.lastIndexOf('.');
 
 		var fileName = pimage.substring(0, lastDot);
@@ -417,7 +348,9 @@
 	});
   	
 
-	// 댓글내용 정규표현식 처리
+	/*
+	 * 댓글내용 정규표현식 처리
+	 */
 	Handlebars.registerHelper('breaklines', function(text) {
 	   
 		var parent = this.rparent;	// 부모 댓글번호
@@ -439,6 +372,7 @@
 	    return new Handlebars.SafeString(text);
 	});
 	
+	
 	/******************** registerHelper *********************/
 	
  
@@ -446,9 +380,13 @@
 	var brdno = ${boardVO.brdno};
 	var replyPage = 1;
 	
+	
 	fn_getReplyList("/replies/"+brdno+"/1");
 	
-	// 댓글목록과 댓글페이지를 만든다.
+	
+	/*
+	 * 댓글목록과 댓글페이지를 만든다.
+	 */
 	function fn_getReplyList(pageURI) {
 
 		$.getJSON(pageURI, function(data) {
@@ -459,10 +397,11 @@
 			fn_printPage(data.pageCalculate, $(".pagination"));
 		});
 	}
-	// end getReplyList()
+
 	
-	
-	// 배열형식 댓글데이터, 타겟(div), 템플릿 스크립트를 인자로 받아 템플릿 생성
+	/*
+	 * 배열형식 댓글데이터, 타겟(div), 템플릿 스크립트를 인자로 받아 템플릿 생성
+	 */
  	var fn_printTemplate = function(replyArr, target, templateObject){
 
  		var template = Handlebars.compile(templateObject.html());
@@ -471,8 +410,10 @@
  		target.after(html);
  	}
 
-	
-	// 댓글 페이지 생성
+	 
+	/*
+	 *	댓글 페이지 생성
+	 */
 	var fn_printPage = function(pageCalculate, target) {
 
 		var str = "";
@@ -498,21 +439,27 @@
 
 		target.html(str);
 	};
-	// end printPage();
+
   	
-	// 댓글 페이징 처리 이벤트 - 페이지 번호 클릭시 해당 페이지로 이동
+	/*
+	 *	댓글 페이징 처리 이벤트 - 페이지 번호 클릭시 해당 페이지로 이동
+	 */
 	$(".pagination").on("click", "li a", function(event){
 
-		event.preventDefault(); // 일단 페이지 이동을 멈춤 - <a href> 태그 정지
+		// 일단 페이지 이동을 멈춤 - <a href> 태그 정지
+		event.preventDefault(); 
 	
-		replyPage = $(this).attr("href");  // li 태그 아래의 a 태그에서 href 속성 값을 가져온다.
+		// li 태그 아래의 a 태그에서 href 속성 값을 가져온다.
+		replyPage = $(this).attr("href");  
 		fn_getReplyList("/replies/"+brdno+"/"+replyPage);
 	});
 	
-	// 댓글 등록
+	
+	/*
+	 *	댓글 등록
+	 */
 	$("#replyAddBtn").on("click", function() {
 	
-		//var replyerObj = $("#newReplyWriter"); // 작성자
 		var replyer = loginUser;
 	 	var replyContentObj = $("#replyContent");
 		var rcontent = replyContentObj.val();
@@ -542,7 +489,6 @@
 					console.log("/replies/" + brdno + "/" + replyPage);
 
 					fn_getReplyList("/replies/" + brdno + "/" + replyPage);
-					//replyerObj.val("");
 					replyContentObj.val("");
 				}
 			}, 
@@ -553,7 +499,9 @@
 	});
 
 
-	// 댓글 수정div 부분
+	/*
+	 *	댓글 수정div 부분
+	 */
 	var updateRepeno = updateRcontent = null;
 	
 	function fn_replyModify(repeno){
@@ -562,15 +510,11 @@
 
 		if (updateRepeno) {
 			// 다른 댓글 수정버튼 클릭시, 전에 수정버튼 클릭했던 댓글 내용을 가져와 세팅한다.
-			//$("#replyModDiv").appendTo(document.body);
 			
 			hideDiv("#replyModDiv");
 
 			$("#reply"+updateRepeno).html(updateRcontent);
 			updateRepeno = updateRcontent = null;
-
-			//$(document.body).append($("#replyModDiv"));
-			//$("#reply"+updateRepeno).text( updateRcontent );
 		} 
 		
 		updateRepeno = repeno;
@@ -580,7 +524,6 @@
 		$("#modRepeno").val(repeno);  // 수정할 댓글번호
 		$("#modContent").val( html2Text(updateRcontent) ); // 수정할 댓글내용
 		$("#reply"+repeno).text("");	// 수정내용이 들어가있는 div 에 "" 붙임
-		//$("#replyModDiv").appendTo($("#reply"+repeno));
 		$("#reply"+repeno).append($("#replyModDiv"));
 		$("#replyModDiv").show();
 		$("#modContent").focus(); // 수정할 텍스트에 포커스
@@ -588,7 +531,9 @@
 	} 
 	
 	
-	// 댓글 수정 취소
+	/*
+	 *	댓글 수정 취소
+	 */
 	function replyModCancel(){
 		hideDiv("#replyModDiv");
 		
@@ -597,7 +542,9 @@
 	}
 	
 	
-	// 댓글 수정
+	/*
+	 *	댓글 수정
+	 */
 	$("#replyModBtn").on("click", function() {
 
 		var repeno = $("#modRepeno").val();
@@ -617,7 +564,6 @@
 			success : function(result) {
 				console.log("댓글 수정 결과 : " + result);
 				if (result == 'SUCCESS') {
-					//$("#replyModDiv").appendTo(document.body);
 					$(document.body).append($("#replyModDiv"));
 					$("#replyModDiv").hide();
 					$("#reply"+updateRepeno).html( text2Html($("#modContent").val()) );
@@ -634,7 +580,9 @@
 	});
 	
 	
-	// 댓글 삭제
+	/*
+	 *	댓글 삭제
+	 */
 	function replyRemove(repno){
 
 		var parent = $("#hiddenParent"+repno).val();
@@ -663,7 +611,9 @@
 	}
 
 	
-	// 댓글 답글창
+	/*
+	 *	댓글 답글창
+	 */
 	function fn_replyReply(repno, userno){
 		
 		$("#replyDialog").show();
@@ -672,29 +622,29 @@
 			replyModCancel();
 		} 
 
-		// 부모글의 repno
-		//alert("부모글 번호 : "+repno + " / 부모글 작성자 : "+userno);
-		
 		var groupNumber = $("#hiddenGroup"+repno).val();
 		
 		$("#replyParent").val(repno);
 		$("#repReplyContent").val("");
-		//$("#replyDialog").appendTo($("#reply"+repno));
 		$("#replyGroup").val(groupNumber);
 		$("#reply"+repno).append($("#replyDialog"));
 		$("#repReplyContent").focus();
 	} 
 	
-	// 댓글 답변 취소
+
+	/*
+	 *	댓글 답변 취소
+	 */
 	function fn_replyReplyCancel(){
 		hideDiv("#replyDialog");
 	} 
 	
 	
-	// 댓글 답변 등록
+	/*
+	 *	댓글 답변 등록
+	 */
 	$("#replyReplyBtn").on("click", function() {
 	
-		//var replyerObj = $("#newReplyWriter"); // 작성자
 		var replyer = "2" //replyerObj.val();  현재 답글
 		var replyContent = $("#repReplyContent").val();
 		var rparent = $("#replyParent").val(); 
@@ -725,7 +675,6 @@
 					console.log("/replies/" + brdno + "/" + replyPage);
 
 					fn_getReplyList("/replies/" + brdno + "/" + replyPage);
-					//$("#repReplyContent").val("");
 					fn_replyReplyCancel();
 				}
 			}, 
@@ -736,7 +685,9 @@
 	});
 	
 	
-	// 작성자 클릭시 작성글 표시
+	/*
+	 *	작성자 클릭시 작성글 표시
+	 */
 	function fn_writerSearch(value){
 
 		var url =  "/board/list?"
@@ -749,10 +700,12 @@
 			self.location = url;
 	}
 	
+	
 	function hideDiv(id){
 		$(id).hide();
 		$(id).appendTo(document.body);
 	}
+	
 	
 	function html2Text(text) {
 
@@ -766,6 +719,7 @@
 		return text;	
 	}
 
+	
 	function text2Html(text) {
 
 		text = text.replace(/</gi,"&lt;");

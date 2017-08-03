@@ -12,27 +12,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-<!-- 
-	<link href="/resources/sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/sb-admin/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-    <link href="/resources/sb-admin/dist/css/sb-admin-2.css" rel="stylesheet">
-    <link href="/resources/sb-admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    
-    <script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
-    <script src="/resources/sb-admin/vendor/jquery/jquery-ui.js"></script>
-    <script src="/resources/sb-admin/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/resources/sb-admin/vendor//metisMenu.min.js"></script>
-    <script src="/resources/sb-admin/dist/js/sb-admin-2.js"></script>
-     -->
-     
-     <!--  project9 BoardList.jsp JS파일 링크
-    <script src="js/jquery-2.2.3.min.js"></script>
-	<script src="js/jquery-ui.js"></script>
-	<script src="js/dynatree/jquery.dynatree.js"></script>    
-    <script src="css/sb-admin/bootstrap.min.js"></script>
-    <script src="css/sb-admin/metisMenu.min.js"></script>
-    <script src="css/sb-admin/sb-admin-2.js"></script>
-   -->
     
     <!-- Bootstrap Core CSS -->
     <link href="/resources/sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -83,7 +62,10 @@
 
 	});
 	
-	// 검색
+
+	/*
+	 *	검색
+	 */
 	function fn_search(value){
 
 		var url =  "/board/list"
@@ -97,7 +79,9 @@
 	}
 	
 	
-	// 작성자 클릭시 작성글 표시
+	/*
+	 *	작성자 클릭시 작성글 표시
+	 */
 	function fn_writerSearch(value){
 
 		var url =  "/board/list"
@@ -246,20 +230,9 @@
 					    <!-- 페이지 -->
 						<div id="dataTables-example_paginate" class="text-center">
 							<ul class="pagination">
-							
-							<!-- 
-							<c:if test="${pageCalculate.cri.page > 1}">
-								<li title="처음으로" class="paginate_button" ><a href="/board/list${pageCalculate.makeSearchURI(1) }"><i class="fa fa-angle-double-left fa-fw"></i> </a></li>
-							</c:if>	
-							 -->	
+
 									<c:if test="${pageCalculate.prev}">
-										<!--  
-										<li title="이전" class="paginate_button">
-											<a href="/board/list${pageCalculate.makeSearchURI(pageCalculate.startPage - 1) }">
-												<i class="fa fa-angle-left  fa-fw"></i>
-											</a>
-										</li>
-										-->
+
 										<li title="이전" class="page-item">
 									       <a class="page-link" href="/board/list${pageCalculate.makeSearchURI(pageCalculate.startPage - 1) }" aria-label="Previous">
 									        <span aria-hidden="true">&laquo;</span>
@@ -281,13 +254,7 @@
 									</c:forEach>
 		
 									<c:if test="${pageCalculate.next && pageCalculate.endPage > 0}">
-										<!--
-										<li title="다음" class="page-item"">
-											<a href="/board/list${pageCalculate.makeSearchURI(pageCalculate.endPage +1) }">
-												<i class="fa fa-angle-right fa-fw"></i>
-											</a>
-										</li>
-									  -->	
+			
 										<li title="다음" class="page-item">
 									       <a class="page-link" href="/board/list${pageCalculate.makeSearchURI(pageCalculate.endPage +1) }" aria-label="Next">
 									        <span aria-hidden="true">&raquo;</span>
@@ -296,43 +263,12 @@
 									    </li>
 										
 									</c:if>
-
-							<!-- 
-								<c:if test="${pageCalculate.cri.page < pageCalculate.totalPage }">
-									<li title="끝으로" class="paginate_button"><a href="/board/list${pageCalculate.makeSearchURI(pageCalculate.totalPage) }"><i class="fa fa-angle-double-right  fa-fw"></i></a></li>
-								</c:if>	
-							 -->
 							 
 							</ul>
 							
 						</div>					    
 					    
-				    	<!-- 기존 검색 부분
-						<div class="form-group">
-						
-							<div class="col-lg-2" style="width:auto;">
-							
-								<select class="selectpicker form-control"  name="searchType" style="width:auto;">
-									<option value="n" <c:out value="${cri.searchType == null ? 'selected' : '' }"/> >---</option>
-                                	<option value="t" <c:out value="${cri.searchType eq 't' ? 'selected' : '' }"/> >제목</option>
-                                	<option value="c" <c:out value="${cri.searchType eq 'c' ? 'selected' : '' }"/> >내용</option>
-                                	<option value="w" <c:out value="${cri.searchType eq 'w' ? 'selected' : ''}"/> >작성자</option>
-                                	<option value="tc" <c:out value="${cri.searchType eq 'tc' ? 'selected' : ''}"/> >제목+내용</option>
-                                </select>
-							</div>
-		                   
-			                <div class="input-group custom-search-form col-lg-3">
-								<input class="form-control" placeholder="Search..." type="text" name='keyword' 
-		                        		id="keywordInput" value='${cri.keyword }' >
-								<span class="input-group-btn">
-									<button class="btn btn-default" id='searchBtn'>
-										<i class="fa fa-search" style="font-size:1.45em"></i>
-									</button>
-								</span>
-							</div>
-
-						</div>
-	 -->
+				    	
 						<!-- 검색 -->
 						<div class="form-group col-lg-5" >
 							<div class="input-group">

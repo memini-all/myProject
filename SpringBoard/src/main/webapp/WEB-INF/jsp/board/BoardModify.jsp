@@ -170,26 +170,15 @@
     <!-- /#wrapper -->
     
     
+    
     <script type="text/javascript">
-
- 
-	// 전송 부분 - 제이쿼리 이용 x
-	/*
-	function fn_formSubmit(){
-		CKEDITOR.instances["content"].updateElement();
-		
-		// 내용 입력 체크
-		if ( ! chkInputValue("#title", "제목")) return false;
-		if ( ! chkInputValue("#content", "내용")) return false;
-	
-		$("#registerForm").submit();
-	} 
-	*/
     
 	var formObj = $("form[role='form']");
 
 	
-	// 수정버튼
+	/*
+	 *	수정버튼
+	 */
 	$("#modifyBtn").on("click", function(){
 		
 		CKEDITOR.instances["content"].updateElement();
@@ -203,7 +192,9 @@
 	});
 	
 	
-	// 취소 버튼
+	/*
+	 *	취소 버튼
+	 */
 	$("#cancelBtn").on("click", function(){
 
 		var url =  "/board/list"
@@ -217,6 +208,10 @@
     // 파일 인덱스값
     var fileIndex = 0;	
     
+    
+	/*
+	 * 파일첨부
+	 */
     var fn_makeUploadElem = function(fileElemObj){
 
     	// 파일 용량체크
@@ -229,18 +224,12 @@
     	var targetElem = $("div#fileWrapper");
     	var fileElem = $("<input id='file"+fileIndex+"' class='file' type='file' name='uploadFile"+ fileIndex 
     					+ "' style='width:119px;height:40px; position: absolute;right:0px;top:0px; opacity:0; filter: alpha(opacity=0);cursor: pointer;outline:none;'/>");
-    	//var fileUpBtnElem = $("<span class='fileUp'>파일첨부</span>");
     	
     	$(fileElem).change(function(){
     		fn_makeUploadElem(this);	//recursive				
     	});
     	
-    	$(targetElem).append(fileElem);
-    	//$(targetElem).append(fileUpBtnElem);
-    	//$(fileElemObj).hide();	
-    	
-    	//파일 목록 추가 / 삭제
-    	//var fileElemObjVal = $(fileElemObj).val();	
+    	$(targetElem).append(fileElem);		
     	
     	var fileValues = $(fileElemObj).val().split("\\");
     	var fileName = fileValues[fileValues.length-1]; 				// 파일명
@@ -258,8 +247,11 @@
     }
     
  
-  	//업로드 파일 리스트 삭제
+	/*
+	 *	업로드 파일 리스트 삭제
+	 */
     var fn_deleteFileList = function(fileListElem, fileIndex){
+  		
     	// 기본으로 마크업된 input:file의 인덱스 번호가 0으로 시작되는데
     	// 전역변수로 증가 시킨 상태이므로 -1을 시켜서 인덱스 번호를 맞춰준다.
     	var fileElemIdx = fileIndex - 1;
@@ -269,7 +261,10 @@
     	$(fileListElem).parent().remove();
     };
     
-    // 기존 첨부된 파일목록 삭제
+
+	/*
+	 *	기존 첨부된 파일목록 삭제
+	 */
     var fn_deleteExistFile = function(fileListElem, fileIndex){
     	
     	var fileWrapperElem = $("div").filter("#fileWrapper");
@@ -279,7 +274,9 @@
     }
 	
 
-	// 파일 용량단위 계산
+	/*
+	 *	파일 용량단위 계산
+	 */
 	function fn_sizeCalculator(fileSize){
 		
 		var kb_Size = (fileSize / 1024);
@@ -301,7 +298,10 @@
 		}
 	}
 	
-	// 개별 파일 사이즈 체크 
+
+	/*
+	 *	개별 파일 사이즈 체크 
+	 */
 	function fn_fileSizeChk(fileObj){
 		
 		var maxSize = 1024 * 1024 * 10; // 10mb까지
@@ -315,7 +315,10 @@
 		return true;
 	}
 	
-	// 전체 파일 사이즈 체크
+
+	/*
+	 *	전체 파일 사이즈 체크
+	 */
 	function fn_allFileSizeChk(){
 		
 		var fileSizeSum = 0;
@@ -336,7 +339,10 @@
 		return true;
 	}
 
-	// 입력값 체크
+
+	/*
+	 *	입력값 체크
+	 */
 	function fn_chkInputValue(id, msg){
 
 		if ( $.trim($(id).val()) == "") {

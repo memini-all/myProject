@@ -221,12 +221,18 @@
 	
 	var formObj = $("form[role='form']");
 	
-	// 회원정보 보기 취소
+ 
+	/*
+	 *	회원정보 보기 취소
+	 */
 	$("#cancelBtn").on("click", function(){
 	  	self.location = "/board/list";	  
 	});
 	
-	// 회원정보 수정
+
+	/*
+	 *	회원정보 수정
+	 */
 	$("#modBtn").on("click", function(){
 		self.location = "/user/view/update";	  
 	});
@@ -234,7 +240,10 @@
 	
 	/**************** 회원 탈퇴 *****************/
 	
-	// 회원탈퇴 버튼 클릭 - 탈퇴 창 보여줌
+
+	/*
+	 *	회원탈퇴 버튼 클릭 - 탈퇴 창 보여줌
+	 */
 	$("#delDialogBtn").on("click", function(){
 		
 		// 탈퇴창 열릴때 초기화
@@ -246,7 +255,9 @@
 	});
 	
 	
-	// 회원 탈퇴
+	/*
+	 * 회원 탈퇴
+	 */
 	$("#delBtn").on("click", function(){
 
 		var userno = ${userVO.userno};
@@ -281,11 +292,15 @@
 		
 	});
 	
+	
 	// 탈퇴버튼 활성,비활성화를 위한 변수설정
     var pwdCheck = 0;
     var repwCheck = 0;
 	
-	// 비밀번호 체크
+
+	/*
+	 *	비밀번호 체크
+	 */
 	$("#modPw").focusout(function(){
 
 		var regPw = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{5,20}$/;
@@ -309,7 +324,10 @@
 
 	});
 	
-	// 비밀번호 확인
+
+	/*
+	 *	비밀번호 확인
+	 */
 	$("#modPw2").focusout(function(){
 		
 		var userno = ${userVO.userno};
@@ -346,7 +364,9 @@
 	});
 	
 	
-	// 공백 체크
+	/*
+	 * 공백 체크
+	 */
 	function fn_isEmpty(value, divElmt){
 
 		var regxBlank = /[\s]/g;
@@ -369,7 +389,9 @@
 	}
 	
 	
-	// 유효성 체크
+	/*
+	 *	유효성 체크
+	 */
 	function fn_validCheck(pwVal, repwVal){
 		
 		if( pwVal == 1 && repwVal == 1 ){
@@ -379,7 +401,10 @@
 		}	
 	}
 	
-	// 탈퇴버튼 활성, 비활성
+
+	/*
+	 *	탈퇴버튼 활성, 비활성
+	 */
 	function fn_activeButton(flag){
 		
 		// 탈퇴버튼 활성

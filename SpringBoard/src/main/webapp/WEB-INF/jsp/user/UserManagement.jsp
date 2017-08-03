@@ -12,28 +12,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	
-	<!-- 
-			<link href="/resources/sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		    <link href="/resources/sb-admin/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-		    <link href="/resources/sb-admin/dist/css/sb-admin-2.css" rel="stylesheet">
-		    <link href="/resources/sb-admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-		    
-		    <script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
-		    <script src="/resources/sb-admin/vendor/jquery/jquery-ui.js"></script>
-		    <script src="/resources/sb-admin/vendor/bootstrap/js/bootstrap.min.js"></script>
-		    <script src="/resources/sb-admin/vendor//metisMenu.min.js"></script>
-		    <script src="/resources/sb-admin/dist/js/sb-admin-2.js"></script>
-		     -->
-	
-	<!--  project9 BoardList.jsp JS파일 링크
-		    <script src="js/jquery-2.2.3.min.js"></script>
-			<script src="js/jquery-ui.js"></script>
-			<script src="js/dynatree/jquery.dynatree.js"></script>    
-		    <script src="css/sb-admin/bootstrap.min.js"></script>
-		    <script src="css/sb-admin/metisMenu.min.js"></script>
-		    <script src="css/sb-admin/sb-admin-2.js"></script>
-		   -->
+
 	
 	<!-- Bootstrap Core CSS -->
 	<link href="/resources/sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,6 +45,7 @@
 
 	<!-- Conmmon JavaScript -->
     <script src="/resources/js/common.js"></script>
+
 
 	<style type="text/css">
 
@@ -132,10 +112,7 @@
 						<div class="table-responsive">
 							
 							<div id="userListDiv"></div>
-							
-								
-							
-							
+	
 						</div>
 						<!-- /.table-responsive -->
 					</div>

@@ -48,70 +48,60 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-	<!-- 
-    <link href="css/sb-admin/bootstrap.min.css" rel="stylesheet">
-    <link href="css/sb-admin/metisMenu.min.css" rel="stylesheet">
-    <link href="css/sb-admin/sb-admin-2.css" rel="stylesheet">
-    <link href="css/sb-admin/font-awesome.min.css" rel="stylesheet">
-    
-
-    <script src="js/jquery-2.2.3.min.js"></script>
-    <script src="css/sb-admin/bootstrap.min.js"></script>
-    <script src="css/sb-admin/metisMenu.min.js"></script>
-    <script src="css/sb-admin/sb-admin-2.js"></script>
-	<script src="js/project9.js"></script>  
-	 -->
 	  
-<script>
-
-
-
-
-function fn_formSubmit(){
+	  
+	<script>
 	
-	if ( fn_chkInputValue("#userid", "아이디") ) return false;
-	if ( fn_chkInputValue("#userpw", "비밀번호") ) return false;
+		/*
+		 * Submit - 로그인
+		 */
+		function fn_formSubmit(){
+			
+			if ( fn_chkInputValue("#userid", "아이디") ) return false;
+			if ( fn_chkInputValue("#userpw", "비밀번호") ) return false;
+			
+			var formObj = $("form[role='form']");
+			
+			formObj.attr("action", "/login");
+			formObj.attr("method", "post");	
+			formObj.submit();
+		}
+		
+
+		/*	
+		 *	입력값 체크
+		 */
+		function fn_chkInputValue(value, msg){
+		
+			var inputVal = $(value).val();
+			
+			var regxBlank = /[\s]/g;
+			
+			if( regxBlank.test(inputVal) == true ){
+		 
+				alert("공백은 사용할 수 없습니다.");
+				$(value).focus();
+				return true;
+			}
+			else if( inputVal == "" | inputVal == null){			
+		  
+				alert(msg+"을(를) 입력해주세요.");
+				$(value).focus();
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		// 로그인 결과메시지
+		var result = '${msg}';
+		
+		if(result == 'FAIL'){
+			alert("아이디 또는 비밀번호를 다시 확인하세요.");
+		}
 	
-	var formObj = $("form[role='form']");
-	
-	formObj.attr("action", "/login");
-	formObj.attr("method", "post");	
-	formObj.submit();
-}
-
-// 입력값 체크
-function fn_chkInputValue(value, msg){
-
-	var inputVal = $(value).val();
-	
-	var regxBlank = /[\s]/g;
-	
-	if( regxBlank.test(inputVal) == true ){
- 
-		alert("공백은 사용할 수 없습니다.");
-		$(value).focus();
-		return true;
-	}
-	else if( inputVal == "" | inputVal == null){			
-  
-		alert(msg+"을(를) 입력해주세요.");
-		$(value).focus();
-		return true;
-	}
-	else{
-		return false;
-	}
-}
-
-
-var result = '${msg}';
-
-if(result == 'FAIL'){
-	alert("아이디 또는 비밀번호를 다시 확인하세요.");
-}
-
-</script>
+	</script>
 
 </head>
 
@@ -269,8 +259,10 @@ if(result == 'FAIL'){
     
     <script type="text/javascript">
     
-    
-	// 아이디/비밀번호 찾기
+     
+	/*
+	 *	아이디/비밀번호 찾기
+	 */
 	$("#findBtn").on("click", function(){
 		
 		// dialog 열릴때 값 초기화
@@ -284,7 +276,10 @@ if(result == 'FAIL'){
 		$("#findModal").modal("show");	
 	});
 	
-	// 아이디 찾기
+
+	/*
+	 *	아이디 찾기
+	 */
 	$("#idFindBtn").on("click", function(){
 		
 		if ( fn_chkInputValue("#modId1", "이름") ) return false;
@@ -316,7 +311,9 @@ if(result == 'FAIL'){
 	});
 	
 	
-	// 비밀번호 찾기
+	/*
+	 *	비밀번호 찾기
+	 */
 	$("#pwFindBtn").on("click", function(){
 		
 		if ( fn_chkInputValue("#modPw", "아이디") ) return false;
@@ -354,7 +351,10 @@ if(result == 'FAIL'){
 		
 	});
 	
-	// 상태메시지 
+
+	/*
+	 *	 상태메시지 
+	 */
 	function fn_conMessage(id, flag, msg){
 		
 		var elmt = $(id);

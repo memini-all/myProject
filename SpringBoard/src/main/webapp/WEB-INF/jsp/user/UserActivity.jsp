@@ -50,21 +50,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-<!--  
-    <title></title>
-    <link href="css/sb-admin/bootstrap.min.css" rel="stylesheet">
-    <link href="css/sb-admin/metisMenu.min.css" rel="stylesheet">
-    <link href="css/sb-admin/sb-admin-2.css" rel="stylesheet">
-    <link href="css/sb-admin/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    
-
-    <script src="js/jquery-2.2.3.min.js"></script>
-    <script src="css/sb-admin/bootstrap.min.js"></script>
-    <script src="css/sb-admin/metisMenu.min.js"></script>
-    <script src="css/sb-admin/sb-admin-2.js"></script>
-	<script src="js/project9.js"></script>    
-  --> 
 
 
 </head>
@@ -248,23 +234,31 @@
 	
 		/************** articleTemplate registerHelper **************/
 	
-		// 첨부 파일이 있는지 체크
+		
+		/*
+		 *	첨부 파일이 있는지 체크
+		 */
 		Handlebars.registerHelper('isFile', function(fileCnt, options) {	   
 			return fileCnt > 0 ? options.fn(this) : options.inverse(this);
 		});
 		
-		// 댓글이 있는지 체크
+		/*
+		 *	댓글이 있는지 체크
+		 */
 		Handlebars.registerHelper('isReplyCnt', function(replycnt, options) {	   
 			return replycnt > 0 ? options.fn(this) : options.inverse(this);
 		});
 		
 		
-		// 공지사항 체크
+		/*
+		 *	공지사항 체크
+		 */
 		Handlebars.registerHelper('isNotice', function(notice, options) {	   
 			return notice == "Y" ? options.fn(this) : options.inverse(this);
 		});
 	
-		/**********************************************************/
+		
+		/************** articleTemplate registerHelper **************/
 
 		
 		var userno = ${userVO.userno};	// 회원번호
