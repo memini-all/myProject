@@ -31,9 +31,14 @@ import com.spring.project.board.service.BoardService;
 import com.spring.project.common.util.Criteria;
 import com.spring.project.common.util.PageCalculate;
 import com.spring.project.common.util.SearchCriteria;
-import com.spring.project.login.dto.LoginVO;
-import com.spring.project.user.dto.UserVO;
 
+
+/**
+ * 게시물 Controller <br>
+ * /board/* URL을 처리한다.
+ * 
+ * @author adm
+ */
 @Controller
 @RequestMapping("/board/*")
 public class BoardController {
@@ -46,15 +51,17 @@ public class BoardController {
 	
 	/**
 	 * 게시물을 조회한다. @ModelAttribute 사용으로 SearchCriteria가 BoardList.jsp로 자동으로 전달
-	 * @param cri  페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
-	 * @param model Spring Model
-	 * @return
+	 * 
+	 * @param cri  {@link SearchCriteria} 페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
+	 * @param model {@link Model}
+	 * 
+	 * @return 글목록 화면 (board/BoardList)
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String boardList(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
-		logger.info(">>>>>>> 게시물 보기 ........");
+		//logger.info(">>>>>>> 게시물 보기 ........");
 		
 		model.addAttribute("noticeList", service.selectNoticeList(cri));
 		model.addAttribute("list", service.selectBoardList(cri));
@@ -73,12 +80,14 @@ public class BoardController {
 	/**
 	 * 게시물 상세보기<br>
 	 * 상세보기에서 다시 원래의 페이지로 돌아가기위해 SearchCriteria를 가져온다.
+	 * 
 	 * @param response HttpServletResponse
 	 * @param request HttpServletRequest
 	 * @param brdno 상세보기하는 글의 글번호
-	 * @param cri 페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
-	 * @param model Spring Model
-	 * @return
+	 * @param cri  {@link SearchCriteria} 페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
+	 * @param model {@link Model}
+	 * 
+	 * @return 상세보기 화면 (board/BoardDetail)
 	 * @throws Exception
 	 */
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -117,7 +126,8 @@ public class BoardController {
 		
 		Map<String, Object> resultMap = service.selectBoardDetail(brdno);
 		
-		logger.info(">>>>>>> 상세보기 ........");
+		//logger.info(">>>>>>> 상세보기 ........");
+		
 		model.addAttribute("boardVO", resultMap.get("boardVO"));
 		model.addAttribute("fileList", resultMap.get("fileList"));
 
@@ -128,15 +138,17 @@ public class BoardController {
 	
 	/**
 	 * 글 작성 화면을 보여준다.
+	 * 로그인 하지 않고 해당 경로로 접근하면 로그인 화면을 보여준다.
+	 * 
 	 * @param request HttpServletRequest
-	 * @param board
-	 * @param model Spring Model
-	 * @return
+	 * @param model {@link Model}
+	 * 
+	 * @return 글작성 화면(board/BoardForm) 또는 로그인 화면(redirect:/view/login)
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/post", method = RequestMethod.GET)
 	public String boardForm(HttpServletRequest request, Model model) throws Exception {
-		logger.info(">>>>>>> 글작성 페이지 이동 .........");
+		//logger.info(">>>>>>> 글작성 페이지 이동 .........");
 
 		HttpSession session = request.getSession();
 		Object sessionObj =  session.getAttribute("login");
@@ -149,11 +161,22 @@ public class BoardController {
 		return "redirect:/view/login";	
 	}
 
-	// 글 등록
+
+	
+	/**
+	 * 글 등록 작업을 처리한다. 작성 후 글 목록화면으로 돌아간다.
+	 * 
+	 * @param request HttpServletRequest
+	 * @param board {@link BoardVO} 글 작성 정보를 담고있는 VO 
+	 * @param rttr {@link RedirectAttributes}
+	 * 
+	 * @return 글 목록 화면 (redirect:/board/list)
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
 	public String boardRegist(HttpServletRequest request, @ModelAttribute("board") BoardVO board, RedirectAttributes rttr) throws Exception {
     	
-		logger.info(">>>>>>> 등록작업 .......");
+		//logger.info(">>>>>>> 등록작업 .......");
 
 		service.insertBoard(board, request);
 		rttr.addFlashAttribute("msg", "SUCCESS");
@@ -161,7 +184,21 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	// 수정화면
+
+	
+	/**
+	 * 수정 화면을 보여준다. 
+	 * 로그인 하지 않고 해당 경로로 접근하면 로그인 화면을 보여준다.<br>
+	 * 수정 작업 후 다시 원래의 페이지로 돌아가기위해 SearchCriteria를 가져온다.
+	 * 
+	 * @param request HttpServletRequest
+	 * @param brdno 수정할 글의 글번호
+	 * @param cri  {@link SearchCriteria} 페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
+	 * @param model Model
+	 * 
+	 * @return 글 수정 화면(board/BoardModify) 또는 로그인 화면(redirect:/view/login)
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
 	public String modifyForm(HttpServletRequest request, @RequestParam("brdno") int brdno, 
 			@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
@@ -170,7 +207,7 @@ public class BoardController {
 		Object sessionObj =  session.getAttribute("login");
 		
 		if(sessionObj != null){
-			logger.info(">>>>>>> 수정 페이지 이동 .........");
+			//logger.info(">>>>>>> 수정 페이지 이동 .........");
 
 			Map<String, Object> resultMap = service.selectBoardDetail(brdno);
 			model.addAttribute("boardVO", resultMap.get("boardVO"));
@@ -183,12 +220,24 @@ public class BoardController {
 		return "redirect:/view/login";	
 	}
 
-	// 수정처리
+	
+	
+	/**
+	 * 글 수정 작업을 처리한다.
+	 * 
+	 * @param request HttpServletRequest
+	 * @param board {@link BoardVO} 수정할 글 정보를 담은 VO
+	 * @param cri {@link SearchCriteria} 페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
+	 * @param rttr RedirectAttributes
+	 * 
+	 * @return 글 목록 화면 (redirect:/board/list)
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public String boardModify(HttpServletRequest request, BoardVO board, SearchCriteria cri, 
 			RedirectAttributes rttr) throws Exception {
 		
-		logger.info(">>>>>>> 수정작업........");
+		//logger.info(">>>>>>> 수정작업........");
 
 		service.updateBoard(board, request);
 
@@ -203,12 +252,24 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	// 삭제처리
+
+	
+	/**
+	 * 글 삭제 처리를 한다.
+	 * 삭제 작업 후 다시 원래의 페이지로 돌아가기위해 SearchCriteria를 가져온다.
+	 * 
+	 * @param brdno 삭제할 글의 글번호
+	 * @param cri {@link SearchCriteria} 페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
+	 * @param rttr RedirectAttributes
+	 * 
+	 * @return 글 목록 화면(redirect:/board/list)
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
 	public String boardRemove(@RequestParam("brdno") int brdno, @ModelAttribute("cri") SearchCriteria cri,
 			RedirectAttributes rttr) throws Exception {
 
-		logger.info(">>>>>>> 삭제작업 ........");
+		//logger.info(">>>>>>> 삭제작업 ........");
 
 		service.deleteBoard(brdno);
 		
@@ -224,7 +285,14 @@ public class BoardController {
 
 	
 
-	// 내가 작성한 글 목록
+	/**
+	 * 내가 작성한 글 목록을 보여준다.
+	 * 
+	 * @param userno 사용자 번호
+	 * @param page 작성한 글 페이지 정보
+	 * 
+	 * @return  {@link ResponseEntity} 작성글 목록과 페이지 정보
+	 */
 	@RequestMapping(value = "/user/{userno}/{page}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> userArticleList4Ajax(
 			@PathVariable("userno") Integer userno, @PathVariable("page") Integer page) {
@@ -232,7 +300,7 @@ public class BoardController {
 		ResponseEntity<Map<String, Object>> entity = null;
 
 		try {
-			logger.info(">>>>>>> 작성글 조회 ........");
+			//logger.info(">>>>>>> 작성글 조회 ........");
 			
 			int articleCount = service.selectUserArticleCnt(userno); // 작성한 글의 총 개수
 			
@@ -260,7 +328,13 @@ public class BoardController {
 	}
 	
 
-	// 내가 작성한 글 삭제
+
+	/**
+	 * 내가 작성한 글을 삭제한다.
+	 * 
+	 * @param arrayParams 삭제할 글번호 리스트
+	 * @return {@link ResponseEntity}
+	 */
 	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)
 	public ResponseEntity<String> userArticleDelete4Ajax(
 			@RequestParam(value="delBrdnoArr[]") List<Integer> arrayParams) {
@@ -268,7 +342,7 @@ public class BoardController {
 		ResponseEntity<String> entity = null;
 		
 		try {
-			logger.info(">>>>>>> 내가 쓴 글 삭제 ........"+arrayParams);
+			//logger.info(">>>>>>> 내가 쓴 글 삭제 ........"+arrayParams);
 			
 			service.deleteUserArticle(arrayParams);
 			

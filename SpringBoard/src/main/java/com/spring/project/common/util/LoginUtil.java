@@ -8,15 +8,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 로그인 관련된 정보를 처리하는 클래스
+ * @author adm
+ *
+ */
 public class LoginUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginUtil.class);
 
+	
 	/**
 	 * Client의 IP주소를 가져온다.
 	 * 
-	 * @param request
-	 * @return
+	 * @param request request {@link HttpServletRequest}
+	 * @return String Ip주소
 	 */
 	private String getIp(HttpServletRequest request) {
 
@@ -50,12 +56,17 @@ public class LoginUtil {
 
 	}
 	
+	
+	
+	
 	/**
 	 * 로그인 정보를 담은 Map을 생성한다.
+	 * 
 	 * @param userno 사용자 번호
-	 * @param request HttpServletRequest
+	 * @param request {@link HttpServletRequest}
 	 * @param type 유형 - 로그인/로그아웃
-	 * @return
+	 * 
+	 * @return 로그인정보를 담은 Map
 	 */
 	public Map<String, Object> getLoginHistoryMap(int userno, HttpServletRequest request, String type) {
 

@@ -17,7 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-
+/**
+ * 파일업로드를 처리하는 클래스
+ * @author adm
+ *
+ */
 public class FileUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
@@ -25,9 +29,11 @@ public class FileUtils {
 	
 	/**
 	 * 프로필 이미지를 업로드 한다.
+	 * 
 	 * @param profileImgPath 파일업로드 경로
-	 * @param request
-	 * @return 파일명
+	 * @param request {@link HttpServletRequest}
+	 * 
+	 * @return String 프로필 이미지 파일명
 	 * @throws Exception
 	 */
 	public String profileImgFileInfo(String profileImgPath, HttpServletRequest request) throws Exception{
@@ -63,11 +69,14 @@ public class FileUtils {
 	}
 	
 	
+	
 	/**
 	 * ckeditor 이미지를 업로드 한다.
+	 * 
 	 * @param uploadPath 파일업로드 경로
-	 * @param request
-	 * @return 파일명
+	 * @param request {@link HttpServletRequest}
+	 * 
+	 * @return 업로드된 파일명과 저장경로를 담은 Map
 	 * @throws Exception
 	 */
 	public Map<String, String> ckeditImgFileInfo(String uploadPath, HttpServletRequest request) throws Exception{
@@ -112,12 +121,15 @@ public class FileUtils {
 	}
 	
 	
+	
 	/**
 	 * 파일을 업로드한다.
-	 * @param brdno 글번호
+	 * 
+	 * @param brdno 글 번호
 	 * @param uploadPath 파일업로드 경로
-	 * @param request
-	 * @return List<Map<String,Object>> 파일정보를 담은 list
+	 * @param request {@link HttpServletRequest}
+	 * 
+	 * @return 파일정보를 담은 List
 	 * @throws Exception
 	 */
 	public List<Map<String,Object>> uploadFileInfo(Integer brdno, String uploadPath, HttpServletRequest request) throws Exception{
@@ -169,10 +181,12 @@ public class FileUtils {
 	
 	/**
 	 * 업로드할 파일이 수정되었을 경우 해당 작업을 처리한다.
+	 * 
 	 * @param brdno 글번호
 	 * @param uploadPath 파일업로드 경로
-	 * @param request
-	 * @return List<Map<String,Object>> 파일정보를 담은 list
+	 * @param request {@link HttpServletRequest}
+	 * 
+	 * @return 파일정보를 담은 List
 	 * @throws Exception
 	 */
 	public List<Map<String,Object>> updateFileInfo(Integer brdno, String uploadPath, HttpServletRequest request) throws Exception{
@@ -235,10 +249,13 @@ public class FileUtils {
    
 	}
 	
+	
+	
 	/**
 	 * 파일이 저장될 폴더 생성에 필요한 년/월/일 정보를 생성한다.
-	 * @param uploadPath
-	 * @return
+	 * 
+	 * @param uploadPath 파일 업로드 경로
+	 * @return String 년/월/일 문자열
 	 */
 	private static String calcPath(String uploadPath) {
 
@@ -256,10 +273,13 @@ public class FileUtils {
 		return datePath;
 	}
 	
+	
+	
 	/**
 	 * 년/월/일 정보와 파일 업로드 경로를 이용해서 폴더를 생성한다.
-	 * @param uploadPath
-	 * @param paths
+	 * 
+	 * @param uploadPath 파일 업로드 경로
+	 * @param paths 년/월/일 문자열배열
 	 */
 	private static void makeDir(String uploadPath, String... paths) {
 		

@@ -15,14 +15,24 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.spring.project.common.util.SessionStore;
 import com.spring.project.user.dto.UserVO;
 
+
+/**
+ * 로그인 되기 전,후 작업을 처리하는 Interceptor
+ * @author adm
+ *
+ */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
+	/**
+	 * 로그인한 사용자의 Session정보를 관리하는 클래스
+	 */
 	@Resource(name = "sessionStore")
 	private SessionStore sessionStore;
 
 	private static final String LOGIN = "login";
 	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -38,6 +48,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		return true;
 	}
 
+	
+	/**
+	 * 로그인 후 작업을 처리한다. 로그인 되면 세션에 로그인한 사용자 정보를 저장한다.<br>
+	 * 사용자가 화면에서 아이디/비밀번호 기억에 체크하면 쿠키를 생성한다.
+	 */
+	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 

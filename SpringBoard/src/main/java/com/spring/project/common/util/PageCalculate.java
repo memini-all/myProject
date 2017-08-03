@@ -6,9 +6,9 @@ import java.net.URLEncoder;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+
 /**
- * 페이지 계산
- * 
+ * 페이지 처리를 하는 클래스
  * @author adm
  *
  */
@@ -24,8 +24,9 @@ public class PageCalculate {
 
 	private Criteria cri;
 
+	
 	/**
-	 * 페이지 계산
+	 * 페이지 정보를 계산하여 초기화한다. 
 	 */
 	private void calcData() {
 
@@ -53,10 +54,12 @@ public class PageCalculate {
 	}
 
 
+	
 	/**
 	 * 검색조건이 없는 페이지 URL 생성
+	 * 
 	 * @param page 현재 페이지
-	 * @return
+	 * @return String  페이지 URL
 	 */
 	public String makeURI(int page) {
 
@@ -68,10 +71,13 @@ public class PageCalculate {
 		return uriComponents.toUriString();
 	}
 
+	
+	
 	/**
 	 * 검색조건이 있는 페이지 URL 생성
+	 * 
 	 * @param page 현재 페이지
-	 * @return
+	 * @return String  페이지 URL
 	 */
 	public String makeSearchURI(int page) {
 
@@ -86,10 +92,11 @@ public class PageCalculate {
 	}
 
 
+	
 	/**
-	 * 인코딩 처리
+	 * 인코딩 처리를 한다.
 	 * @param keyword 검색할 키워드
-	 * @return
+	 * @return String 인코딩 처리된 검색 키워드
 	 */
 	private String encoding(String keyword) {
 
@@ -105,12 +112,14 @@ public class PageCalculate {
 		}
 	}
 
+	
 	@Override
 	public String toString() {
 		return "PageCalculate [Start = " + startPage + " , " + "end = " + endPage + "]";
 	}
 
-	/*********** getter & setter *************/
+	
+	/*********** Getter & Setter ***********/
 
 	public int getTotalPage() {
 		return totalPage;

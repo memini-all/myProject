@@ -12,6 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.project.common.util.Criteria;
 import com.spring.project.user.dto.UserVO;
 
+
+/**
+ * UserDAO의 구현체<br>
+ * 사용자 테이블과 관련된 CRUD를 처리한다.
+ * @author adm
+ *
+ */
 @Repository
 public class UserDAOImpl implements UserDAO {
 
@@ -19,6 +26,7 @@ public class UserDAOImpl implements UserDAO {
 	private SqlSession sqlSession;
 	
 	private static String namespace = "com.spring.project.user";
+	
 	
 	@Transactional
 	@Override
@@ -48,6 +56,7 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSession.selectOne(namespace+".selectUserInfo", userno);
 	}
 
+	
 	@Transactional
 	@Override
 	public void updateUser(UserVO userVO) throws Exception {
@@ -62,6 +71,7 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSession.selectOne(namespace+".selectDeleteUserInfo", userVO);
 	}
 
+	
 	@Transactional
 	@Override
 	public void deleteUser(int userno) throws Exception {

@@ -13,11 +13,18 @@ import com.spring.project.common.util.Criteria;
 import com.spring.project.reply.dao.ReplyDAO;
 import com.spring.project.reply.dto.ReplyVO;
 
+/**
+ * ReplyService의 구현체<br>
+ * 댓글과 관련된 처리를 한다.
+ * @author adm
+ *
+ */
 @Service
 public class ReplyServiceImpl implements ReplyService {
 
 	@Inject
 	private ReplyDAO replyDAO;
+	
 	
 	@Override
 	public List<ReplyVO> selectReplyList(Criteria cri, Integer brdno) throws Exception {
@@ -29,6 +36,7 @@ public class ReplyServiceImpl implements ReplyService {
 		return replyDAO.selectReplyList(paramMap);
 	}
 
+	
 	@Transactional
 	@Override
 	public void insertReply(ReplyVO replyVO) throws Exception {
@@ -41,6 +49,7 @@ public class ReplyServiceImpl implements ReplyService {
 		}
 	}
 
+	
 	@Transactional
 	@Override
 	public void updateReply(ReplyVO replyVO) throws Exception {
@@ -48,6 +57,7 @@ public class ReplyServiceImpl implements ReplyService {
 		replyDAO.updateReply(replyVO);
 	}
 
+	
 	@Transactional
 	@Override
 	public void deleteReply(Integer repno) throws Exception {
@@ -55,18 +65,21 @@ public class ReplyServiceImpl implements ReplyService {
 		replyDAO.deleteReply(repno);
 	}
 
+	
 	@Override
 	public int replyCount(Integer brdno) throws Exception {
 		
 		return replyDAO.replyCount(brdno);
 	}
 
+	
 	@Override
 	public int selectUserReplyCnt(int userno) throws Exception {
 		
 		return replyDAO.selectUserReplyCnt(userno);
 	}
 
+	
 	@Override
 	public List<ReplyVO> selectUserReplyList(Criteria cri, int userno) throws Exception {
 	

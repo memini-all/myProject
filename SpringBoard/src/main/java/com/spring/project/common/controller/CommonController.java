@@ -22,19 +22,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.project.board.dto.BoardVO;
 import com.spring.project.common.util.FileUtils;
 import com.spring.project.common.util.MediaUtils;
 import com.spring.project.user.service.UserService;
 
+/**
+ * 공통된 URL을 처리할 CommonController
+ * @author adm
+ *
+ */
 @Controller
 public class CommonController {
 
+	/**
+	 * common-context.xml에 등록한 프로필 이미지 업로드 경로
+	 */
 	@Resource(name = "profileImgPath")
 	private String profileImgPath;
 
+	/**
+	 * common-context.xml에 등록한 파일 업로드 경로
+	 */
 	@Resource(name = "uploadPath")
 	private String uploadPath;
 
+	/**
+	 * 파일업로드를 처리할 Utils 클래스
+	 */
 	@Resource(name = "fileUtils")
 	private FileUtils fileUtils;
 
@@ -43,18 +58,30 @@ public class CommonController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 
+	
+	
+	/**
+	 * /index URL로 접근시 글목록 화면을 보여준다.
+	 * 
+	 * @return 글 목록 화면(redirect:/board/list)
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/index")
 	public String boardList() throws Exception {
 
-		logger.info(">>>>>>> CommonController");
+		//logger.info(">>>>>>> CommonController");
 		return "redirect:/board/list";
 	}
 
+	
+	
 	/**
-	 * 브라우저에서 파일을 다운로드 할수 있게 하는 메서드
-	 * @param fileName : 저장된 파일명
-	 * @param downname : 원본 파일명
-	 * @return
+	 * 파일 다운로드
+	 * 
+	 * @param fileName 저장된 파일명
+	 * @param downName 원본 파일명
+	 * 
+	 * @return {@link ResponseEntity} 파일데이터
 	 * @throws Exception
 	 */
 	@ResponseBody
@@ -87,10 +114,13 @@ public class CommonController {
 	}
 
 	
+	
 	/**
-	 * 프로필 이미지를 가져온다.
-	 * @param userno
-	 * @return
+	 * 사용자의 프로필 이미지를 가져온다.
+	 * 
+	 * @param userno 사용자 번호
+	 * 
+	 * @return {@link ResponseEntity} 이미지 파일데이터
 	 * @throws Exception
 	 */
 	@ResponseBody
@@ -131,10 +161,12 @@ public class CommonController {
 	}
 
 	
+	
 	/**
 	 * ckeditor 이미지 파일 업로드
-	 * @param request
-	 * @param response
+	 * 
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
 	 * @throws Exception
 	 */
 	@RequestMapping("/uploadckedit")
@@ -174,8 +206,10 @@ public class CommonController {
 	
 	/**
 	 * ckeditor로 업로드된 이미지 보기
-	 * @param fileName
-	 * @return
+	 * 
+	 * @param fileName 업로드된 이미지 파일명
+	 * 
+	 * @return {@link ResponseEntity} 이미지 파일데이터
 	 * @throws Exception
 	 */
 	@ResponseBody

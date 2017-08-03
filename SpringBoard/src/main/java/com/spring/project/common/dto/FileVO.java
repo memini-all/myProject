@@ -1,5 +1,11 @@
 package com.spring.project.common.dto;
 
+
+/**
+ * 파일 정보를 담을 VO 클래스
+ * @author adm
+ *
+ */
 public class FileVO {
 
 	private Integer fileno; // 파일번호
@@ -10,9 +16,11 @@ public class FileVO {
 	private String file_regdate; // 파일 업로드날짜
 	private String file_delat; // 파일 삭제여부
 
+	
 	/**
 	 * 첨부된 파일 사이즈를 계산하여 문자열로 리턴한다.
-	 * @return String fileSize 파일사이즈
+	 * 
+	 * @return String 파일 사이즈
 	 */
 	public String getCalculateSize() {
 		
@@ -35,7 +43,8 @@ public class FileVO {
 		}
 	}
 	
-	/*********** getter & setter *************/
+	
+	/*********** Getter & Setter ***********/
 	
 	public Integer getFileno() {
 		return fileno;

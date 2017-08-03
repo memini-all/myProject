@@ -14,6 +14,12 @@ import com.spring.project.login.dao.LoginDAO;
 import com.spring.project.login.dto.LoginVO;
 import com.spring.project.user.dto.UserVO;
 
+/**
+ * LoginService의 구현체<br>
+ * 로그인과 관련된 처리를 한다.
+ * @author adm
+ *
+ */
 @Service
 public class LoginServiceImpl implements LoginService {
 	

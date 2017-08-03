@@ -21,6 +21,13 @@ public class MediaUtils {
 		mediaMap.put("PNG", MediaType.IMAGE_PNG);
 	}
 	
+	
+	/**
+	 * MediaType이 저장된 Map에서 해당하는 이미지 확장자를 가져온다.
+	 * 
+	 * @param type 이미지 확장자
+	 * @return
+	 */
 	public static MediaType getMediaType(String type){
 		return mediaMap.get(type.toUpperCase());
 	}

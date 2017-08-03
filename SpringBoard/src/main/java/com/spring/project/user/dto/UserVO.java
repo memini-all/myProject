@@ -1,5 +1,11 @@
 package com.spring.project.user.dto;
 
+
+/**
+ * 사용자 정보를 담을 VO 클래스
+ * @author adm
+ *
+ */
 public class UserVO {
 
 	private Integer userno; // 사용자 번호
@@ -13,6 +19,9 @@ public class UserVO {
 	private int loginFaile; // 로그인 실패횟수
 	private String islock; // 계정 잠금여부
 	private String regdate; // 가입일
+	
+	
+	/************ Getter/Setter ************/
 
 	public Integer getUserno() {
 		return userno;

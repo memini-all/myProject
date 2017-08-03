@@ -20,28 +20,60 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
+import com.spring.project.board.dto.BoardVO;
 import com.spring.project.common.util.LoginUtil;
 import com.spring.project.login.dto.LoginVO;
 import com.spring.project.login.service.LoginService;
 import com.spring.project.user.dto.UserVO;
 
 
+/**
+ * 로그인 Controller <br>
+ * 로그인 관련 URL을 처리한다.
+ * @author adm
+ *
+ */
 @Controller
 public class LoginController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
+	/**
+	 * 로그인 관련된 정보를 처리하는 클래스
+	 */
 	@Resource(name="loginUtil")
 	private LoginUtil loginUtil;
 	
 	@Inject
 	private LoginService service;
 	
+	
+	
+	/**
+	 * 로그인 화면을 보여준다.
+	 * 
+	 * @param loginVO {@link LoginVO} 로그인 정보를 담고있는 VO
+	 * @return 로그인 화면 (/login/Login)
+	 */
 	@RequestMapping(value = "/view/login", method = RequestMethod.GET)
 	public String login(@ModelAttribute("loginVO") LoginVO loginVO){
 		return "/login/Login";
 	}
 	
+	
+	
+	/**
+	 * 사용자 로그인
+	 * 
+	 * @param loginVO {@link LoginVO} 로그인 정보를 담고있는 VO
+	 * @param request {@link HttpServletRequest}
+	 * @param session {@link HttpSession}
+	 * @param model {@link Model}
+	 * @param rttr {@link RedirectAttributes}
+	 * 
+	 * @return 글 목록 화면 (board/BoardList)
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(LoginVO loginVO, HttpServletRequest request, HttpSession session, Model model, RedirectAttributes rttr) throws Exception{
 		
@@ -75,6 +107,18 @@ public class LoginController {
 	}
 	
 	
+	
+	
+	/**
+	 * 사용자 로그아웃
+	 * 
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @param session {@link HttpSession}
+	 * 
+	 * @return 글 목록 화면 (redirect:/board/list)
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		

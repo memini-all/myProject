@@ -1,5 +1,10 @@
 package com.spring.project.board.dto;
 
+/**
+ * 글 정보를 담을 VO 클래스
+ * @author adm
+ *
+ */
 public class BoardVO {
 
 	private Integer brdno; // 글번호
@@ -15,6 +20,9 @@ public class BoardVO {
 	private int replycnt; // 댓글수
 	private int fileCnt; // 파일개수
 
+	
+	/************ Getter/Setter ************/
+	
 	public Integer getBrdno() {
 		return brdno;
 	}

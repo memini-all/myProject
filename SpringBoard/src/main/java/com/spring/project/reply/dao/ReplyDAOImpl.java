@@ -11,6 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.project.reply.dto.ReplyVO;
 
+/**
+ * ReplyDAO의 구현체<br>
+ * 댓글 테이블과 관련된 CRUD를 처리한다.
+ * @author adm
+ *
+ */
 @Repository
 public class ReplyDAOImpl implements ReplyDAO {
 

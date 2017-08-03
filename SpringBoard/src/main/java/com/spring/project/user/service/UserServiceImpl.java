@@ -19,6 +19,13 @@ import com.spring.project.login.dto.LoginVO;
 import com.spring.project.user.dao.UserDAO;
 import com.spring.project.user.dto.UserVO;
 
+
+/**
+ * UserService의 구현체<br>
+ * 사용자와 관련된 처리를 한다.
+ * @author adm
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -28,12 +35,21 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private LoginDAO loginDAO;
 
+	
+	/**
+	 * common-context.xml에 등록한 프로필 이미지 업로드 경로
+	 */
 	@Resource(name = "profileImgPath")
 	private String profileImgPath;
 
+	
+	/**
+	 * 파일업로드를 처리할 Utils 클래스
+	 */
 	@Resource(name = "fileUtils")
 	private FileUtils fileUtils;
 
+	
 	@Transactional
 	@Override
 	public void insertUser(UserVO userVO, HttpServletRequest request) throws Exception {
@@ -44,18 +60,21 @@ public class UserServiceImpl implements UserService {
 		userDAO.insertUser(userVO);
 	}
 
+	
 	@Override
 	public int selectDuplUserId(String userid) throws Exception {
 
 		return userDAO.selectDuplUserId(userid);
 	}
 
+	
 	@Override
 	public String selectProfileImg(int userno) throws Exception {
 
 		return userDAO.selectProfileImg(userno);
 	}
 
+	
 	@Override
 	public List<LoginVO> selectLoginHistoryList(Criteria cri, int userno) throws Exception {
 
@@ -66,18 +85,21 @@ public class UserServiceImpl implements UserService {
 		return loginDAO.selectLoginHistoryList(paramMap);
 	}
 
+	
 	@Override
 	public int selectLoginCount(int userno) throws Exception {
 
 		return loginDAO.selectLoginCount(userno);
 	}
 
+	
 	@Override
 	public UserVO selectUserInfo(int userno) throws Exception {
 
 		return userDAO.selectUserInfo(userno);
 	}
 
+	
 	@Transactional
 	@Override
 	public void updateUser(UserVO userVO, HttpServletRequest request) throws Exception {
@@ -95,6 +117,7 @@ public class UserServiceImpl implements UserService {
 		userDAO.updateUser(userVO);
 	}
 
+	
 	@Override
 	public int selectDeleteUserInfo(UserVO userVO) throws Exception {
 		
@@ -151,6 +174,7 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 	
+	
 	@Override
 	public List<UserVO> selectWithdrawUser(Criteria cri) throws Exception {
 		
@@ -185,6 +209,7 @@ public class UserServiceImpl implements UserService {
 		return userDAO.selectUserId(paramMap);
 	}
 
+	
 	@Transactional
 	@Override
 	public String selectUserPw(String userid) throws Exception {

@@ -35,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
     </insert>
 
+
 	<!-- 사용자 아이디 조회 - 중복체크 -->
 	<select id="selectDuplUserId" parameterType="String" resultType="int">
 		SELECT 
@@ -92,7 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	
-	<!--탈퇴할 회원정보 확인 -->
+	<!--탈퇴 할 회원정보 확인 -->
 	<select id="selectDeleteUserInfo" parameterType="userVO" resultType="int">
 		SELECT 
 			COUNT(*)
@@ -152,7 +153,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			userid like CONCAT('%', #{_parameter}, '%') OR username LIKE CONCAT('%', #{_parameter}, '%')	
 	</select>
-	
 	
 		
 	<!-- 관리자 모드 : 탈퇴한 사용자 조회 -->

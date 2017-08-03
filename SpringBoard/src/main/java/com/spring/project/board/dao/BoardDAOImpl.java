@@ -13,6 +13,12 @@ import com.spring.project.board.dto.BoardVO;
 import com.spring.project.common.dto.FileVO;
 import com.spring.project.common.util.SearchCriteria;
 
+/**
+ * BoardDAO의 구현체<br>
+ * 게시물 테이블과 관련된 CRUD를 처리한다.
+ * @author adm
+ *
+ */
 @Repository
 public class BoardDAOImpl implements BoardDAO {
 
@@ -29,7 +35,7 @@ public class BoardDAOImpl implements BoardDAO {
 		// insert 실행 후 AUTO_INCREMENT(글번호 brdno)값이 BoardVO의 변수 brdno에 세팅된다.
 		sqlsession.insert(namespace+".insertBoard", boardVO);
 		
-		// AUTO_INCREMENT(댓글 brdno) 값 전달
+		// AUTO_INCREMENT(brdno) 값 전달
 		return boardVO.getBrdno();	
 	}
 

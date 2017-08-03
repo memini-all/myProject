@@ -18,18 +18,32 @@ import com.spring.project.common.util.Criteria;
 import com.spring.project.common.util.FileUtils;
 import com.spring.project.common.util.SearchCriteria;
 
+/**
+ * BoardService의 구현체<br>
+ * 게시물과 관련된 처리를 한다.
+ * @author adm
+ *
+ */
 @Service
 public class BoardServiceImpl implements BoardService {
 
 	@Inject
 	private BoardDAO boardDAO;
 	
-	// common-context.xml에 등록한 파일업로드 경로를 주입
+
+	/**
+	 * common-context.xml에 등록한 파일 업로드 경로
+	 */
 	@Resource(name = "uploadPath")
 	private String uploadPath;
 	
+	
+	/**
+	 * 파일업로드를 처리할 Utils 클래스
+	 */
 	@Resource(name="fileUtils")
 	private FileUtils fileUtils;
+	
 	
 	@Transactional
 	@Override
@@ -58,6 +72,7 @@ public class BoardServiceImpl implements BoardService {
 		return boardDAO.selectBoardList(cri);
 	}
 
+	
 	@Transactional
 	@Override
 	public Map<String, Object> selectBoardDetail(Integer brdno) throws Exception {
@@ -73,6 +88,7 @@ public class BoardServiceImpl implements BoardService {
 		return resultMap;
 	}
 
+	
 	@Transactional
 	@Override
 	public void updateBoard(BoardVO boardVO, HttpServletRequest request) throws Exception {
@@ -96,6 +112,7 @@ public class BoardServiceImpl implements BoardService {
 		
 	}
 
+	
 	@Transactional
 	@Override
 	public void deleteBoard(Integer brdno) throws Exception {
@@ -104,12 +121,14 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.deleteFileList(brdno);
 	}
 
+	
 	@Override
 	public int countPage(SearchCriteria cri) throws Exception {
 		
 		return boardDAO.countPage(cri);
 	}
 
+	
 	@Transactional
 	@Override
 	public void updateViewCnt(Integer brdno) throws Exception {
@@ -117,6 +136,7 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.updateViewCnt(brdno);
 	}
 
+	
 	@Override
 	public int selectUserArticleCnt(int userno) throws Exception {
 		

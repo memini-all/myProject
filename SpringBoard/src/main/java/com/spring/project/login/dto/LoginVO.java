@@ -1,7 +1,7 @@
 package com.spring.project.login.dto;
 
 /**
- * 화면에서 전달되는 데이터를 수집하는 용도의 클래스
+ * 로그인 정보를를 담을 VO 클래스
  * 
  * @author adm
  *
@@ -16,6 +16,9 @@ public class LoginVO {
 	private String conip; // 접속 아이피
 	private String ltype; // 로그인유형 - 로그인/로그아웃
 
+	
+	/*********** Getter & Setter ***********/
+	
 	public String getUserid() {
 		return userid;
 	}

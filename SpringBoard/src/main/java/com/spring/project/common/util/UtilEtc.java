@@ -1,12 +1,19 @@
 package com.spring.project.common.util;
 
+
+/**
+ * 기타 작업을 처리할 클래스
+ * @author adm
+ *
+ */
 public class UtilEtc {
 
 	
 	/**
 	 * 비밀번호 자리수를 입력받아 해당 자리수 만큼의 임시 비밀번호를 생성한다.
+	 * 
 	 * @param size 비밀번호 자리수
-	 * @return
+	 * @return 입력된 자리수에 해당하는 임시비밀번호
 	 */
 	public static String randomPw(int size) {
 
