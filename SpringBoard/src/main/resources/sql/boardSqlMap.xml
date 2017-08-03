@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				, updatedate
 				, deleteat
 				, viewcnt
+				, notice
 			)
 		VALUES
 			(
@@ -26,9 +27,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				, NOW()
 				, 'N'
 				, 0
+			<choose>
+				<when test="notice == null">
+				, 'N'
+				</when>
+				<otherwise>
+				, #{notice}
+				</otherwise>
+			</choose>
 			)
 	</insert>
 	
+
+	<!-- 공지사항 -->
+	<select id="selectNoticeList" parameterType="criteria" resultType="boardVO">
+		SELECT 
+		   BD.brdno
+		   , BD.userno
+		   , SU.username
+		   , BD.title
+		   , BD.content
+		   , DATE_FORMAT(BD.regdate,'%Y-%m-%d') regdate
+		   , DATE_FORMAT(BD.updatedate,'%Y-%m-%d') updatedate
+		   , BD.deleteat
+		   , BD.notice
+		   , BD.viewcnt
+		   , (SELECT COUNT(*) FROM tbl_sreply WHERE brdno = BD.brdno AND rdeletat = 'N') replycnt
+		   , (SELECT COUNT(*) FROM tbl_sboardfile WHERE brdno = BD.brdno) fileCnt
+		FROM 
+			tbl_sboard AS BD
+			
+			INNER JOIN tbl_suser SU
+			
+			ON BD.userno = SU.userno
+		WHERE 
+			BD.deleteat = 'N' AND BD.notice = "Y"
+		ORDER BY 
+			brdno DESC, regdate DESC
+		LIMIT 
+			5
+    </select> 
+
 
 	<!-- 글목록 -->
 	<select id="selectBoardList" parameterType="criteria" resultType="boardVO">
@@ -42,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   , DATE_FORMAT(BD.regdate,'%Y-%m-%d') regdate
 		   , DATE_FORMAT(BD.updatedate,'%Y-%m-%d') updatedate
 		   , BD.deleteat
+		   , BD.notice
 		   , BD.viewcnt
 		   , (SELECT COUNT(*) FROM tbl_sreply WHERE brdno = BD.brdno AND rdeletat = 'N') replycnt
 		   , (SELECT COUNT(*) FROM tbl_sboardfile WHERE brdno = BD.brdno) fileCnt
@@ -52,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			
 			ON BD.userno = SU.userno
 		WHERE 
-			BD.deleteat = 'N'
+			BD.deleteat = 'N' AND BD.notice = "N"
 	]]>
 		<!-- 검색조건 (동적 쿼리)을 추가 -->
 	<include refid="search"></include> 
@@ -77,6 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, DATE_FORMAT(BD.updatedate, '%Y-%m-%d %H:%i') updatedate
 			, BD.deleteat
 			, BD.viewcnt
+			, BD.notice
 		FROM
 			tbl_sboard AS BD
 			
@@ -124,7 +165,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			
 			ON BD.userno = SU.userno
 		WHERE 
-			BD.deleteat = 'N'
+			BD.deleteat = 'N' AND BD.notice = "N"
 	]]>
 		<!-- 검색조건 (동적 쿼리)을 추가 -->
 	<include refid="search"></include>
@@ -244,6 +285,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, DATE_FORMAT(updatedate, '%Y-%m-%d') updatedate
 			, deleteat
 			, viewcnt
+			, notice
 			, (SELECT COUNT(*) FROM tbl_sreply WHERE brdno = BD.brdno AND rdeletat = 'N') replycnt
 			, (SELECT COUNT(*) FROM tbl_sboardfile WHERE brdno = BD.brdno) fileCnt
 		FROM

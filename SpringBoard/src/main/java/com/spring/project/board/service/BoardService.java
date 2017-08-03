@@ -21,6 +21,15 @@ public interface BoardService {
 	
 	
 	/**
+	 * 공지사항
+	 * @param cri
+	 * @return
+	 * @throws Exception
+	 */
+	public List<BoardVO> selectNoticeList(SearchCriteria cri) throws Exception;
+	
+	
+	/**
 	 * 글 목록 - 페이지 처리
 	 * @return
 	 * @throws Exception

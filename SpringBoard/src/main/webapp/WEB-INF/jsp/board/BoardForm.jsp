@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 
 
@@ -41,11 +40,12 @@
     
     <script src="/resources/ckeditor/ckeditor.js"></script>
     
+  
     <script>
  
 	
 	$(document).ready(function() {		
-		CKEDITOR.replace( 'content', { 'filebrowserUploadUrl': 'upload4ckeditor'});
+		CKEDITOR.replace( 'content', { 'filebrowserUploadUrl': '/uploadckedit'});
 	});
 
 	</script>
@@ -78,14 +78,14 @@
 	                            <div class="col-lg-9">
 	                            	<input type="text" class="form-control" id="title" name="title" size="70" maxlength="250" placeholder="Enter Title">
 	                            	
-	                            	<!-- 공지사항 
-	                            	<c:if test="${bgInfo.bgnotice=='Y'}">
+	                            	<!-- 공지사항 -->
+	                            	<c:if test="${sessionScope.login.authority == 'AD'}">
 									 	<label>
-				                        	<input type="checkbox" name="brdnotice" value="Y" <c:if test="${boardInfo.brdnotice=='Y'}">checked="checked"</c:if>/>
-				                        	<s:message code="common.notice"/>
+				                        	<input type="checkbox" name="notice" id="notice" value="Y" />
+				                        	공지사항
 				                        </label>
 	                            	</c:if>
-	                            	-->
+	                            	
 	                            </div>
 	                        </div>
 	                        <!-- 글 내용 -->
@@ -229,7 +229,7 @@
 			
 			if ( ( kb_Size / 1024) > 1 ) { 
 				
-				fileSize = (Math.round( ( kb_Size / 1024 ) * 100) / 100); 
+				fileSize = (Math.round( ( kb_Size / 1024 ) * 100) / 100);  
 				return fileSize + " Mb";
 				
 			}else{ 

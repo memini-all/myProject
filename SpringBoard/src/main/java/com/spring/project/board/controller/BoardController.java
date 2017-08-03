@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,8 @@ import com.spring.project.board.service.BoardService;
 import com.spring.project.common.util.Criteria;
 import com.spring.project.common.util.PageCalculate;
 import com.spring.project.common.util.SearchCriteria;
+import com.spring.project.login.dto.LoginVO;
+import com.spring.project.user.dto.UserVO;
 
 @Controller
 @RequestMapping("/board/*")
@@ -40,13 +43,20 @@ public class BoardController {
 	@Inject
 	private BoardService service;
 
-	// 게시물 보기
-	// @ModelAttribute 사용으로 SearchCriteria가 BoardList.jsp로 자동으로 전달
+	
+	/**
+	 * 게시물을 조회한다. @ModelAttribute 사용으로 SearchCriteria가 BoardList.jsp로 자동으로 전달
+	 * @param cri  페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
+	 * @param model Spring Model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String boardList(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
 		logger.info(">>>>>>> 게시물 보기 ........");
-
+		
+		model.addAttribute("noticeList", service.selectNoticeList(cri));
 		model.addAttribute("list", service.selectBoardList(cri));
 
 		PageCalculate pCalculate = new PageCalculate();
@@ -59,7 +69,18 @@ public class BoardController {
 	}
 
 
-	// 글 상세보기
+
+	/**
+	 * 게시물 상세보기<br>
+	 * 상세보기에서 다시 원래의 페이지로 돌아가기위해 SearchCriteria를 가져온다.
+	 * @param response HttpServletResponse
+	 * @param request HttpServletRequest
+	 * @param brdno 상세보기하는 글의 글번호
+	 * @param cri 페이지 및 검색 키워드, 검색타입(제목, 내용 등)을 담은 클래스
+	 * @param model Spring Model
+	 * @return
+	 * @throws Exception
+	 */
 	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String boardRead(HttpServletResponse response, HttpServletRequest request, 
@@ -103,12 +124,29 @@ public class BoardController {
 		return "board/BoardDetail";
 	}
 
-	// 등록화면
+
+	
+	/**
+	 * 글 작성 화면을 보여준다.
+	 * @param request HttpServletRequest
+	 * @param board
+	 * @param model Spring Model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/post", method = RequestMethod.GET)
-	public String boardForm(BoardVO board, Model model) throws Exception {
+	public String boardForm(HttpServletRequest request, Model model) throws Exception {
 		logger.info(">>>>>>> 글작성 페이지 이동 .........");
 
-		return "board/BoardForm";
+		HttpSession session = request.getSession();
+		Object sessionObj =  session.getAttribute("login");
+		
+		if(sessionObj != null){
+			return "board/BoardForm";
+		}
+		
+		// 로그인 하지 않고 접근할 경우 로그인 화면 리다이렉트
+		return "redirect:/view/login";	
 	}
 
 	// 글 등록
@@ -125,16 +163,24 @@ public class BoardController {
 
 	// 수정화면
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
-	public String modifyForm(@RequestParam("brdno") int brdno, @ModelAttribute("cri") SearchCriteria cri, Model model)
-			throws Exception {
+	public String modifyForm(HttpServletRequest request, @RequestParam("brdno") int brdno, 
+			@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
-		logger.info(">>>>>>> 수정 페이지 이동 .........");
+		HttpSession session = request.getSession();
+		Object sessionObj =  session.getAttribute("login");
+		
+		if(sessionObj != null){
+			logger.info(">>>>>>> 수정 페이지 이동 .........");
 
-		Map<String, Object> resultMap = service.selectBoardDetail(brdno);
-		model.addAttribute("boardVO", resultMap.get("boardVO"));
-		model.addAttribute("fileList", resultMap.get("fileList"));
+			Map<String, Object> resultMap = service.selectBoardDetail(brdno);
+			model.addAttribute("boardVO", resultMap.get("boardVO"));
+			model.addAttribute("fileList", resultMap.get("fileList"));
 
-		return "board/BoardModify";
+			return "board/BoardModify";
+		}
+		
+		// 로그인 하지 않고 접근할 경우 로그인 화면 리다이렉트
+		return "redirect:/view/login";	
 	}
 
 	// 수정처리

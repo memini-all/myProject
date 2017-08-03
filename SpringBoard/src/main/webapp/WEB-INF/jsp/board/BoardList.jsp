@@ -154,8 +154,51 @@
 						<div class="listHiddenField pull-right field100">작성자</div>
 						<div class="listTitle">제목</div>
 					</div>
+					
+					<!--  공지사항 -->
+					<c:if test="${pageCalculate.cri.page == 1}">   <!-- 공지사항은 첫페이지에만 보이도록 한다. -->
+					<c:forEach items="${noticeList}" var="boardVO">	
 						
+						<div class="listBody">
+	
+							<!-- 파일첨부 아이콘부분 -->
+							<div class="listHiddenField pull-right field60">
+								<c:if test="${boardVO.fileCnt>0}">
+									<i class="fa fa-download fa-fw" title="<c:out value="${boardVO.fileCnt}개 파일"/>"></i>
+								</c:if>	
+							</div>				
+							<div class="listHiddenField pull-left field60"><img src="/resources/image/notice-icon3.png"></div>
+							<div class="listHiddenField pull-right field60 textCenter"><c:out value="${boardVO.viewcnt}"/></div>
+							<div class="listHiddenField pull-right field100 textCenter"><c:out value="${boardVO.regdate}"/></div>
+							<div class="listHiddenField pull-right field100 textCenter">
+								<a href="javascript:fn_writerSearch('<c:out value="${boardVO.username}"/>');"><c:out value="${boardVO.username}"/></a>
+							</div> 		
+							<div class="listTitle">
+														<!-- 목록에서 글제목 클릭 시 페이지 정보 넘긴다. -->	
+								<a href="/board/detail${pageCalculate.makeSearchURI(pageCalculate.cri.page) }&brdno=${boardVO.brdno}" class="notice">${boardVO.title}</a>	
+								<c:if test="${boardVO.replycnt > 0}">
+									(<c:out value="${boardVO.replycnt}"/>)	<!-- 댓글 개수 -->
+								</c:if>						
+							</div>
+
+							 
+							<!-- 화면 축소시 보여질 부분 -->
+							<div class="showField text-muted small">
+								<c:out value="글쓴이"/> 
+								<c:out value="${boardVO.regdate}"/>
+								<i class="fa fa-eye fa-fw"></i> <c:out value="${boardVO.viewcnt}"/>
+								<c:if test="${boardVO.fileCnt>0}">
+									<i class="fa fa-download fa-fw" title="<c:out value="${boardVO.fileCnt}"/>"></i>
+								</c:if>									
+							</div>
+
+							 
+						</div>
+					<!-- listBody -->	
 						
+					</c:forEach>
+					</c:if>	
+					<!--  일반글 -->	
 					<c:forEach items="${list}" var="boardVO">	
 						
 						<div class="listBody">

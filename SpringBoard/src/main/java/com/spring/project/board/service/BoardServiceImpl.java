@@ -44,6 +44,14 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	
+	@Override
+	public List<BoardVO> selectNoticeList(SearchCriteria cri) throws Exception {
+		
+		return boardDAO.selectNoticeList(cri);
+	}
+	
+	
 	@Override
 	public List<BoardVO> selectBoardList(SearchCriteria cri) throws Exception {
 		
@@ -134,5 +142,7 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.deleteUserArticle(brdnoList);
 		boardDAO.deleteUserArticleFile(brdnoList);	// 첨부파일도 삭제
 	}
+
+
 
 }

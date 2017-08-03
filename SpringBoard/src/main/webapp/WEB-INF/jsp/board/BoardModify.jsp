@@ -86,14 +86,14 @@
 	                            <div class="col-lg-9">
 	                            	<input type="text" class="form-control" id="title" name="title" size="70" maxlength="250" value="<c:out value="${boardVO.title}"/>">
 	                            	
-	                            	<!-- 공지사항 
-	                            	<c:if test="${bgInfo.bgnotice=='Y'}">
+	                            	<!-- 공지사항 -->
+	                            	<c:if test="${sessionScope.login.authority == 'AD'}">
 									 	<label>
-				                        	<input type="checkbox" name="brdnotice" value="Y" <c:if test="${boardInfo.brdnotice=='Y'}">checked="checked"</c:if>/>
-				                        	<s:message code="common.notice"/>
+				                        	<input type="checkbox" name="notice" id="notice" />
+				                        	공지사항
 				                        </label>
 	                            	</c:if>
-	                            	-->
+	                            	
 	                            </div>
 	                        </div>
 	                        <!-- 글 내용 -->

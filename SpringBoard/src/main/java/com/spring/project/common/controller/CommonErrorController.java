@@ -26,6 +26,12 @@ public class CommonErrorController {
 		logger.info(">>>>>> CommonError : exception");
 		return "common/error";
 	}
+	
+	@RequestMapping(value = "/400")
+	public String pageError400(HttpServletRequest request, Model model) {
+		logger.info(">>>>>> CommonError : page error code 400");
+		return "common/error";
+	}
 
 	@RequestMapping(value = "/404")
 	public String pageError404(HttpServletRequest request, Model model) {

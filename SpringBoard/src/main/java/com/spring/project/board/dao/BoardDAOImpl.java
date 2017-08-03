@@ -33,6 +33,13 @@ public class BoardDAOImpl implements BoardDAO {
 		return boardVO.getBrdno();	
 	}
 
+
+	@Override
+	public List<BoardVO> selectNoticeList(SearchCriteria cri) throws Exception {
+		
+		return sqlsession.selectList(namespace+".selectNoticeList", cri);
+	}
+	
 	
 	@Override
 	public List<BoardVO> selectBoardList(SearchCriteria cri) throws Exception {
@@ -138,4 +145,6 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		sqlsession.update(namespace+".deleteUserArticleFile", brdnoList);
 	}
+
+
 }

@@ -36,7 +36,10 @@ public class HomeController {
 		return "home";
 	}
 	
-	// Ajax 테스트용
+
+	/**
+	 * 테스트용 메서드
+	 */
 	@RequestMapping(value = "/test3", method = RequestMethod.GET)
 	public void ajaxTest() {
 	    

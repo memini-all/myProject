@@ -10,6 +10,7 @@ public class BoardVO {
 	private String regdate; // 작성일
 	private String updatedate; // 수정일
 	private String deleteat; // 삭제여부
+	private String notice; // 공지사항여부
 	private int viewcnt; // 조회수
 	private int replycnt; // 댓글수
 	private int fileCnt; // 파일개수
@@ -77,6 +78,14 @@ public class BoardVO {
 
 	public void setDeleteat(String deleteat) {
 		this.deleteat = deleteat;
+	}
+
+	public String getNotice() {
+		return notice;
+	}
+
+	public void setNotice(String notice) {
+		this.notice = notice;
 	}
 
 	public int getViewcnt() {

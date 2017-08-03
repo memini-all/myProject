@@ -196,7 +196,13 @@
 		<div class="listHiddenField pull-right field100 textCenter">{{regdate}}</div>
 							
 		<div class="listTitle">
-			<a href="/board/detail?brdno={{brdno}}" >{{title}}</a>			
+			{{#isNotice notice}}
+				<img src="/resources/image/notice-icon3.png">
+				<a href="/board/detail?brdno={{brdno}}" class="notice">{{title}}</a>	
+			{{else}}
+				<a href="/board/detail?brdno={{brdno}}" >{{title}}</a>	
+			{{/isNotice}}	
+
 			{{#isReplyCnt replycnt}}	
 				({{replycnt}})
 			{{/isReplyCnt}}	
@@ -250,6 +256,12 @@
 		// 댓글이 있는지 체크
 		Handlebars.registerHelper('isReplyCnt', function(replycnt, options) {	   
 			return replycnt > 0 ? options.fn(this) : options.inverse(this);
+		});
+		
+		
+		// 공지사항 체크
+		Handlebars.registerHelper('isNotice', function(notice, options) {	   
+			return notice == "Y" ? options.fn(this) : options.inverse(this);
 		});
 	
 		/**********************************************************/

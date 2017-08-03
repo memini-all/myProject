@@ -25,7 +25,7 @@ public class FileUtils {
 	
 	/**
 	 * 프로필 이미지를 업로드 한다.
-	 * @param uploadPath 파일업로드 경로
+	 * @param profileImgPath 파일업로드 경로
 	 * @param request
 	 * @return 파일명
 	 * @throws Exception
@@ -61,6 +61,56 @@ public class FileUtils {
         
         return savedFileName;   
 	}
+	
+	
+	/**
+	 * ckeditor 이미지를 업로드 한다.
+	 * @param uploadPath 파일업로드 경로
+	 * @param request
+	 * @return 파일명
+	 * @throws Exception
+	 */
+	public Map<String, String> ckeditImgFileInfo(String uploadPath, HttpServletRequest request) throws Exception{
+		
+		// MultipartHttpServletRequest에서 파일명을 추출한다.
+		MultipartHttpServletRequest multipartReq = (MultipartHttpServletRequest)request;
+		Iterator<String> iterator = multipartReq.getFileNames();
+		
+		MultipartFile multipartFile = null;
+    	String originalFileName = null;
+    	String savedFileName = null;
+    	Map<String, String> resultMap = null; 
+    	
+    	// randomUUID() : 중복되지 않는 난수 생성
+     	UUID uid = UUID.randomUUID();
+         	
+     	// 파일 저장될 경로
+        String savedFilePath = calcPath(uploadPath);
+        savedFilePath = savedFilePath.replace(File.separatorChar, '/');
+        
+        while(iterator.hasNext()){
+        	// 파일을 가져온다.
+        	multipartFile = multipartReq.getFile(iterator.next());
+        	
+        	if(multipartFile.isEmpty() == false){
+        		
+        		originalFileName = multipartFile.getOriginalFilename();		// 원본 파일명
+        		savedFileName = uid.toString() + "_" + originalFileName;	// 저장될 파일명
+        		
+        		File file = new File(uploadPath + savedFilePath, savedFileName);
+        		
+        		// 파일생성
+        		multipartFile.transferTo(file);  
+        		
+        		resultMap = new HashMap<String,String>();
+        		resultMap.put("savedPath", savedFilePath);
+        		resultMap.put("saveFileName", savedFileName);
+        	}
+        }
+        
+        return resultMap;   
+	}
+	
 	
 	/**
 	 * 파일을 업로드한다.

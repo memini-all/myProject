@@ -18,6 +18,15 @@ public interface BoardDAO {
 	
 	
 	/**
+	 * 공지사항
+	 * @param cri
+	 * @return
+	 * @throws Exception
+	 */
+	public List<BoardVO> selectNoticeList(SearchCriteria cri) throws Exception;
+	
+	
+	/**
 	 * 글 목록
 	 * @return
 	 * @throws Exception
