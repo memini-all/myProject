@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES
 			(
 				#{userid}
-				, #{userpw}
+				, SHA2(#{userpw}, 256)
 				, #{username}
 				, #{email}
 				, 'US'
@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE 
 			tbl_suser 
 		SET 
-            userpw = #{userpw}
+            userpw = SHA2(#{userpw}, 256)
             , username = #{username}
             , email = #{email}
             , profile_Img = #{profile_Img}
@@ -100,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM
 			tbl_suser
 		WHERE
-			userno = #{userno} AND userpw = #{userpw}
+			userno = #{userno} AND userpw = SHA2(#{userpw}, 256)
 	</select>
 	
 	
@@ -260,7 +260,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE 
 			tbl_suser 
 		SET 
-            userpw = #{userpw}  
+            userpw = SHA2(#{userpw}, 256)  
         WHERE 
         	userno = #{userno}  
 	</update>

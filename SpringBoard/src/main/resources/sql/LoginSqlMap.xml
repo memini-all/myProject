@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM
 			tbl_suser
 		WHERE
-			userid = #{userid} AND userpw = #{userpw}
+			userid = #{userid} AND userpw = SHA2(#{userpw}, 256)
 	</select>
 
 
