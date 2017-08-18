@@ -69,28 +69,11 @@
 				
 					<form id="form1" name="form1" role="form" enctype="multipart/form-data">
 					
-
 						<div class="row form-group">
 							<div class="col-lg-1"></div>
 							<label id="idLb" class="control-label col-xs-4 col-sm-2"><font color="#ED4C00" >* </font>아이디</label>
 							<div class="col-lg-3 form-check disabled">
 								<input type="text" class="form-control" id="userid" name="userid" maxlength="20" readonly value="${userVO.userid}">
-							</div>
-						</div>
-						
-						<div class="row form-group" id="pwDiv">
-							<div class="col-lg-1"></div>
-							<label class="control-label col-xs-4 col-sm-2"><font color="#ED4C00" >* </font>비밀번호</label>
-							<div class="col-lg-3">
-								<input type="password" class="form-control" id="userpw" name="userpw" maxlength="20" readonly value="${userVO.userpw}">
-							</div>
-						</div>
-
-						<div class="row form-group" id="pwDiv">
-							<div class="col-lg-1"></div>
-							<label class="control-label col-xs-4 col-sm-2">비밀번호 확인</label>
-							<div class="col-lg-3">
-								<input type="password" class="form-control" id="userpw2" name="userpw2" maxlength="20" readonly value="${userVO.userpw}">
 							</div>
 						</div>
 
@@ -133,6 +116,7 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-outline btn-primary" id="cancelBtn">취소</button>
 					<button type="button" class="btn btn-outline btn-primary" id="modBtn" >회원정보 수정</button>
+					<button type="button" class="btn btn-outline btn-primary" id="pwModDialogBtn" >비밀번호 변경</button>
 					<button type="button" class="btn btn-outline btn-primary" id="delDialogBtn" >회원탈퇴</button>
 				</div>
 			</div>
@@ -143,7 +127,72 @@
 	<!-- /#wrapper -->
 
 
-	<!-- Modal -->  <!-- 회원탈퇴 부분 -->
+	<!-- Modal -->  <!-- 비밀번호 변경 dialog -->
+    <div class="modal fade" id="pwModModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="closeX" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">비밀번호 수정</h4>
+                </div>
+                
+                <div class="modal-body">
+                	<form id="form1" name="form1">
+						<input type="hidden" name="userno" id="modUserno"> 
+                    	
+                    	<div class="row form-group">
+							<div class="col-lg-1"></div>
+							<label id="idLb" class="control-label col-sm-3">아이디</label>
+							<div class="col-lg-3 form-check disabled">
+								${userVO.userid}
+							</div>
+						</div>
+                    	
+                    	<div class="row form-group">
+							<div class="col-lg-1"></div>
+							<label class="control-label col-sm-3">현재 비밀번호</label>
+							<div class="col-lg-6">
+								<input type="password" class="form-control" id="curtPw" name="curtPw" maxlength="20">
+							</div>
+							<div class="col-lg-4"></div>
+							<div class="col-lg-8" id="curtPwMsg" ></div> 
+						</div>
+                         
+                        <div class="row form-group" id="pwDiv">
+							<div class="col-lg-1"></div>
+							<label class="control-label col-sm-3">새 비밀번호</label>
+							<div class="col-lg-6">
+								<input type="password" class="form-control" id="newPw" name="newPw" maxlength="20">
+							</div>
+							<div class="col-lg-4"></div>
+							<div class="col-lg-8" id="newPwMsg" ></div> 
+						</div>
+
+						<div class="row form-group" id="pwDiv">
+							<div class="col-lg-1"></div>
+							<label class="control-label col-sm-3">새 비밀번호 확인</label>
+							<div class="col-lg-6">
+								<input type="password" class="form-control" id="newPw2" name="newPw2" maxlength="20">
+							</div>
+							<div class="col-lg-4"></div>
+							<div class="col-lg-8" id="repwMsg" ></div> 
+						</div>
+  
+                	</form>        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="close">취소</button>
+                    <button type="button" class="btn btn-default" disabled="disabled" id="pwModBtn">수정</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+	<!-- Modal -->  <!-- 회원탈퇴 dialog -->
     <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -238,6 +287,160 @@
 	});
 	
 	
+	
+	/*************** 비밀번호 변경 ***************/
+	
+
+	/*
+	 *	비밀번호 수정 버튼 클릭 - 수정 창 보여줌
+	 */
+	$("#pwModDialogBtn").on("click", function(){
+		  
+		//수정 창 열릴때 초기화
+		$("#curtPw").val("");
+		$("#newPw").val("");
+		$("#newPw2").val("");	
+		
+		$("#curtPwMsg").html("");	
+		$("#newPwMsg").html("");	
+		$("#repwMsg").html("");	
+		fn_activeButton("#pwModBtn", "N"); 
+		
+		$("#pwModModal").modal("show");	
+	});
+	
+
+	/*
+	 * 비밀번호 수정
+	 */
+	$("#pwModBtn").on("click", function(){
+
+		var userno = ${userVO.userno};
+		var curtPw = $("#curtPw").val();
+		var newPw = $("#newPw").val();
+		
+		$.ajax({
+			type : 'post',
+			url : '/user/update/password',
+			data : {userno : userno, curtpw : curtPw, newpw : newPw},
+			success : function(result) {
+				
+				if(result == 'NOT_FOUND'){
+					// 입력한 현재 비밀번호와 DB에 저장된 비밀번호와 일치하지 않을경우 
+					$("#curtPw").val("");
+					$("#newPw").val("");
+					$("#newPw2").val("");
+
+					alert("현재 사용중인 비밀번호가 일치하지 않습니다.");
+				}
+				else if (result == 'SUCCESS') {
+					
+					alert("정상적으로 비밀번호가 수정되었습니다.");	
+					$("#pwModModal").modal("hide");
+				}
+			}, 
+	        error:function(request,status,error){
+        		fn_errorPage(request.status);
+        	}	
+		});
+	});
+	
+	
+	// 비밀번호 수정 버튼 활성,비활성화를 위한 변수설정
+    var curtPwCheck = 0;
+    var newPwCheck = 0;
+    var repwCheck = 0;
+
+    
+	/*
+	 *	현재 비밀번호 체크
+	 */
+	$("#curtPw").focusout(function(){
+
+		var curtpw = $("#curtPw").val();
+		if( fn_isEmpty(curtpw, "#curtPwMsg") ){
+			curtPwCheck = 0;
+			fn_activeButton("#pwModBtn", "N");
+		}else{
+			curtPwCheck = 1;
+		}	
+		
+		fn_validCheck2(curtPwCheck, newPwCheck, repwCheck);
+	});
+	
+	
+	/*
+	 *	새 비밀번호 체크
+	 */
+	$("#newPw").focusout(function(){
+		
+		var curtpw = $("#curtPw").val();
+		var newpw = $("#newPw").val();
+		var regPw = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{5,20}$/;
+		
+		if( fn_isEmpty(newpw, "#newPwMsg") ){
+			newPwCheck = 0;
+		}	
+		else if( regPw.test(newpw) == false ){
+			newPwCheck = 0;
+			fn_activeButton("#pwModBtn", "N");
+			$("#newPwMsg").css("color", "#FF2424");   
+			$("#newPwMsg").html("5~20자 영문 대소문자, 숫자, 특수문자를 사용하세요.");	
+		}
+		else if( curtpw == newpw ){
+			newPwCheck = 0;
+			fn_activeButton("#pwModBtn", "N");
+			$("#newPwMsg").css("color", "#FF2424");   
+			$("#newPwMsg").html("기존 비밀번호는 사용할 수 없습니다.");	
+			$("#newPw").val("");
+		}
+		else{
+			newPwCheck = 1;
+			$("#newPwMsg").html("");	
+			fn_validCheck2(curtPwCheck, newPwCheck, repwCheck);
+		}	
+	});
+	
+
+	/*
+	 *	새 비밀번호 확인
+	 */
+	$("#newPw2").focusout(function(){
+		
+		var userno = ${userVO.userno};
+		
+		var regPw = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{5,20}$/;
+		var pw = $("#newPw").val();
+		var repw = $("#newPw2").val();	
+		
+		
+		if( fn_isEmpty(repw, "#repwMsg") ){
+			repwCheck = 0;
+			$("#newPw2").val("");
+		}
+		else if( regPw.test(repw) == false ){
+			repwCheck = 0;
+			fn_activeButton("#pwModBtn", "N");
+			$("#repwMsg").css("color", "#FF2424");   
+			$("#repwMsg").html("5~20자 영문 대소문자, 숫자, 특수문자를 사용하세요.");	
+			$("#newPw2").val("");
+		}
+		else if( pw != repw ){
+			repwCheck = 0;
+			fn_activeButton("#pwModBtn", "N");
+			$("#repwMsg").css("color", "#FF2424");   
+			$("#repwMsg").html("비밀번호가 일치하지 않습니다.");	
+			$("#newPw2").val("");
+		}
+		else{
+			repwCheck = 1;		
+			$("#repwMsg").html("");	
+
+			fn_validCheck2(curtPwCheck, newPwCheck, repwCheck);
+		}
+	});
+	
+	
 	/**************** 회원 탈퇴 *****************/
 	
 
@@ -250,6 +453,7 @@
 		$("#modPw").val("");
 		$("#modPw2").val("");
 		$("#pwMsg").html("");	
+		fn_activeButton("#delBtn", "N");
 		
 		$("#delModal").modal("show");	
 	});
@@ -280,7 +484,7 @@
 					
 					alert("정상적으로 탈퇴되었습니다.");
 					
-					$("#myModal").modal("hide");
+					$("#delModal").modal("hide");
 					self.location = "/logout";	  
 				}
 			}, 
@@ -288,8 +492,6 @@
         		fn_errorPage(request.status);
         	}	
 		});
-
-		
 	});
 	
 	
@@ -312,6 +514,7 @@
 		}	
 		else if( regPw.test(userpw) == false ){
 			pwdCheck = 0;
+			fn_activeButton("#delBtn", "N");
 			$("#pwMsg").css("color", "#FF2424");   
 			$("#pwMsg").html("5~20자 영문 대소문자, 숫자, 특수문자를 사용하세요.");	
 		}
@@ -343,14 +546,14 @@
 		}
 		else if( regPw.test(repw) == false ){
 			repwCheck = 0;
-			fn_activeButton("N");
+			fn_activeButton("#delBtn", "N");
 			$("#pwMsg").css("color", "#FF2424");   
 			$("#pwMsg").html("5~20자 영문 대소문자, 숫자, 특수문자를 사용하세요.");	
 			$("#modPw2").val("");
 		}
 		else if( pw != repw ){
 			repwCheck = 0;
-			fn_activeButton("N");
+			fn_activeButton("#delBtn", "N")
 			$("#pwMsg").css("color", "#FF2424");   
 			$("#pwMsg").html("비밀번호가 일치하지 않습니다.");	
 			$("#modPw2").val("");
@@ -395,26 +598,35 @@
 	function fn_validCheck(pwVal, repwVal){
 		
 		if( pwVal == 1 && repwVal == 1 ){
-			fn_activeButton("Y");
+			fn_activeButton("#delBtn", "Y");
 		}else{
-			fn_activeButton("N");
+			fn_activeButton("#delBtn", "N");
+		}	
+	}
+	
+	function fn_validCheck2(pwVal, newpwVal, repwVal){
+		
+		if( pwVal == 1 && newpwVal == 1 && repwVal == 1 ){
+			fn_activeButton("#pwModBtn", "Y");
+		}else{
+			fn_activeButton("#pwModBtn", "N");
 		}	
 	}
 	
 
 	/*
-	 *	탈퇴버튼 활성, 비활성
+	 *	비밀번호 수정, 탈퇴버튼 활성, 비활성
 	 */
-	function fn_activeButton(flag){
+	function fn_activeButton(btnId, flag){
 		
-		// 탈퇴버튼 활성
+		// 버튼 활성
 		if(flag == "Y"){
-			$("#delBtn").prop("disabled", false);
-			$("#delBtn").removeClass("btn btn-default").addClass("btn btn-primary");
+			$(btnId).prop("disabled", false);
+			$(btnId).removeClass("btn btn-default").addClass("btn btn-primary");
 		}
 		else{	// 비활성
-			$("#delBtn").prop("disabled", true);
-			$("#delBtn").removeClass("btn btn-primary").addClass("btn btn-default");	
+			$(btnId).prop("disabled", true);
+			$(btnId).removeClass("btn btn-primary").addClass("btn btn-default");	
 		}
 	}
 	

@@ -3,6 +3,8 @@ package com.spring.project.user.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.spring.project.common.util.Criteria;
 import com.spring.project.user.dto.UserVO;
 
@@ -77,6 +79,24 @@ public interface UserDAO {
 	public int selectDeleteUserInfo(UserVO userVO) throws Exception;
 	
 
+	/**
+	 * 사용자의 현재 비밀번호를 체크한다. (비밀번호 수정에 사용)
+	 * 
+	 * @param paramMap 사용자번호와 현재 비밀번호를 담은 Map
+	 * @return int 체크 결과
+	 * @throws Exception
+	 */
+	public int selectUserPassowrd(Map<String, Object> paramMap) throws Exception;
+	
+
+	/**
+	 * 사용자의 비밀번호를 수정한다.
+	 * 
+	 * @param paramMap 사용자번호와 변경할 비밀번호를 담은 Map
+	 * @throws Exception
+	 */
+	public void updatetUserPassowrd(Map<String, Object> paramMap) throws Exception;
+	
 	
 	/**
 	 * 회원탈퇴
@@ -175,5 +195,5 @@ public interface UserDAO {
 	 * @param paramMap 사용자 번호와 임시비밀번호를 갖고있는 Map
 	 * @throws Exception
 	 */
-	public void updatetUserPw(Map<String, Object> paramMap) throws Exception;
+	public void updatetUserTempPw(Map<String, Object> paramMap) throws Exception;
 }

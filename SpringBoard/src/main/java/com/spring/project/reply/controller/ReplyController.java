@@ -83,7 +83,7 @@ public class ReplyController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// 조회작업 실패시 BAD_REQUEST 전송
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
@@ -127,7 +127,7 @@ public class ReplyController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// 조회작업 실패시 BAD_REQUEST 전송
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}

@@ -107,6 +107,18 @@ public interface UserService {
 	public int selectDeleteUserInfo(UserVO userVO) throws Exception;
 	
 	
+	/**
+	 * 사용자 비밀번호 수정
+	 * 
+	 * @param userno 사용자 번호
+	 * @param curtpw 현재 비밀번호
+	 * @param newpw 새 비밀번호
+	 * 
+	 * @return String 비밀번호 수정 결과
+	 * @throws Exception
+	 */
+	public String updateUserPassword(int userno, String curtpw, String newpw) throws Exception;
+	
 	
 	/**
 	 * 회원탈퇴

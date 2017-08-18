@@ -12,6 +12,8 @@
 		<org.springframework-version>4.3.3.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.8.9</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -38,6 +40,13 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
+		</dependency>
+
+		<!-- aspectjtools -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>1.8.9</version>
 		</dependency>
 
 		<!-- Logging -->
@@ -180,20 +189,6 @@
 			<version>2.8.4</version>
 		</dependency>
 
-		<!-- AspectJ -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${org.aspectj-version}</version>
-		</dependency>
-
-		<!-- aspectjtools -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjtools</artifactId>
-			<version>1.8.9</version>
-		</dependency>
-
 		<!-- spring-aop -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -210,6 +205,7 @@
 
 	</dependencies>
 	<build>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -245,6 +241,31 @@
 					<mainClass>org.test.int1.Main</mainClass>
 				</configuration>
 			</plugin>
+
+			<!-- 메이븐을 통한 서버 배포
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<warsourcedirectory>src/main/webapp</warsourcedirectory>
+					<webxml>src/main/webapp/WEB-INF/web.xml</webxml>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<url>http://192.168.137.128:8080/manager/text</url>
+					<path>/SpringBoard</path>
+					<username>admin</username>
+					<password>admin</password>
+				</configuration>
+			</plugin>
+			 -->	
+
 		</plugins>
 	</build>
 </project>

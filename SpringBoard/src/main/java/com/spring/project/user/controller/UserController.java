@@ -154,7 +154,7 @@ public class UserController {
 
 		} catch (Exception e) { 
 			e.printStackTrace();
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
@@ -250,7 +250,38 @@ public class UserController {
 		return "redirect:/user/info";
 	}
 	
+
+	/**
+	 * 비밀번호 수정
+	 * 
+	 * @param userno 사용자 번호
+	 * @param curtpw 현재 비밀번호
+	 * @param newpw 새 비밀번호
+	 * 
+	 * @return {@link ResponseEntity} 수정결과 메시지
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/password", method = RequestMethod.POST)
+	public ResponseEntity<String> userPasswordUpdate(int userno, 
+			String curtpw, String newpw) throws Exception {
+
+		//logger.info(">>>>>>> 비밀번호 수정 ........");
+
+		ResponseEntity<String> entity = null;
 	
+		try {
+			
+			String msg = service.updateUserPassword(userno, curtpw, newpw);
+			entity = new ResponseEntity<String>(msg, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 비밀번호 수정 작업 실패시 에러 메시지 전송
+			entity = new ResponseEntity<String>("에러 : " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+		
+	}	
 
 	/**
 	 * 회원 탈퇴
@@ -344,7 +375,7 @@ public class UserController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<Integer>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
@@ -415,7 +446,7 @@ public class UserController {
 		} catch (Exception e) { 
 			e.printStackTrace();
 			// 작업 실패시 BAD_REQUEST 전송
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<List<UserVO>>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
@@ -450,7 +481,7 @@ public class UserController {
 
 		} catch (Exception e) { 
 			e.printStackTrace();
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<List<UserVO>>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
@@ -478,7 +509,7 @@ public class UserController {
 
 		} catch (Exception e) { 
 			e.printStackTrace();
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<List<UserVO>>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
@@ -506,7 +537,7 @@ public class UserController {
 
 		} catch (Exception e) { 
 			e.printStackTrace();
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<List<UserVO>>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
@@ -562,7 +593,7 @@ public class UserController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
@@ -590,7 +621,7 @@ public class UserController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}

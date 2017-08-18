@@ -22,8 +22,8 @@
 		<!-- <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>-->
 		<property name="url"
 			value="jdbc:log4jdbc:mysql://192.168.137.128:3306/test_db01?useSSL=false&amp;serverTimezone=UTC"></property>
-		<property name="username" value="scott"></property>
-		<property name="password" value="tiger"></property>
+		<property name="username" value="mgt"></property>
+		<property name="password" value="mgt"></property>
 	</bean>
 
 	<!-- mybatis SqlSessionFactoryBean -->

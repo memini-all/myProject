@@ -72,6 +72,21 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	
+	@Override
+	public int selectUserPassowrd(Map<String, Object> paramMap) throws Exception {
+		
+		return sqlSession.selectOne(namespace+".selectUserPassowrd", paramMap);
+	}
+	
+
+	@Transactional
+	@Override
+	public void updatetUserPassowrd(Map<String, Object> paramMap) throws Exception {
+		
+		sqlSession.update(namespace+".updatetUserPw", paramMap);
+	}
+	
+	
 	@Transactional
 	@Override
 	public void deleteUser(int userno) throws Exception {
@@ -132,7 +147,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Transactional
 	@Override
-	public void updatetUserPw(Map<String, Object> paramMap) throws Exception {
+	public void updatetUserTempPw(Map<String, Object> paramMap) throws Exception {
 		
 		sqlSession.update(namespace+".updatetUserPw", paramMap);
 	}

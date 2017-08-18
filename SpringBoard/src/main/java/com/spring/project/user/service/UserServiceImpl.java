@@ -127,6 +127,30 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	@Override
+	public String updateUserPassword(int userno, String curtpw, String newpw) throws Exception {
+		
+		String msg = "NOT_FOUND";
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("userno", userno);
+		paramMap.put("userpw", curtpw);
+		
+		int result = userDAO.selectUserPassowrd(paramMap);
+		
+		// 화면에서 입력된 현재 비밀번호가 올바를경우
+		if(result == 1){
+			
+			paramMap.replace("userpw", newpw);
+			userDAO.updatetUserPassowrd(paramMap);
+			msg = "SUCCESS";
+		}
+
+		return msg;
+	}
+	
+	
+	@Transactional
+	@Override
 	public void deleteUser(int userno) throws Exception {
 		
 		userDAO.deleteUser(userno);
@@ -233,7 +257,7 @@ public class UserServiceImpl implements UserService {
 				paramMap.put("userpw", tempPw);
 				
 				// 사용자의 비밀번호를 임시 비밀번호로 변경한다.
-				userDAO.updatetUserPw(paramMap);
+				userDAO.updatetUserTempPw(paramMap);
 				
 				result = tempPw;
 			}

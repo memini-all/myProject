@@ -79,25 +79,7 @@
 									 readonly disabled="disabled" value="${userVO.userid}">
 							</div>
 						</div>
-						
-						<div class="row form-group" id="pwDiv">
-							<div class="col-lg-1"></div>
-							<label class="control-label col-xs-4 col-sm-2"><font color="#ED4C00" >* </font>비밀번호</label>
-							<div class="col-lg-3">
-								<input type="password" class="form-control" id="userpw" name="userpw" maxlength="20" value="${userVO.userpw}">
-							</div>
-							<div class="col-lg-5" id="pwMsg" ></div> 
-						</div>
-
-						<div class="row form-group" id="pwDiv">
-							<div class="col-lg-1"></div>
-							<label class="control-label col-xs-4 col-sm-2">비밀번호 확인</label>
-							<div class="col-lg-3">
-								<input type="password" class="form-control" id="userpw2" name="userpw2" maxlength="20" value="${userVO.userpw}">
-							</div>
-							<div class="col-lg-5" id="repwMsg" ></div> 
-						</div>
-
+						 
 						<div class="row form-group">
 							<div class="col-lg-1"></div>
 							<label class="control-label col-xs-4 col-sm-2"><font color="#ED4C00" >* </font>이름</label>
@@ -192,81 +174,11 @@
 	});
 	
 
-	//  가입버튼 비활성화를 위한 변수설정
-    var pwdCheck = 0;
-    var repwCheck = 0;
+	//  회원정보 수정버튼 비활성화를 위한 변수설정
 	var nameCheck = 0;
 	var emailCheck = 0;
 
 	
-	/* 
-	 *	비밀번호 체크
-	 */
-	$("#userpw").focusout(function(){
-
-		var regPw = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{5,20}$/;
-		var userpw = $("#userpw").val();
-		
-		
-		if( fn_isEmpty(userpw, "#pwMsg") ){
-			pwdCheck = 0;
-		}	
-		else if( regPw.test(userpw) == false ){
-			pwdCheck = 0;
-			fn_activeButton("N");
-			$("#pwMsg").css("color", "#FF2424");   
-			$("#pwMsg").html("5~20자 영문 대소문자, 숫자, 특수문자를 사용하세요.");	
-		}
-		else{
-			pwdCheck = 1;
-			$("#pwMsg").css("color", "#47C83E");   
-			$("#pwMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");
-			
-			fn_validCheck(pwdCheck, repwCheck, nameCheck, emailCheck);
-		}
-
-	});
-
-
-	/* 
-	 *	비밀번호 확인
-	 */
-	$("#userpw2").focusout(function(){
-		
-		var regPw = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{5,20}$/;
-		var pw = $("#userpw").val();
-		var repw = $("#userpw2").val();	
-		
-		
-		if( fn_isEmpty(repw, "#repwMsg") ){
-			repwCheck = 0;
-			$("#userpw2").val("");
-		}
-		else if( regPw.test(repw) == false ){
-			repwCheck = 0;
-			fn_activeButton("N");
-			$("#repwMsg").css("color", "#FF2424");   
-			$("#repwMsg").html("5~20자 영문 대소문자, 숫자, 특수문자를 사용하세요.");	
-			$("#userpw2").val("");
-		}
-		else if( pw != repw ){
-			repwCheck = 0;
-			fn_activeButton("N");
-			$("#repwMsg").css("color", "#FF2424");   
-			$("#repwMsg").html("비밀번호가 일치하지 않습니다.");	
-			$("#userpw2").val("");
-		}
-		else{
-			repwCheck = 1;
-			$("#repwMsg").css("color", "#47C83E");   
-			$("#repwMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");	
-			
-			fn_validCheck(pwdCheck, repwCheck, nameCheck, emailCheck);
-		}
-
-	});
-
-
 	/* 
 	 *	이름 체크
 	 */
@@ -290,7 +202,7 @@
 			$("#nameMsg").css("color", "#47C83E");   
 			$("#nameMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");
 			
-			fn_validCheck(pwdCheck, repwCheck, nameCheck, emailCheck);
+			fn_validCheck(nameCheck, emailCheck);
 		}
 
 	});
@@ -346,7 +258,7 @@
 			$("#mailMsg").css("color", "#47C83E");   
 			$("#mailMsg").html("<i class='fa fa-check fa-fw' style='font-size:1.45em'></i>");	
      			
-			fn_validCheck(pwdCheck, repwCheck, nameCheck, emailCheck);    
+			fn_validCheck(nameCheck, emailCheck);    
 	    }
 		else{
 			emailCheck = 0;
@@ -402,9 +314,9 @@
 	/* 
 	 *	유효성 체크
 	 */
-	function fn_validCheck(pwVal, repwVal, nameVal, emailVal){
+	function fn_validCheck(nameVal, emailVal){
 		
-		if( pwVal == 1 && repwVal == 1 && nameVal == 1 && emailVal == 1 ){
+		if(nameVal == 1 && emailVal == 1 ){
 			fn_activeButton("Y");
 		}else{
 			fn_activeButton("N");
