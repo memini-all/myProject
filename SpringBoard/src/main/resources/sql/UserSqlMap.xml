@@ -84,8 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE 
 			tbl_suser 
 		SET 
-            userpw = SHA2(#{userpw}, 256)
-            , username = #{username}
+            username = #{username}
             , email = #{email}
             , profile_Img = #{profile_Img}
         WHERE 

@@ -17,18 +17,33 @@
 		<property name="maxInMemorySize" value="10485760"></property>
 	</bean>
 	
-	<!-- 업로드 경로 -->
+	<!-- 업로드 경로 (윈도우) 
 	<bean id="uploadPath" class="java.lang.String">
 		<constructor-arg value="E:\\uploadFile\\STS_Upload">
 		</constructor-arg>
 	</bean>
+	-->
 	
-	
-	<!-- 프로필 이미지파일 경로 -->
+	<!-- 프로필 이미지파일 경로 (윈도우) 
 	<bean id="profileImgPath" class="java.lang.String">	
 		<constructor-arg value="E:\\uploadFile\\profileImg">
 		</constructor-arg>
 	</bean>
+	-->
+	
+	<!-- 업로드 경로 (리눅스) -->
+	<bean id="uploadPath" class="java.lang.String">
+		<constructor-arg value="/var/board-upload/uploadfile">
+		</constructor-arg>
+	</bean>
+	
+	
+	<!-- 업로드 경로 (리눅스) -->
+	<bean id="profileImgPath" class="java.lang.String">	
+		<constructor-arg value="/var/board-upload/profileimg">
+		</constructor-arg>
+	</bean>
+	 
 
 	<!-- FileUtils -->
     <bean id="fileUtils" class="com.spring.project.common.util.FileUtils">

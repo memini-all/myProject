@@ -363,7 +363,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/checkid", method = RequestMethod.GET)
-	public ResponseEntity<Integer> checkUserID(@PathVariable String userid) throws Exception{
+	public ResponseEntity<Integer> checkUserID(String userid) throws Exception{
 		
 		ResponseEntity<Integer> entity = null;
 

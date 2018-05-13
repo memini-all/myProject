@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +79,7 @@ public class CommonErrorController {
 	 */
 	@RequestMapping(value = "/404")
 	public String pageError404(HttpServletRequest request, Model model) {
-		//logger.info(">>>>>> CommonError : page error code 404");
+		logger.info(">>>>>> CommonError : page error code 404");
 		return "common/error404";
 	}
 

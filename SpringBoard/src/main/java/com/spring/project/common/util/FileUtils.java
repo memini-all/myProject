@@ -103,8 +103,11 @@ public class FileUtils {
         	
         	if(multipartFile.isEmpty() == false){
         		
-        		originalFileName = multipartFile.getOriginalFilename();		// 원본 파일명
-        		savedFileName = uid.toString() + "_" + originalFileName;	// 저장될 파일명
+        		originalFileName = multipartFile.getOriginalFilename();		// 원본 파일명	
+        		int idx = originalFileName.lastIndexOf(".");
+        		String extension = originalFileName.substring(idx+1); // 파일 확장자 추출
+        		
+        		savedFileName = uid.toString() + "." + extension;	// 저장될 파일명
         		
         		File file = new File(uploadPath + savedFilePath, savedFileName);
         		

@@ -252,11 +252,13 @@
 				<div> 
 					<strong>{{uname}}</strong> &nbsp; <font color="#9E9E9E">{{regdate}}</font>
 					<c:if test="${sessionScope.login !=null }">
+						{{#isDeleteReply rdeletat}}
 						{{#checkUser userno}}
 							<a href="javascript:fn_replyRemove({{repno}})" title="삭제" ><span class="text-muted"><i class="fa fa-times fa-fw"></i></span></span></a>
 							<a href="javascript:fn_replyModify({{repno}})" title="수정" ><span class="text-muted"><i class="fa fa-edit fa-fw"></i></span></a>
 						{{/checkUser}}
 							<a href="javascript:fn_replyReply({{repno}}, {{userno}})" title="답글" ><span class="text-muted"><i class="fa fa-comments fa-fw"></i></span></a>
+						{{/isDeleteReply}}
 					</c:if>
 				</div>
 				
@@ -296,6 +298,14 @@
 			return loginUser == userno ? options.fn(this) : options.inverse(this);	
 		}
 	});
+	
+	
+	/*
+	 * 최상위 글이 삭제된 경우 모든버튼 비활성화
+	 */
+	Handlebars.registerHelper('isDeleteReply', function(rdeletat, options) {	   
+		return rdeletat == "N" ? options.fn(this) : options.inverse(this);
+	});	
 	
 	
 	/*
@@ -583,7 +593,7 @@
 	/*
 	 *	댓글 삭제
 	 */
-	function replyRemove(repno){
+	function fn_replyRemove(repno){
 
 		var parent = $("#hiddenParent"+repno).val();
 		
@@ -645,7 +655,7 @@
 	 */
 	$("#replyReplyBtn").on("click", function() {
 	
-		var replyer = "2" //replyerObj.val();  현재 답글
+		var replyer = loginUser;
 		var replyContent = $("#repReplyContent").val();
 		var rparent = $("#replyParent").val(); 
 		var rgroup = $("#replyGroup").val();

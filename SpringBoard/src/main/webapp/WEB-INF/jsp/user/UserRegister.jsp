@@ -182,7 +182,6 @@
 		var userid = $("#userid").val();
 		var tempID = $("#userid").val().toLowerCase();	
 		
-		
 		if(tempID.indexOf("admin") != -1){
 			
 			fn_activeButton("N");
@@ -230,7 +229,8 @@
 					}
 				}, 
 		        error:function(request,status,error){
-	        		fn_errorPage(request.status);
+	        		//fn_errorPage(request.status);
+		        	alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	        	}
 				
 			});
